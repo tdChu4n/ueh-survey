@@ -355,10 +355,23 @@
   </div>
 
   <div class="nav-right">
+    <!-- Chưa đăng nhập -->
     <button class="btn-nav-login" id="btnNavLogin" onclick="openLoginModal()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Đăng nhập
     </button>
+
+    <!-- Sinh viên đã đăng nhập (Google) -->
+    <div id="studentNavInfo" style="display:none;align-items:center;gap:10px;">
+      <img id="navAvatar" src="" alt="" style="width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.5);">
+      <div>
+        <div style="color:#fff;font-size:13px;font-weight:600;line-height:1.2;" id="navUserName"></div>
+        <div style="color:rgba(255,255,255,.7);font-size:11px;" id="navUserEmail"></div>
+      </div>
+      <button class="btn-nav-logout" onclick="signOut()">Đăng xuất</button>
+    </div>
+
+    <!-- Admin đã đăng nhập -->
     <div class="admin-nav-info" id="adminNavInfo">
       <div>
         <div class="admin-name">Quản trị viên</div>
@@ -369,13 +382,8 @@
   </div>
 </nav>
 
-<!-- Student user bar (hiện sau Google login) -->
-<div class="user-bar" id="userBar">
-  <img id="userAvatar" src="" alt="avatar">
-  <span class="user-name" id="userName"></span>
-  <span class="user-email" id="userEmailDisplay"></span>
-  <button class="btn-logout" onclick="signOut()">Đăng xuất</button>
-</div>
+<!-- user-bar ẩn, thông tin user hiện trong nav -->
+<div id="userBar" style="display:none;"></div>
 
 <!-- ══ LOGIN MODAL ══ -->
 <div class="login-overlay" id="loginOverlay" onclick="onOverlayClick(event)">
@@ -640,10 +648,13 @@
     const p = parseJwt(response.credential);
     currentUser = { email: p.email, name: p.name, picture: p.picture };
     closeLoginModal();
-    document.getElementById('userBar').style.display        = 'flex';
-    document.getElementById('userAvatar').src               = p.picture;
-    document.getElementById('userName').textContent         = p.name;
-    document.getElementById('userEmailDisplay').textContent = p.email;
+    // Hiện thông tin trong nav
+    document.getElementById('btnNavLogin').style.display    = 'none';
+    document.getElementById('studentNavInfo').style.display = 'flex';
+    document.getElementById('navAvatar').src                = p.picture;
+    document.getElementById('navUserName').textContent      = p.name;
+    document.getElementById('navUserEmail').textContent     = p.email;
+    // Hiện survey
     document.getElementById('loginSection').style.display   = 'none';
     document.getElementById('surveySection').style.display  = 'block';
     loadCourses();
@@ -652,9 +663,10 @@
   function signOut() {
     google.accounts.id.disableAutoSelect();
     currentUser = null;
-    document.getElementById('userBar').style.display        = 'none';
+    document.getElementById('btnNavLogin').style.display    = 'flex';
+    document.getElementById('studentNavInfo').style.display = 'none';
     document.getElementById('surveySection').style.display  = 'none';
-    document.getElementById('loginSection').style.display   = 'flex';
+    document.getElementById('loginSection').style.display   = 'block';
   }
 
   // ── Load danh sách môn học ────────────────────────
