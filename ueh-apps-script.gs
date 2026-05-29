@@ -163,7 +163,17 @@ function handleGetResponses() {
     });
   }
 
-  return jsonOut({ success: true, responses });
+  // Đọc danh sách chương trình từ Assignments để dashboard luôn khớp
+  const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
+  const programs    = [];
+  if (assignSheet) {
+    const aRows = assignSheet.getDataRange().getValues();
+    for (let i = 1; i < aRows.length; i++) {
+      if (aRows[i][1]) programs.push(String(aRows[i][1]).trim());
+    }
+  }
+
+  return jsonOut({ success: true, responses, programs });
 }
 
 function fmtDate(d) {

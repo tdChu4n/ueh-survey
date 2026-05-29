@@ -81,10 +81,9 @@ function App() {
     fetch(APPS_SCRIPT_URL + '?action=getResponses')
       .then(r => r.json())
       .then(data => {
-        if (data.success && data.responses?.length > 0) {
-          window.SURVEY_RESPONSES = data.responses;
-          const progs = [...new Set(data.responses.map(r => r.program))].filter(Boolean);
-          if (progs.length) window.PROGRAMS = progs;
+        if (data.success) {
+          if (data.responses?.length > 0) window.SURVEY_RESPONSES = data.responses;
+          if (data.programs?.length > 0)  window.PROGRAMS = data.programs;
           setUpdatedAt(new Date().toLocaleTimeString('vi-VN'));
           setDataKey(k => k + 1);
         }
