@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UEH – Khảo sát ý kiến sinh viên</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background: #efefef; color: #333; }
+
+    /* ─── UEH Header ─── */
+    .ueh-header {
+      background: linear-gradient(90deg, #005c50 0%, #007a6a 100%);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ueh-logo {
+      color: #fff;
+      font-size: 30px;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .ueh-subtitle {
+      color: rgba(255,255,255,0.85);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+    .the-badge {
+      margin-left: auto;
+      background: #fff;
+      border-radius: 5px;
+      padding: 5px 10px;
+      text-align: center;
+      font-size: 9px;
+      color: #555;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+    .the-badge .top-badge {
+      background: #f90;
+      color: #fff;
+      font-weight: bold;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 8.5px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ─── User bar ─── */
+    .user-bar {
+      background: #fff;
+      border-bottom: 2px solid #e0e0e0;
+      padding: 8px 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .user-bar img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #005c50;
+    }
+    .user-name  { font-size: 13px; font-weight: 600; }
+    .user-email { font-size: 12px; color: #888; }
+    .btn-logout {
+      font-size: 12px;
+      padding: 4px 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #555;
+      transition: background .15s;
+    }
+    .btn-logout:hover { background: #f5f5f5; }
+
+    /* ─── Container ─── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: calc(100vh - 72px);
+      padding: 32px 28px;
+    }
+
+    /* ─── Login section ─── */
+    #loginSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 72px 20px;
+      gap: 0;
+    }
+    .login-logo {
+      font-size: 48px;
+      font-weight: 900;
+      font-style: italic;
+      color: #005c50;
+      letter-spacing: -2px;
+      margin-bottom: 6px;
+    }
+    #loginSection h2 {
+      color: #222;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    #loginSection p {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    /* ─── Survey section ─── */
+    #surveySection { display: none; }
+    .page-title {
+      text-align: center;
+      color: #0000cc;
+      font-size: 22px;
+      font-weight: bold;
+      text-decoration: underline;
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .page-desc {
+      text-align: center;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 22px;
+    }
+
+    /* ─── Refresh notice bar ─── */
+    .refresh-bar {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #fffbe6;
+      border: 1px solid #f0c000;
+      border-radius: 6px;
+      padding: 10px 16px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #555;
+    }
+    .poll-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #888;
+      font-size: 12px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #ddd;
+      border-top-color: #005c50;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-refresh {
+      padding: 5px 14px;
+      background: #005c50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background .15s;
+      white-space: nowrap;
+    }
+    .btn-refresh:hover { background: #004a42; }
+
+    /* ─── Table ─── */
+    .survey-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .survey-table th {
+      background: #e5e5e5;
+      border: 1px solid #bbb;
+      padding: 10px 10px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .survey-table td {
+      border: 1px solid #bbb;
+      padding: 10px 10px;
+      vertical-align: middle;
+    }
+    .survey-table tbody tr:hover td { background: #f8f8f8; }
+
+    .status-done {
+      color: #28a745;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .status-pending {
+      color: #0055cc;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+      white-space: nowrap;
+    }
+    .status-pending:hover { color: #003a99; }
+
+    /* ─── States ─── */
+    .state-msg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 48px;
+      color: #888;
+      font-size: 14px;
+    }
+
+    /* ─── Mobile ─── */
+    @media (max-width: 600px) {
+      .container { padding: 20px 12px; }
+      .survey-table { font-size: 12px; }
+      .survey-table th, .survey-table td { padding: 8px 6px; }
+      .page-title { font-size: 17px; }
+      .ueh-logo { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- UEH Header -->
+<div class="ueh-header">
+  <div>
+    <div class="ueh-logo">UEH</div>
+    <div class="ueh-subtitle">UNIVERSITY OF ECONOMICS HO CHI MINH CITY</div>
+  </div>
+  <div class="the-badge">
+    <span>THE World<br>University Rankings</span>
+    <span class="top-badge">TOP 501+ WORLDWIDE</span>
+  </div>
+</div>
+
+<!-- User bar (hiện sau khi đăng nhập) -->
+<div class="user-bar" id="userBar">
+  <img id="userAvatar" src="" alt="avatar">
+  <span class="user-name" id="userName"></span>
+  <span class="user-email" id="userEmailDisplay"></span>
+  <button class="btn-logout" onclick="signOut()">Đăng xuất</button>
+</div>
+
+<!-- Main content -->
+<div class="container">
+
+  <!-- LOGIN -->
+  <div id="loginSection">
+    <div class="login-logo">UEH</div>
+    <h2>Hệ thống khảo sát ý kiến sinh viên</h2>
+    <p>Vui lòng đăng nhập bằng tài khoản Google của bạn</p>
+    <!-- Nút Sign In được render bởi GSI vào đây -->
+    <div id="googleSignInBtn"></div>
+  </div>
+
+  <!-- SURVEY -->
+  <div id="surveySection">
+    <h1 class="page-title">Danh sách môn học / phiếu khảo sát</h1>
+    <p class="page-desc">Bạn hãy cho ý kiến đánh giá các môn đã học / phiếu khảo sát ở danh sách bên dưới:</p>
+
+    <!-- Hiện khi sinh viên đang thực hiện khảo sát -->
+    <div class="refresh-bar" id="refreshBar">
+      <span>Sau khi hoàn thành, trạng thái sẽ tự cập nhật.</span>
+      <div class="poll-indicator" id="pollIndicator">
+        <div class="spinner"></div>
+        <span>Đang kiểm tra...</span>
+      </div>
+      <button class="btn-refresh" onclick="loadCourses(false)">Làm mới ngay</button>
+    </div>
+
+    <div id="tableContainer">
+      <div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  // ═══════════════════════════════════════════════════
+  //  CẤU HÌNH — chỉ cần thay 2 giá trị này
+  // ═══════════════════════════════════════════════════
+  const CONFIG = {
+    // 1. Lấy từ Google Cloud Console > APIs & Services > Credentials
+    GOOGLE_CLIENT_ID: 'YOUR_GOOGLE_CLIENT_ID',
+
+    // 2. URL sau khi deploy Apps Script (Extensions > Apps Script > Deploy > Web App)
+    APPS_SCRIPT_URL: 'YOUR_APPS_SCRIPT_WEB_APP_URL',
+  };
+  // ═══════════════════════════════════════════════════
+
+  let currentUser   = null;
+  let pollingTimer  = null;
+  let pollingCount  = 0;
+  const POLL_EVERY  = 6000;   // kiểm tra mỗi 6 giây
+  const POLL_LIMIT  = 30;     // dừng sau ~3 phút
+
+  // ── Google Sign-In ────────────────────────────────
+  window.onGoogleLibraryLoad = function () {
+    google.accounts.id.initialize({
+      client_id: CONFIG.GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+    });
+    google.accounts.id.renderButton(
+      document.getElementById('googleSignInBtn'),
+      { theme: 'outline', size: 'large', text: 'sign_in_with', shape: 'rectangular', logo_alignment: 'left' }
+    );
+  };
+
+  function handleCredentialResponse(response) {
+    const p = parseJwt(response.credential);
+    currentUser = { email: p.email, name: p.name, picture: p.picture };
+
+    document.getElementById('userBar').style.display        = 'flex';
+    document.getElementById('userAvatar').src               = p.picture;
+    document.getElementById('userName').textContent         = p.name;
+    document.getElementById('userEmailDisplay').textContent = p.email;
+    document.getElementById('loginSection').style.display   = 'none';
+    document.getElementById('surveySection').style.display  = 'block';
+
+    loadCourses(false);
+  }
+
+  function signOut() {
+    google.accounts.id.disableAutoSelect();
+    stopPolling();
+    currentUser = null;
+    document.getElementById('userBar').style.display        = 'none';
+    document.getElementById('surveySection').style.display  = 'none';
+    document.getElementById('loginSection').style.display   = 'flex';
+    document.getElementById('refreshBar').style.display     = 'none';
+  }
+
+  // ── Load danh sách môn học ────────────────────────
+  async function loadCourses(silent) {
+    if (!silent) {
+      document.getElementById('tableContainer').innerHTML =
+        '<div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>';
+    }
+    try {
+      const url = CONFIG.APPS_SCRIPT_URL
+        + '?action=getCourses&email=' + encodeURIComponent(currentUser.email);
+      const res  = await fetch(url);
+      const data = await res.json();
+      renderTable(data.courses || []);
+    } catch {
+      if (!silent) {
+        document.getElementById('tableContainer').innerHTML =
+          '<div class="state-msg" style="color:#c00;">Không thể tải dữ liệu. Kiểm tra kết nối hoặc liên hệ quản trị viên.</div>';
+      }
+    }
+  }
+
+  // ── Render bảng ───────────────────────────────────
+  function renderTable(courses) {
+    if (!courses.length) {
+      stopPolling();
+      document.getElementById('tableContainer').innerHTML =
+        '<div class="state-msg">Không tìm thấy môn học nào được phân công cho tài khoản của bạn.<br>Vui lòng liên hệ quản trị viên.</div>';
+      return;
+    }
+
+    const allDone = courses.every(c => c.status === 'Đã thực hiện');
+    if (allDone) {
+      stopPolling();
+      document.getElementById('refreshBar').style.display = 'none';
+    }
+
+    const rows = courses.map((c, i) => {
+      const done = c.status === 'Đã thực hiện';
+      const cell = done
+        ? `<span class="status-done">&#10004; Đã thực hiện</span>`
+        : `<span class="status-pending" onclick="openForm(${JSON.stringify(c.formLink)})">Chưa thực hiện</span>`;
+      return `<tr>
+        <td style="text-align:center;width:46px;">${i + 1}</td>
+        <td style="width:190px;">${esc(c.semester)}</td>
+        <td>${esc(c.courseName)}</td>
+        <td style="text-align:center;width:135px;">${cell}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tableContainer').innerHTML = `
+      <table class="survey-table">
+        <thead>
+          <tr>
+            <th style="text-align:center;">TT</th>
+            <th>HỌC KỲ KHẢO SÁT</th>
+            <th>TÊN HỌC PHẦN / TÊN PHIẾU</th>
+            <th style="text-align:center;">TRẠNG THÁI</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  // ── Mở form khảo sát ─────────────────────────────
+  function openForm(formLink) {
+    window.open(formLink, '_blank');
+    document.getElementById('refreshBar').style.display = 'flex';
+    startPolling();
+  }
+
+  // ── Polling tự động cập nhật trạng thái ──────────
+  function startPolling() {
+    stopPolling();
+    pollingCount = 0;
+    pollingTimer = setInterval(() => {
+      pollingCount++;
+      loadCourses(true);
+      if (pollingCount >= POLL_LIMIT) stopPolling();
+    }, POLL_EVERY);
+  }
+
+  function stopPolling() {
+    if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
+    const pi = document.getElementById('pollIndicator');
+    if (pi) pi.style.display = 'none';
+  }
+
+  // ── Utilities ─────────────────────────────────────
+  function parseJwt(token) {
+    const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(decodeURIComponent(
+      atob(b64).split('').map(c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join('')
+    ));
+  }
+
+  function esc(s) {
+    return String(s ?? '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+</script>
+</body>
+</html>
