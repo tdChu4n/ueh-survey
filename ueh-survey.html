@@ -80,59 +80,106 @@
     }
     .btn-logout:hover { background: #f5f5f5; }
 
-    /* ── Admin login modal ── */
-    .admin-overlay {
+    /* ── Login modal (3 views) ── */
+    .login-overlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.5); z-index: 2000;
-      align-items: flex-start; justify-content: flex-end;
-      padding: 68px 20px 0;
+      background: rgba(60,60,60,.65); z-index: 2000;
+      align-items: center; justify-content: center; padding: 16px;
     }
-    .admin-overlay.open { display: flex; }
+    .login-overlay.open { display: flex; }
 
-    .admin-login-box {
-      background: #fff; border-radius: 10px; width: 320px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.25);
-      overflow: hidden; animation: slideDown .18s ease;
+    .login-box {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 440px;
+      box-shadow: 0 12px 48px rgba(0,0,0,.3); overflow: hidden;
+      animation: popIn .2s ease;
     }
-    @keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes popIn { from { opacity:0; transform:scale(.95); } to { opacity:1; transform:scale(1); } }
 
-    .admin-login-hdr {
-      background: var(--brand); color: #fff;
-      padding: 14px 18px; font-size: 15px; font-weight: 600;
-      display: flex; justify-content: space-between; align-items: center;
+    /* Close button (top right) */
+    .login-close {
+      position: absolute; top: 14px; right: 18px;
+      background: none; border: none; font-size: 22px;
+      color: #999; cursor: pointer; line-height: 1; z-index: 1;
     }
-    .admin-login-hdr button {
-      background: none; border: none; color: rgba(255,255,255,.7);
-      font-size: 18px; cursor: pointer; line-height: 1;
-    }
-    .admin-login-hdr button:hover { color: #fff; }
+    .login-close:hover { color: #333; }
 
-    .admin-login-body { padding: 18px; }
+    /* Shared inner padding */
+    .login-inner { padding: 32px 36px; position: relative; }
 
-    .admin-notice {
-      background: #f0eeff; border-left: 3px solid var(--brand);
-      border-radius: 4px; padding: 10px 12px; margin-bottom: 16px;
-      font-size: 12px; color: #444; line-height: 1.5;
-    }
-    .admin-notice strong { color: var(--brand); }
-
-    .admin-login-body input {
-      width: 100%; border: 1px solid #ddd; border-radius: 6px;
-      padding: 9px 12px; font-size: 14px; margin-bottom: 10px;
-      transition: border .15s; outline: none;
-    }
-    .admin-login-body input:focus { border-color: var(--brand); }
-
-    .login-error {
-      display: none; color: #c00; font-size: 12px; margin-bottom: 10px;
+    /* Logo area */
+    .login-logo-area { text-align: center; margin-bottom: 20px; }
+    .login-logo-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px; border-radius: 14px;
+      background: var(--brand); color: #fff; font-size: 20px; font-weight: 900;
+      letter-spacing: 1px; margin-bottom: 0;
     }
 
-    .btn-admin-submit {
+    /* Choose view */
+    .login-choose-text {
+      text-align: center; font-size: 14px; color: #555;
+      margin-bottom: 22px; line-height: 1.5;
+    }
+
+    .login-opt {
+      width: 100%; border: none; border-radius: 10px; padding: 16px 18px;
+      display: flex; align-items: center; gap: 14px; cursor: pointer;
+      margin-bottom: 12px; text-align: left; transition: opacity .15s, transform .1s;
+    }
+    .login-opt:hover { opacity: .92; transform: translateY(-1px); }
+    .login-opt:active { transform: translateY(0); }
+
+    .login-opt--admin { background: #1d7a6e; }
+    .login-opt--student { background: #e8670a; }
+
+    .login-opt-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .login-opt-icon svg { width: 20px; height: 20px; color: #fff; }
+
+    .login-opt-text { flex: 1; }
+    .login-opt-title { color: #fff; font-size: 15px; font-weight: 700; }
+    .login-opt-sub   { color: rgba(255,255,255,.8); font-size: 12px; margin-top: 2px; }
+    .login-opt-arrow { color: rgba(255,255,255,.7); font-size: 20px; }
+
+    /* Admin form view */
+    .login-back {
+      background: none; border: none; color: var(--brand);
+      font-size: 13px; cursor: pointer; padding: 0; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .login-back:hover { text-decoration: underline; }
+
+    .login-view-title {
+      font-size: 18px; font-weight: 700; color: #222; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .login-view-title span {
+      width: 8px; height: 28px; border-radius: 4px; display: inline-block;
+    }
+    .login-view-title.admin-title span { background: #1d7a6e; }
+    .login-view-title.student-title span { background: #e8670a; }
+
+    .login-input {
+      width: 100%; border: 1px solid #ddd; border-radius: 8px;
+      padding: 11px 14px; font-size: 14px; margin-bottom: 12px;
+      transition: border .15s; outline: none; font-family: inherit;
+    }
+    .login-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(59,45,138,.1); }
+
+    .login-error { display: none; color: #c00; font-size: 12px; margin-bottom: 10px; }
+
+    .btn-login-submit {
       width: 100%; background: var(--brand); color: #fff;
-      border: none; border-radius: 6px; padding: 10px;
-      font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s;
+      border: none; border-radius: 8px; padding: 12px;
+      font-size: 15px; font-weight: 600; cursor: pointer; transition: background .15s; margin-top: 4px;
     }
-    .btn-admin-submit:hover { background: var(--brand-dark); }
+    .btn-login-submit:hover { background: var(--brand-dark); }
+
+    /* Student view google btn centering */
+    #studentView .google-wrap { display: flex; justify-content: center; margin-top: 8px; }
 
     /* ── Container ── */
     .container { max-width: 960px; margin: 0 auto; background: #fff; min-height: calc(100vh - 72px); padding: 32px 28px; }
@@ -307,33 +354,15 @@
     </div>
   </div>
 
-  <div class="nav-links">
-    <a href="#" class="nav-link active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-      Trang chủ
-    </a>
-    <a href="#" class="nav-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-      Hoạt động
-    </a>
-    <a href="#" class="nav-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Quản trị
-    </a>
-  </div>
-
   <div class="nav-right">
-    <!-- Nút đăng nhập (admin chưa đăng nhập) -->
-    <button class="btn-nav-login" id="btnNavLogin" onclick="openAdminLogin()">
+    <button class="btn-nav-login" id="btnNavLogin" onclick="openLoginModal()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Đăng nhập
     </button>
-
-    <!-- Thông tin admin (sau khi đăng nhập) -->
     <div class="admin-nav-info" id="adminNavInfo">
       <div>
         <div class="admin-name">Quản trị viên</div>
-        <div class="admin-email" id="adminNavEmail"></div>
+        <div class="admin-email">doanhoi.ttk@ueh.edu.vn</div>
       </div>
       <button class="btn-nav-logout" onclick="adminLogout()">Đăng xuất</button>
     </div>
@@ -348,36 +377,78 @@
   <button class="btn-logout" onclick="signOut()">Đăng xuất</button>
 </div>
 
-<!-- Admin login modal -->
-<div class="admin-overlay" id="adminOverlay" onclick="closeAdminLogin(event)">
-  <div class="admin-login-box">
-    <div class="admin-login-hdr">
-      <span>Đăng nhập</span>
-      <button onclick="closeAdminLogin()">&#x2715;</button>
-    </div>
-    <div class="admin-login-body">
-      <div class="admin-notice">
-        &#9432; Đăng nhập này chỉ dành cho <strong>quản trị viên</strong>.<br>
-        Sinh viên vui lòng đăng nhập bằng <strong>Google</strong> bên dưới trang.
+<!-- ══ LOGIN MODAL ══ -->
+<div class="login-overlay" id="loginOverlay" onclick="onOverlayClick(event)">
+  <div class="login-box" id="loginBox">
+
+    <!-- View 1: Chọn vai trò -->
+    <div class="login-inner" id="chooseView">
+      <button class="login-close" onclick="closeLoginModal()">&#x2715;</button>
+      <div class="login-logo-area">
+        <div class="login-logo-badge">TTK</div>
       </div>
-      <input type="text" id="adminUser" placeholder="Tài khoản" autocomplete="username"
-             onkeydown="if(event.key==='Enter') doAdminLogin()">
-      <input type="password" id="adminPass" placeholder="Mật khẩu" autocomplete="current-password"
-             onkeydown="if(event.key==='Enter') doAdminLogin()">
-      <div class="login-error" id="loginError">Sai tài khoản hoặc mật khẩu.</div>
-      <button class="btn-admin-submit" onclick="doAdminLogin()">Đăng nhập</button>
+      <p class="login-choose-text">Vui lòng chọn phương thức đăng nhập phù hợp</p>
+
+      <button class="login-opt login-opt--admin" onclick="showAdminView()">
+        <div class="login-opt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="login-opt-text">
+          <div class="login-opt-title">Quản trị viên</div>
+          <div class="login-opt-sub">Dành cho quản trị viên hệ thống</div>
+        </div>
+        <span class="login-opt-arrow">›</span>
+      </button>
+
+      <button class="login-opt login-opt--student" onclick="showStudentView()">
+        <div class="login-opt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="login-opt-text">
+          <div class="login-opt-title">Sinh viên</div>
+          <div class="login-opt-sub">Dành cho sinh viên tham gia khảo sát</div>
+        </div>
+        <span class="login-opt-arrow">›</span>
+      </button>
     </div>
+
+    <!-- View 2: Admin login -->
+    <div class="login-inner" id="adminView" style="display:none">
+      <button class="login-back" onclick="showChooseView()">← Quay lại</button>
+      <div class="login-view-title admin-title">
+        <span></span> Quản trị viên
+      </div>
+      <input class="login-input" type="text" id="adminUser" placeholder="Tài khoản"
+             autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('adminPass').focus()">
+      <input class="login-input" type="password" id="adminPass" placeholder="Mật khẩu"
+             autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      <div class="login-error" id="loginError">Sai tài khoản hoặc mật khẩu.</div>
+      <button class="btn-login-submit" onclick="doAdminLogin()">Đăng nhập</button>
+    </div>
+
+    <!-- View 3: Student (Google) -->
+    <div class="login-inner" id="studentView" style="display:none">
+      <button class="login-back" onclick="showChooseView()">← Quay lại</button>
+      <div class="login-view-title student-title">
+        <span></span> Sinh viên
+      </div>
+      <p style="font-size:13px;color:#666;margin-bottom:20px;">Đăng nhập bằng tài khoản Google để thực hiện khảo sát.</p>
+      <div class="google-wrap" id="googleSignInBtn"></div>
+    </div>
+
   </div>
 </div>
 
 <!-- Main -->
 <div class="container">
-  <!-- LOGIN -->
-  <div id="loginSection">
-    <div style="width:64px;height:64px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:900;margin-bottom:12px;">TTK</div>
-    <h2>Hệ thống khảo sát ý kiến sinh viên</h2>
-    <p>Vui lòng đăng nhập bằng tài khoản Google của bạn</p>
-    <div id="googleSignInBtn"></div>
+  <!-- Trang chào (chưa đăng nhập) -->
+  <div id="loginSection" style="text-align:center;padding:80px 20px;">
+    <div style="width:72px;height:72px;border-radius:16px;background:var(--brand);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:900;margin-bottom:16px;">TTK</div>
+    <h2 style="font-size:20px;color:#222;margin-bottom:8px;">Hệ thống khảo sát ý kiến sinh viên</h2>
+    <p style="font-size:14px;color:#777;margin-bottom:28px;">Youth. Đoàn - Hội khoa Toán - Thống kê · UEH</p>
+    <button onclick="openLoginModal()" style="background:var(--brand);color:#fff;border:none;border-radius:24px;padding:12px 32px;font-size:15px;font-weight:600;cursor:pointer;">
+      Đăng nhập để tiếp tục
+    </button>
   </div>
 
   <!-- SURVEY TABLE -->
@@ -488,50 +559,67 @@
     ]
   };
 
-  // ── Admin auth ────────────────────────────────────
+  // ── Login modal ───────────────────────────────────
   const ADMIN = { user: 'admin', pass: 'admin123' };
 
-  function openAdminLogin() {
-    document.getElementById('adminOverlay').classList.add('open');
-    document.getElementById('loginError').style.display = 'none';
+  function openLoginModal() {
+    showChooseView();
+    document.getElementById('loginOverlay').classList.add('open');
+  }
+  function closeLoginModal() {
+    document.getElementById('loginOverlay').classList.remove('open');
+  }
+  function onOverlayClick(e) {
+    if (e.target === document.getElementById('loginOverlay')) closeLoginModal();
+  }
+  function showChooseView() {
+    document.getElementById('chooseView').style.display  = 'block';
+    document.getElementById('adminView').style.display   = 'none';
+    document.getElementById('studentView').style.display = 'none';
+  }
+  function showAdminView() {
+    document.getElementById('chooseView').style.display  = 'none';
+    document.getElementById('adminView').style.display   = 'block';
+    document.getElementById('loginError').style.display  = 'none';
     document.getElementById('adminUser').value = '';
     document.getElementById('adminPass').value = '';
-    setTimeout(() => document.getElementById('adminUser').focus(), 100);
+    setTimeout(() => document.getElementById('adminUser').focus(), 80);
   }
-
-  function closeAdminLogin(e) {
-    if (e && e.target !== document.getElementById('adminOverlay')) return;
-    document.getElementById('adminOverlay').classList.remove('open');
+  function showStudentView() {
+    document.getElementById('chooseView').style.display  = 'none';
+    document.getElementById('studentView').style.display = 'block';
+    // Re-render Google button nếu chưa có
+    if (!document.getElementById('googleSignInBtn').hasChildNodes()) {
+      google.accounts.id.renderButton(
+        document.getElementById('googleSignInBtn'),
+        { theme: 'outline', size: 'large', text: 'sign_in_with', shape: 'rectangular', logo_alignment: 'left' }
+      );
+    }
   }
-
   function doAdminLogin() {
     const u = document.getElementById('adminUser').value.trim();
     const p = document.getElementById('adminPass').value;
     if (u === ADMIN.user && p === ADMIN.pass) {
+      closeLoginModal();
+      document.getElementById('btnNavLogin').style.display  = 'none';
+      document.getElementById('adminNavInfo').style.display = 'flex';
       sessionStorage.setItem('adminLoggedIn', '1');
-      document.getElementById('adminOverlay').classList.remove('open');
-      document.getElementById('btnNavLogin').style.display    = 'none';
-      document.getElementById('adminNavInfo').style.display   = 'flex';
-      document.getElementById('adminNavEmail').textContent    = 'doanhoi.ttk@ueh.edu.vn';
+      window.location.href = 'Mymy Activity Insight.html';
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('adminPass').value = '';
       document.getElementById('adminPass').focus();
     }
   }
-
   function adminLogout() {
     sessionStorage.removeItem('adminLoggedIn');
     document.getElementById('btnNavLogin').style.display  = 'flex';
     document.getElementById('adminNavInfo').style.display = 'none';
   }
-
-  // Khôi phục trạng thái admin nếu đã đăng nhập trước đó
   if (sessionStorage.getItem('adminLoggedIn')) {
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('btnNavLogin').style.display  = 'none';
       document.getElementById('adminNavInfo').style.display = 'flex';
-      document.getElementById('adminNavEmail').textContent  = 'doanhoi.ttk@ueh.edu.vn';
     });
   }
 
@@ -545,15 +633,13 @@
       client_id: CONFIG.GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse,
     });
-    google.accounts.id.renderButton(
-      document.getElementById('googleSignInBtn'),
-      { theme: 'outline', size: 'large', text: 'sign_in_with', shape: 'rectangular', logo_alignment: 'left' }
-    );
+    // Button sẽ được render khi user chọn "Sinh viên" trong modal
   };
 
   function handleCredentialResponse(response) {
     const p = parseJwt(response.credential);
     currentUser = { email: p.email, name: p.name, picture: p.picture };
+    closeLoginModal();
     document.getElementById('userBar').style.display        = 'flex';
     document.getElementById('userAvatar').src               = p.picture;
     document.getElementById('userName').textContent         = p.name;
