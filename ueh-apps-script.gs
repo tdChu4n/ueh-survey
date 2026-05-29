@@ -1,63 +1,56 @@
 // ═══════════════════════════════════════════════════════════════════
 //  UEH Survey System — Google Apps Script
 //
-//  HƯỚNG DẪN CÀI ĐẶT:
-//  1. Mở Google Sheets của bạn
-//  2. Extensions > Apps Script
-//  3. Dán toàn bộ code này vào, thay SPREADSHEET_ID bên dưới
-//  4. Deploy > New deployment > Web App
-//     - Execute as: Me
-//     - Who has access: Anyone
-//  5. Copy URL vào CONFIG.APPS_SCRIPT_URL trong ueh-survey.html
-//  6. Chạy hàm setupFormTriggers() một lần để đăng ký auto-update
+//  HƯỚNG DẪN:
+//  1. Mở Google Sheets > Extensions > Apps Script
+//  2. Dán code này vào, thay SPREADSHEET_ID bên dưới
+//  3. Deploy > New deployment > Web App
+//     - Execute as: Me | Who has access: Anyone
+//  4. Copy URL vào CONFIG.APPS_SCRIPT_URL trong ueh-survey.html
 // ═══════════════════════════════════════════════════════════════════
 
-// ── CẤU HÌNH ────────────────────────────────────────────────────
-const SPREADSHEET_ID    = 'YOUR_SPREADSHEET_ID';  // ← ID trong URL Google Sheets
-const SHEET_ASSIGNMENTS = 'Assignments';           // ← Tên sheet chứa dữ liệu
-// ────────────────────────────────────────────────────────────────
+const SPREADSHEET_ID    = 'YOUR_SPREADSHEET_ID';
+const SHEET_ASSIGNMENTS = 'Assignments';   // Admin quản lý danh sách khảo sát
+const SHEET_RESPONSES   = 'Responses';     // Dữ liệu do sinh viên gửi về
 
 // Cấu trúc sheet "Assignments":
-// Cột A: email          — Gmail sinh viên
-// Cột B: semester       — Học kỳ (vd: "Năm học 2026 Học kỳ đầu")
-// Cột C: courseName     — Tên học phần / tên phiếu
-// Cột D: formLink       — Link Google Form
-// Cột E: status         — "Chưa thực hiện" hoặc "Đã thực hiện"
-// Cột F: completedAt    — Thời điểm hoàn thành (tự động ghi)
+// A: email | B: semester | C: courseName | D: status | E: completedAt
+// (Không cần cột formLink nữa vì form được nhúng thẳng vào web)
+
+// Cấu trúc sheet "Responses" (tự động tạo nếu chưa có):
+// timestamp | email | semester | program |
+// DVTT1-4 | CLCT1-5 | CSVC1-3 | GTCT1-2 | SHL1-3 | LTT1-4 |
+// overall | learn | trouble | interest | feedback
 
 
-// ── Web App: xử lý request từ ueh-survey.html ───────────────────
+// ── Web App entry point ──────────────────────────────────────────
 function doGet(e) {
   const action = e.parameter.action;
 
-  if (action === 'getCourses') {
-    return handleGetCourses(e.parameter.email);
-  }
+  if (action === 'getCourses')   return handleGetCourses(e.parameter.email);
+  if (action === 'submitSurvey') return handleSubmitSurvey(e.parameter);
 
   return jsonOut({ error: 'Unknown action' });
 }
 
 
-// ── Trả về danh sách môn học của sinh viên ───────────────────────
+// ── Lấy danh sách môn học của sinh viên ─────────────────────────
 function handleGetCourses(email) {
   if (!email) return jsonOut({ success: false, courses: [] });
 
-  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID)
-                              .getSheetByName(SHEET_ASSIGNMENTS);
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_ASSIGNMENTS);
   const rows  = sheet.getDataRange().getValues();
   const norm  = email.trim().toLowerCase();
-
   const courses = [];
-  for (let i = 1; i < rows.length; i++) {  // bỏ qua hàng tiêu đề
-    const [rowEmail, semester, courseName, formLink, status] = rows[i];
+
+  for (let i = 1; i < rows.length; i++) {
+    const [rowEmail, semester, courseName, status] = rows[i];
     if (!rowEmail) continue;
     if (rowEmail.trim().toLowerCase() !== norm) continue;
-
     courses.push({
       rowIndex:   i + 1,
       semester:   semester   || '',
       courseName: courseName || '',
-      formLink:   formLink   || '',
       status:     status     || 'Chưa thực hiện',
     });
   }
@@ -66,78 +59,69 @@ function handleGetCourses(email) {
 }
 
 
-// ── Trigger: tự động cập nhật khi sinh viên submit form ─────────
-//  Được gọi tự động bởi Google Forms sau khi setupFormTriggers()
-function onSurveySubmit(e) {
+// ── Lưu phản hồi khảo sát và cập nhật trạng thái ───────────────
+function handleSubmitSurvey(p) {
   try {
-    const email  = e.response.getRespondentEmail();
-    const formId = e.source.getId();
-    if (!email) return;
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID)
-                                .getSheetByName(SHEET_ASSIGNMENTS);
-    const rows  = sheet.getDataRange().getValues();
-    const norm  = email.trim().toLowerCase();
-
-    for (let i = 1; i < rows.length; i++) {
-      const rowEmail    = String(rows[i][0]).trim().toLowerCase();
-      const rowFormLink = String(rows[i][3]);
-      const rowStatus   = String(rows[i][4]);
-
-      if (rowEmail === norm
-          && rowFormLink.includes(formId)
-          && rowStatus !== 'Đã thực hiện') {
-        sheet.getRange(i + 1, 5).setValue('Đã thực hiện');
-        sheet.getRange(i + 1, 6).setValue(new Date());
-      }
+    // 1. Cập nhật trạng thái trong Assignments
+    const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
+    const rowIndex    = parseInt(p.rowIndex);
+    if (rowIndex > 1) {
+      assignSheet.getRange(rowIndex, 4).setValue('Đã thực hiện');
+      assignSheet.getRange(rowIndex, 5).setValue(new Date());
     }
+
+    // 2. Ghi dữ liệu vào sheet Responses
+    let respSheet = ss.getSheetByName(SHEET_RESPONSES);
+    if (!respSheet) {
+      respSheet = ss.insertSheet(SHEET_RESPONSES);
+      // Tạo header
+      respSheet.appendRow([
+        'Dấu thời gian','Email','Học kỳ','Chương trình',
+        'DVTT1','DVTT2','DVTT3','DVTT4',
+        'CLCT1','CLCT2','CLCT3','CLCT4','CLCT5',
+        'CSVC1','CSVC2','CSVC3',
+        'GTCT1','GTCT2',
+        'SHL1','SHL2','SHL3',
+        'LTT1','LTT2','LTT3','LTT4',
+        'Tổng quan',
+        'Bài học/Giá trị áp dụng',
+        'Khó khăn/Trải nghiệm chưa thoải mái',
+        'Mối quan tâm học kỳ này',
+        'Góp ý'
+      ]);
+    }
+
+    respSheet.appendRow([
+      new Date(),
+      p.email      || '',
+      p.semester   || '',
+      p.program    || '',
+      num(p.DVTT1), num(p.DVTT2), num(p.DVTT3), num(p.DVTT4),
+      num(p.CLCT1), num(p.CLCT2), num(p.CLCT3), num(p.CLCT4), num(p.CLCT5),
+      num(p.CSVC1), num(p.CSVC2), num(p.CSVC3),
+      num(p.GTCT1), num(p.GTCT2),
+      num(p.SHL1),  num(p.SHL2),  num(p.SHL3),
+      num(p.LTT1),  num(p.LTT2),  num(p.LTT3),  num(p.LTT4),
+      num(p.overall),
+      p.learn    || '',
+      p.trouble  || '',
+      p.interest || '',
+      p.feedback || '',
+    ]);
+
+    return jsonOut({ success: true });
+
   } catch (err) {
-    Logger.log('onSurveySubmit error: ' + err.message);
+    Logger.log('handleSubmitSurvey error: ' + err.message);
+    return jsonOut({ success: false, error: err.message });
   }
-}
-
-
-// ── Setup triggers (chạy 1 lần, hoặc mỗi khi thêm form mới) ─────
-//  Vào Apps Script > chọn hàm này > Run
-function setupFormTriggers() {
-  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID)
-                              .getSheetByName(SHEET_ASSIGNMENTS);
-  const rows  = sheet.getDataRange().getValues();
-
-  // Tập hợp các form đã có trigger
-  const existingTriggers = new Set(
-    ScriptApp.getProjectTriggers()
-      .filter(t => t.getHandlerFunction() === 'onSurveySubmit')
-      .map(t  => t.getTriggerSourceId())
-  );
-
-  const seen = new Set();
-  for (let i = 1; i < rows.length; i++) {
-    const formLink = String(rows[i][3]);
-    const formId   = extractFormId(formLink);
-    if (!formId || seen.has(formId) || existingTriggers.has(formId)) continue;
-    seen.add(formId);
-
-    try {
-      const form = FormApp.openById(formId);
-      ScriptApp.newTrigger('onSurveySubmit')
-               .forForm(form)
-               .onFormSubmit()
-               .create();
-      Logger.log('✅ Trigger created: ' + formId);
-    } catch (err) {
-      Logger.log('❌ Trigger failed for ' + formId + ': ' + err.message);
-    }
-  }
-  Logger.log('setupFormTriggers done.');
 }
 
 
 // ── Helpers ──────────────────────────────────────────────────────
-function extractFormId(url) {
-  const m = String(url).match(/\/forms\/d\/([a-zA-Z0-9_-]+)/);
-  return m ? m[1] : null;
-}
+function num(v)  { const n = parseInt(v); return isNaN(n) ? '' : n; }
 
 function jsonOut(obj) {
   return ContentService

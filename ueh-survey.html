@@ -9,27 +9,16 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, Helvetica, sans-serif; background: #efefef; color: #333; }
 
-    /* ─── UEH Header ─── */
+    /* ── Header ── */
     .ueh-header {
-      background: linear-gradient(90deg, #005c50 0%, #007a6a 100%);
+      background: linear-gradient(90deg, #005c50, #007a6a);
       padding: 10px 24px;
       display: flex;
       align-items: center;
       gap: 14px;
     }
-    .ueh-logo {
-      color: #fff;
-      font-size: 30px;
-      font-weight: 900;
-      font-style: italic;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .ueh-subtitle {
-      color: rgba(255,255,255,0.85);
-      font-size: 10px;
-      line-height: 1.5;
-    }
+    .ueh-logo { color: #fff; font-size: 30px; font-weight: 900; font-style: italic; letter-spacing: -1px; }
+    .ueh-subtitle { color: rgba(255,255,255,.85); font-size: 10px; line-height: 1.5; }
     .the-badge {
       margin-left: auto;
       background: #fff;
@@ -42,197 +31,182 @@
       white-space: nowrap;
     }
     .the-badge .top-badge {
-      background: #f90;
-      color: #fff;
-      font-weight: bold;
-      padding: 1px 5px;
-      border-radius: 3px;
-      font-size: 8.5px;
-      display: block;
-      margin-top: 2px;
+      background: #f90; color: #fff; font-weight: bold;
+      padding: 1px 5px; border-radius: 3px; font-size: 8.5px; display: block; margin-top: 2px;
     }
 
-    /* ─── User bar ─── */
+    /* ── User bar ── */
     .user-bar {
-      background: #fff;
-      border-bottom: 2px solid #e0e0e0;
-      padding: 8px 20px;
-      display: none;
-      align-items: center;
-      gap: 10px;
-      justify-content: flex-end;
+      background: #fff; border-bottom: 2px solid #e0e0e0;
+      padding: 8px 20px; display: none; align-items: center; gap: 10px; justify-content: flex-end;
     }
-    .user-bar img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 2px solid #005c50;
-    }
-    .user-name  { font-size: 13px; font-weight: 600; }
+    .user-bar img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #005c50; }
+    .user-name { font-size: 13px; font-weight: 600; }
     .user-email { font-size: 12px; color: #888; }
     .btn-logout {
-      font-size: 12px;
-      padding: 4px 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      border-radius: 4px;
-      color: #555;
-      transition: background .15s;
+      font-size: 12px; padding: 4px 12px; border: 1px solid #ccc;
+      background: #fff; cursor: pointer; border-radius: 4px; color: #555;
     }
     .btn-logout:hover { background: #f5f5f5; }
 
-    /* ─── Container ─── */
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      background: #fff;
-      min-height: calc(100vh - 72px);
-      padding: 32px 28px;
-    }
+    /* ── Container ── */
+    .container { max-width: 960px; margin: 0 auto; background: #fff; min-height: calc(100vh - 72px); padding: 32px 28px; }
 
-    /* ─── Login section ─── */
-    #loginSection {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 72px 20px;
-      gap: 0;
-    }
-    .login-logo {
-      font-size: 48px;
-      font-weight: 900;
-      font-style: italic;
-      color: #005c50;
-      letter-spacing: -2px;
-      margin-bottom: 6px;
-    }
-    #loginSection h2 {
-      color: #222;
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    #loginSection p {
-      color: #777;
-      font-size: 14px;
-      margin-bottom: 32px;
-    }
+    /* ── Login ── */
+    #loginSection { display: flex; flex-direction: column; align-items: center; padding: 72px 20px; }
+    .login-logo { font-size: 48px; font-weight: 900; font-style: italic; color: #005c50; letter-spacing: -2px; margin-bottom: 6px; }
+    #loginSection h2 { color: #222; font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+    #loginSection p { color: #777; font-size: 14px; margin-bottom: 32px; }
 
-    /* ─── Survey section ─── */
+    /* ── Survey section ── */
     #surveySection { display: none; }
     .page-title {
-      text-align: center;
-      color: #0000cc;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: underline;
-      text-transform: uppercase;
-      line-height: 1.4;
-      margin-bottom: 12px;
+      text-align: center; color: #00c; font-size: 22px; font-weight: bold;
+      text-decoration: underline; text-transform: uppercase; line-height: 1.4; margin-bottom: 12px;
     }
-    .page-desc {
-      text-align: center;
-      font-size: 14px;
-      color: #444;
-      margin-bottom: 22px;
-    }
+    .page-desc { text-align: center; font-size: 14px; color: #444; margin-bottom: 22px; }
 
-    /* ─── Refresh notice bar ─── */
-    .refresh-bar {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      background: #fffbe6;
-      border: 1px solid #f0c000;
-      border-radius: 6px;
-      padding: 10px 16px;
-      margin-bottom: 18px;
-      font-size: 13px;
-      color: #555;
-    }
-    .poll-indicator {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #888;
-      font-size: 12px;
-    }
-    .spinner {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid #ddd;
-      border-top-color: #005c50;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      flex-shrink: 0;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .btn-refresh {
-      padding: 5px 14px;
-      background: #005c50;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 13px;
-      transition: background .15s;
-      white-space: nowrap;
-    }
-    .btn-refresh:hover { background: #004a42; }
-
-    /* ─── Table ─── */
+    /* ── Table ── */
     .survey-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .survey-table th {
-      background: #e5e5e5;
-      border: 1px solid #bbb;
-      padding: 10px 10px;
-      font-weight: bold;
-      text-align: left;
-    }
-    .survey-table td {
-      border: 1px solid #bbb;
-      padding: 10px 10px;
-      vertical-align: middle;
-    }
+    .survey-table th { background: #e5e5e5; border: 1px solid #bbb; padding: 10px; font-weight: bold; text-align: left; }
+    .survey-table td { border: 1px solid #bbb; padding: 10px; vertical-align: middle; }
     .survey-table tbody tr:hover td { background: #f8f8f8; }
-
-    .status-done {
-      color: #28a745;
-      font-weight: 700;
-      font-size: 13px;
-      white-space: nowrap;
-    }
+    .status-done { color: #28a745; font-weight: 700; font-size: 13px; white-space: nowrap; }
     .status-pending {
-      color: #0055cc;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: underline;
-      white-space: nowrap;
+      color: #0055cc; font-weight: 700; font-size: 13px;
+      cursor: pointer; text-decoration: underline; white-space: nowrap;
     }
     .status-pending:hover { color: #003a99; }
+    .state-msg { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 48px; color: #888; font-size: 14px; }
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid #ddd; border-top-color: #005c50; border-radius: 50%;
+      animation: spin .8s linear infinite; flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ─── States ─── */
-    .state-msg {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 48px;
-      color: #888;
-      font-size: 14px;
+    /* ══════════════════════════════════════
+       SURVEY MODAL
+       ══════════════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.55); z-index: 1000;
+      align-items: center; justify-content: center; padding: 16px;
+      overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-panel {
+      background: #fff; border-radius: 8px; width: 100%; max-width: 700px;
+      max-height: 90vh; display: flex; flex-direction: column;
+      overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.2);
+      position: relative; margin: auto;
     }
 
-    /* ─── Mobile ─── */
+    .modal-hdr {
+      background: #005c50; color: #fff; padding: 16px 20px;
+      display: flex; align-items: flex-start; gap: 12px; flex-shrink: 0;
+    }
+    .modal-hdr-text { flex: 1; }
+    .modal-hdr-text small { font-size: 11px; opacity: .8; }
+    .modal-hdr-text h2 { font-size: 15px; margin-top: 3px; line-height: 1.4; }
+    .btn-close-modal {
+      background: rgba(255,255,255,.2); border: none; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .btn-close-modal:hover { background: rgba(255,255,255,.35); }
+
+    .modal-body { overflow-y: auto; padding: 20px; flex: 1; }
+
+    /* Likert cards */
+    .factor-card { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 18px; overflow: hidden; }
+    .factor-title {
+      background: #f4f4f4; padding: 10px 14px; font-weight: bold;
+      font-size: 13.5px; border-bottom: 1px solid #ddd;
+    }
+    .factor-title .req { color: #c00; margin-left: 3px; }
+
+    .likert-scroll { overflow-x: auto; }
+
+    .likert-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+    .likert-table thead th {
+      text-align: center; padding: 6px 4px; font-size: 12px;
+      color: #555; background: #fafafa; border-bottom: 1px solid #eee; font-weight: 600;
+    }
+    .likert-table thead th.col-lbl { text-align: left; padding-left: 14px; width: 52%; }
+    .likert-table tbody td {
+      text-align: center; padding: 10px 4px; border-top: 1px solid #f0f0f0;
+    }
+    .likert-table tbody td.col-lbl {
+      text-align: left; padding-left: 14px; padding-right: 10px; line-height: 1.55;
+    }
+    .item-code { color: #0055cc; font-weight: bold; }
+    .likert-table tbody tr:hover td { background: #fafff9; }
+    .likert-table input[type="radio"] {
+      appearance: none; -webkit-appearance: none;
+      width: 20px; height: 20px; border: 2px solid #aaa; border-radius: 50%;
+      cursor: pointer; display: block; margin: 0 auto; transition: all .12s;
+    }
+    .likert-table input[type="radio"]:checked { background: #005c50; border-color: #005c50; }
+    .likert-table input[type="radio"]:hover:not(:checked) { border-color: #005c50; }
+    .likert-table input.invalid { border-color: #e00; }
+
+    /* Overall rating (same table style) */
+    .overall-card { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 18px; overflow: hidden; }
+
+    /* Text questions */
+    .text-section { margin-bottom: 16px; }
+    .text-section label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; line-height: 1.5; }
+    .text-section label .req { color: #c00; }
+    .text-section textarea {
+      width: 100%; border: 1px solid #ccc; border-radius: 4px;
+      padding: 8px 10px; font-size: 13px; font-family: inherit;
+      resize: vertical; min-height: 70px; transition: border .15s;
+    }
+    .text-section textarea:focus { outline: none; border-color: #005c50; }
+    .text-section textarea.invalid { border-color: #e00; }
+
+    /* Email display */
+    .email-display {
+      background: #f8f8f8; border: 1px solid #ddd; border-radius: 6px;
+      padding: 10px 14px; margin-bottom: 18px; font-size: 13px; color: #555;
+    }
+    .email-display strong { color: #333; }
+
+    /* Modal footer */
+    .modal-footer {
+      padding: 14px 20px; border-top: 1px solid #eee;
+      display: flex; justify-content: flex-end; gap: 10px; flex-shrink: 0;
+    }
+    .btn-cancel { padding: 8px 20px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; font-size: 14px; }
+    .btn-cancel:hover { background: #f5f5f5; }
+    .btn-submit {
+      padding: 8px 24px; background: #005c50; color: #fff; border: none;
+      border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600;
+    }
+    .btn-submit:hover:not(:disabled) { background: #004a42; }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* Success overlay */
+    .success-overlay {
+      display: none; position: absolute; inset: 0;
+      background: rgba(255,255,255,.97);
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px; border-radius: 8px;
+    }
+    .success-overlay.show { display: flex; }
+    .success-icon { font-size: 52px; color: #28a745; line-height: 1; }
+    .success-title { font-size: 20px; font-weight: bold; color: #005c50; }
+    .success-sub { font-size: 14px; color: #666; }
+
     @media (max-width: 600px) {
       .container { padding: 20px 12px; }
       .survey-table { font-size: 12px; }
       .survey-table th, .survey-table td { padding: 8px 6px; }
       .page-title { font-size: 17px; }
-      .ueh-logo { font-size: 24px; }
+      .modal-panel { max-height: 100vh; border-radius: 0; }
+      .modal-overlay { padding: 0; }
     }
   </style>
 </head>
@@ -250,7 +224,7 @@
   </div>
 </div>
 
-<!-- User bar (hiện sau khi đăng nhập) -->
+<!-- User bar -->
 <div class="user-bar" id="userBar">
   <img id="userAvatar" src="" alt="avatar">
   <span class="user-name" id="userName"></span>
@@ -258,58 +232,127 @@
   <button class="btn-logout" onclick="signOut()">Đăng xuất</button>
 </div>
 
-<!-- Main content -->
+<!-- Main -->
 <div class="container">
-
   <!-- LOGIN -->
   <div id="loginSection">
     <div class="login-logo">UEH</div>
     <h2>Hệ thống khảo sát ý kiến sinh viên</h2>
     <p>Vui lòng đăng nhập bằng tài khoản Google của bạn</p>
-    <!-- Nút Sign In được render bởi GSI vào đây -->
     <div id="googleSignInBtn"></div>
   </div>
 
-  <!-- SURVEY -->
+  <!-- SURVEY TABLE -->
   <div id="surveySection">
     <h1 class="page-title">Danh sách môn học / phiếu khảo sát</h1>
     <p class="page-desc">Bạn hãy cho ý kiến đánh giá các môn đã học / phiếu khảo sát ở danh sách bên dưới:</p>
-
-    <!-- Hiện khi sinh viên đang thực hiện khảo sát -->
-    <div class="refresh-bar" id="refreshBar">
-      <span>Sau khi hoàn thành, trạng thái sẽ tự cập nhật.</span>
-      <div class="poll-indicator" id="pollIndicator">
-        <div class="spinner"></div>
-        <span>Đang kiểm tra...</span>
-      </div>
-      <button class="btn-refresh" onclick="loadCourses(false)">Làm mới ngay</button>
-    </div>
-
     <div id="tableContainer">
       <div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>
     </div>
   </div>
+</div>
 
-</div><!-- /container -->
+<!-- ══ SURVEY MODAL ══ -->
+<div class="modal-overlay" id="surveyModal">
+  <div class="modal-panel">
+    <div class="modal-hdr">
+      <div class="modal-hdr-text">
+        <small>Khảo sát ý kiến người tham dự</small>
+        <h2 id="modalProgramName"></h2>
+      </div>
+      <button class="btn-close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Hủy</button>
+      <button class="btn-submit" id="submitBtn" onclick="submitSurveyForm()">Gửi khảo sát</button>
+    </div>
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Đã gửi khảo sát!</div>
+      <div class="success-sub">Cảm ơn bạn đã tham gia đánh giá.</div>
+    </div>
+  </div>
+</div>
 
 <script>
-  // ═══════════════════════════════════════════════════
-  //  CẤU HÌNH — chỉ cần thay 2 giá trị này
-  // ═══════════════════════════════════════════════════
+  // ═══════════════════════════════════════
+  //  CẤU HÌNH
+  // ═══════════════════════════════════════
   const CONFIG = {
-    // 1. Lấy từ Google Cloud Console > APIs & Services > Credentials
     GOOGLE_CLIENT_ID: '84059448728-7698b8sorrp7p4qrq2shhiapvbsgd22u.apps.googleusercontent.com',
-
-    // 2. URL sau khi deploy Apps Script (Extensions > Apps Script > Deploy > Web App)
-    APPS_SCRIPT_URL: 'YOUR_APPS_SCRIPT_WEB_APP_URL',
+    APPS_SCRIPT_URL:  'YOUR_APPS_SCRIPT_WEB_APP_URL',
   };
-  // ═══════════════════════════════════════════════════
 
-  let currentUser   = null;
-  let pollingTimer  = null;
-  let pollingCount  = 0;
-  const POLL_EVERY  = 6000;   // kiểm tra mỗi 6 giây
-  const POLL_LIMIT  = 30;     // dừng sau ~3 phút
+  // ═══════════════════════════════════════
+  //  CẤU TRÚC FORM KHẢO SÁT
+  // ═══════════════════════════════════════
+  const FORM_SCHEMA = {
+    factors: [
+      {
+        code: 'DVTT', name: 'Nhân tố I: Dịch vụ thông tin (DVTT)',
+        items: [
+          { code: 'DVTT1', label: 'Thông tin về chương trình được cung cấp đầy đủ và kịp thời trước khi tôi tham dự.' },
+          { code: 'DVTT2', label: 'Tôi dễ dàng tìm được khu vực diễn ra hoạt động nhờ bản đồ, biển chỉ dẫn hoặc nhân sự hỗ trợ.' },
+          { code: 'DVTT3', label: 'Các nội dung truyền thông của chương trình cung cấp đủ thông tin để tôi hiểu rõ và đăng ký tham gia.' },
+          { code: 'DVTT4', label: 'Các ấn phẩm truyền thông của chương trình thu hút sự chú ý và khiến tôi muốn tìm hiểu thêm.' },
+        ]
+      },
+      {
+        code: 'CLCT', name: 'Nhân tố II: Chất lượng chương trình (CLCT)',
+        items: [
+          { code: 'CLCT1', label: 'Nhân sự hỗ trợ (tại chỗ hoặc qua kênh trực tuyến) giải đáp thắc mắc của tôi kịp thời và rõ ràng.' },
+          { code: 'CLCT2', label: 'Các hình thức hoạt động trong chương trình đa dạng, giúp tôi có nhiều cách tiếp cận nội dung khác nhau.' },
+          { code: 'CLCT3', label: 'Nội dung chương trình kích thích tôi muốn tìm hiểu sâu hơn sau khi tham dự.' },
+          { code: 'CLCT4', label: 'Nội dung chương trình phù hợp với mục tiêu và chủ đề của hoạt động.' },
+          { code: 'CLCT5', label: 'Chương trình có bố cục rõ ràng (mở đầu – nội dung chính – kết thúc) và diễn ra đúng thời gian thông báo.' },
+        ]
+      },
+      {
+        code: 'CSVC', name: 'Nhân tố III: Cơ sở vật chất (CSVC)',
+        items: [
+          { code: 'CSVC1', label: 'Không gian tổ chức phù hợp với quy mô và nội dung chương trình.' },
+          { code: 'CSVC2', label: 'Hệ thống âm thanh, ánh sáng và thiết bị hỗ trợ đáp ứng tốt nhu cầu của chương trình.' },
+          { code: 'CSVC3', label: 'Chỗ ngồi và không gian tham gia tạo cảm giác thoải mái trong suốt chương trình.' },
+        ]
+      },
+      {
+        code: 'GTCT', name: 'Nhân tố IV: Giá trị chương trình (GTCT)',
+        items: [
+          { code: 'GTCT1', label: 'Những giá trị tôi nhận được từ chương trình xứng đáng với thời gian và công sức tôi đã bỏ ra.' },
+          { code: 'GTCT2', label: 'Chương trình mang lại nhiều điều thú vị và có ích hơn so với kỳ vọng ban đầu của tôi.' },
+        ]
+      },
+      {
+        code: 'SHL', name: 'Nhân tố V: Sự hài lòng (SHL)',
+        items: [
+          { code: 'SHL1', label: 'Nhìn chung, tôi hài lòng với chương trình này.' },
+          { code: 'SHL2', label: 'Tổng thể, tôi có cảm xúc tích cực khi tham gia chương trình này.' },
+          { code: 'SHL3', label: 'Nhìn lại, việc tham gia chương trình là lựa chọn đúng đắn và có ý nghĩa với tôi.' },
+        ]
+      },
+      {
+        code: 'LTT', name: 'Nhân tố VI: Lòng trung thành (LTT)',
+        items: [
+          { code: 'LTT1', label: 'Tôi sẽ chia sẻ những điều tích cực về chương trình này với người khác.' },
+          { code: 'LTT2', label: 'Nếu chương trình được tổ chức định kỳ, tôi sẽ tiếp tục đăng ký tham dự trong những lần tới.' },
+          { code: 'LTT3', label: 'Tôi sẽ giới thiệu chương trình này cho bạn bè và người quen.' },
+          { code: 'LTT4', label: 'Tôi sẵn sàng cung cấp phản hồi để Ban Tổ chức cải thiện chương trình lần sau.' },
+        ]
+      },
+    ],
+    overall: { code: 'overall', label: 'Trên tổng 7 điểm, bạn đánh giá chương trình bao nhiêu điểm.' },
+    textQuestions: [
+      { code: 'learn',    label: 'Sau khi bước ra khỏi chương trình này, bài học, kiến thức hoặc giá trị thực tế nào mà Anh/Chị cảm thấy có thể áp dụng ngay vào việc học tập hoặc cuộc sống của mình?' },
+      { code: 'trouble',  label: 'Anh/Chị có gặp khó khăn hay trải nghiệm không thoải mái nào trong suốt quá trình tham gia không?' },
+      { code: 'interest', label: 'Trong học kỳ này, đề tài hoặc kỹ năng nào đang là mối quan tâm lớn nhất mà Anh/Chị mong muốn Đoàn - Hội tổ chức chương trình để giải đáp?' },
+      { code: 'feedback', label: 'Anh/Chị có góp ý cho chương trình hay không?' },
+    ]
+  };
+
+  // ── State ────────────────────────────────────────
+  let currentUser = null;
+  let currentSurveyRow = null;
 
   // ── Google Sign-In ────────────────────────────────
   window.onGoogleLibraryLoad = function () {
@@ -326,67 +369,49 @@
   function handleCredentialResponse(response) {
     const p = parseJwt(response.credential);
     currentUser = { email: p.email, name: p.name, picture: p.picture };
-
     document.getElementById('userBar').style.display        = 'flex';
     document.getElementById('userAvatar').src               = p.picture;
     document.getElementById('userName').textContent         = p.name;
     document.getElementById('userEmailDisplay').textContent = p.email;
     document.getElementById('loginSection').style.display   = 'none';
     document.getElementById('surveySection').style.display  = 'block';
-
-    loadCourses(false);
+    loadCourses();
   }
 
   function signOut() {
     google.accounts.id.disableAutoSelect();
-    stopPolling();
     currentUser = null;
     document.getElementById('userBar').style.display        = 'none';
     document.getElementById('surveySection').style.display  = 'none';
     document.getElementById('loginSection').style.display   = 'flex';
-    document.getElementById('refreshBar').style.display     = 'none';
   }
 
   // ── Load danh sách môn học ────────────────────────
-  async function loadCourses(silent) {
-    if (!silent) {
-      document.getElementById('tableContainer').innerHTML =
-        '<div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>';
-    }
+  async function loadCourses() {
+    document.getElementById('tableContainer').innerHTML =
+      '<div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>';
     try {
-      const url = CONFIG.APPS_SCRIPT_URL
-        + '?action=getCourses&email=' + encodeURIComponent(currentUser.email);
-      const res  = await fetch(url);
-      const data = await res.json();
+      const url = CONFIG.APPS_SCRIPT_URL + '?action=getCourses&email=' + encodeURIComponent(currentUser.email);
+      const data = await (await fetch(url)).json();
       renderTable(data.courses || []);
     } catch {
-      if (!silent) {
-        document.getElementById('tableContainer').innerHTML =
-          '<div class="state-msg" style="color:#c00;">Không thể tải dữ liệu. Kiểm tra kết nối hoặc liên hệ quản trị viên.</div>';
-      }
+      document.getElementById('tableContainer').innerHTML =
+        '<div class="state-msg" style="color:#c00;">Không thể tải dữ liệu. Kiểm tra kết nối hoặc liên hệ quản trị viên.</div>';
     }
   }
 
   // ── Render bảng ───────────────────────────────────
   function renderTable(courses) {
     if (!courses.length) {
-      stopPolling();
       document.getElementById('tableContainer').innerHTML =
-        '<div class="state-msg">Không tìm thấy môn học nào được phân công cho tài khoản của bạn.<br>Vui lòng liên hệ quản trị viên.</div>';
+        '<div class="state-msg">Không tìm thấy môn học nào được phân công cho tài khoản của bạn.</div>';
       return;
     }
-
-    const allDone = courses.every(c => c.status === 'Đã thực hiện');
-    if (allDone) {
-      stopPolling();
-      document.getElementById('refreshBar').style.display = 'none';
-    }
-
     const rows = courses.map((c, i) => {
       const done = c.status === 'Đã thực hiện';
       const cell = done
         ? `<span class="status-done">&#10004; Đã thực hiện</span>`
-        : `<span class="status-pending" onclick="openForm(${JSON.stringify(c.formLink)})">Chưa thực hiện</span>`;
+        : `<span class="status-pending" onclick='openModal(${JSON.stringify(c)})'>Chưa thực hiện</span>`;
       return `<tr>
         <td style="text-align:center;width:46px;">${i + 1}</td>
         <td style="width:190px;">${esc(c.semester)}</td>
@@ -394,57 +419,180 @@
         <td style="text-align:center;width:135px;">${cell}</td>
       </tr>`;
     }).join('');
-
     document.getElementById('tableContainer').innerHTML = `
       <table class="survey-table">
-        <thead>
-          <tr>
-            <th style="text-align:center;">TT</th>
-            <th>HỌC KỲ KHẢO SÁT</th>
-            <th>TÊN HỌC PHẦN / TÊN PHIẾU</th>
-            <th style="text-align:center;">TRẠNG THÁI</th>
-          </tr>
-        </thead>
+        <thead><tr>
+          <th style="text-align:center;">TT</th>
+          <th>HỌC KỲ KHẢO SÁT</th>
+          <th>TÊN HỌC PHẦN / TÊN PHIẾU</th>
+          <th style="text-align:center;">TRẠNG THÁI</th>
+        </tr></thead>
         <tbody>${rows}</tbody>
       </table>`;
   }
 
-  // ── Mở form khảo sát ─────────────────────────────
-  function openForm(formLink) {
-    window.open(formLink, '_blank');
-    document.getElementById('refreshBar').style.display = 'flex';
-    startPolling();
+  // ══ MODAL ════════════════════════════════════════
+
+  function openModal(course) {
+    currentSurveyRow = course;
+    document.getElementById('modalProgramName').textContent = course.courseName;
+    document.getElementById('successOverlay').classList.remove('show');
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = 'Gửi khảo sát';
+    renderForm();
+    document.getElementById('surveyModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
 
-  // ── Polling tự động cập nhật trạng thái ──────────
-  function startPolling() {
-    stopPolling();
-    pollingCount = 0;
-    pollingTimer = setInterval(() => {
-      pollingCount++;
-      loadCourses(true);
-      if (pollingCount >= POLL_LIMIT) stopPolling();
-    }, POLL_EVERY);
+  function closeModal() {
+    document.getElementById('surveyModal').classList.remove('open');
+    document.body.style.overflow = '';
   }
 
-  function stopPolling() {
-    if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
-    const pi = document.getElementById('pollIndicator');
-    if (pi) pi.style.display = 'none';
+  // ── Render form HTML ──────────────────────────────
+  function renderForm() {
+    let html = '';
+
+    // Email display
+    html += `<div class="email-display">
+      <strong>Email:</strong> ${esc(currentUser.email)}
+      <span style="color:#888;font-size:12px;margin-left:8px;">(Được ghi nhận tự động)</span>
+    </div>`;
+
+    // Factor sections (Likert 1-7)
+    for (const factor of FORM_SCHEMA.factors) {
+      html += `<div class="factor-card">
+        <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
+        <div class="likert-scroll">
+        <table class="likert-table">
+          <thead><tr>
+            <th class="col-lbl"></th>
+            ${[1,2,3,4,5,6,7].map(n => `<th>${n}</th>`).join('')}
+          </tr></thead>
+          <tbody>`;
+      for (const item of factor.items) {
+        html += `<tr>
+          <td class="col-lbl"><span class="item-code">${esc(item.code)}:</span> ${esc(item.label)}</td>
+          ${[1,2,3,4,5,6,7].map(n =>
+            `<td><input type="radio" name="${item.code}" value="${n}" aria-label="${item.code} = ${n}"></td>`
+          ).join('')}
+        </tr>`;
+      }
+      html += `</tbody></table></div></div>`;
+    }
+
+    // Overall rating
+    html += `<div class="factor-card">
+      <div class="factor-title">TỔNG QUAN <span class="req">*</span></div>
+      <div class="likert-scroll">
+      <table class="likert-table">
+        <thead><tr>
+          <th class="col-lbl"></th>
+          ${[1,2,3,4,5,6,7].map(n => `<th>${n}</th>`).join('')}
+        </tr></thead>
+        <tbody><tr>
+          <td class="col-lbl">${esc(FORM_SCHEMA.overall.label)}</td>
+          ${[1,2,3,4,5,6,7].map(n =>
+            `<td><input type="radio" name="overall" value="${n}" aria-label="overall = ${n}"></td>`
+          ).join('')}
+        </tr></tbody>
+      </table></div>
+    </div>`;
+
+    // Text questions
+    for (const q of FORM_SCHEMA.textQuestions) {
+      html += `<div class="text-section">
+        <label for="text_${q.code}">${esc(q.label)} <span class="req">*</span></label>
+        <textarea id="text_${q.code}" name="${q.code}" rows="3" placeholder="Câu trả lời của bạn"></textarea>
+      </div>`;
+    }
+
+    document.getElementById('modalBody').innerHTML = html;
+  }
+
+  // ── Validate ──────────────────────────────────────
+  function validateForm() {
+    const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
+    for (const item of allItems) {
+      if (!document.querySelector(`input[name="${item.code}"]:checked`)) {
+        alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá theo thang điểm 1–7.');
+        document.querySelector(`input[name="${item.code}"]`)
+          ?.closest('.factor-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+    }
+    for (const q of FORM_SCHEMA.textQuestions) {
+      const el = document.getElementById('text_' + q.code);
+      if (!el.value.trim()) {
+        alert('Vui lòng trả lời tất cả các câu hỏi.');
+        el.classList.add('invalid');
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.focus();
+        return false;
+      }
+      el.classList.remove('invalid');
+    }
+    return true;
+  }
+
+  // ── Collect data ──────────────────────────────────
+  function collectFormData() {
+    const data = {};
+    const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
+    for (const item of allItems) {
+      const sel = document.querySelector(`input[name="${item.code}"]:checked`);
+      data[item.code] = sel ? sel.value : '';
+    }
+    for (const q of FORM_SCHEMA.textQuestions) {
+      data[q.code] = document.getElementById('text_' + q.code)?.value.trim() || '';
+    }
+    return data;
+  }
+
+  // ── Submit ────────────────────────────────────────
+  async function submitSurveyForm() {
+    if (!validateForm()) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Đang gửi...';
+
+    try {
+      const formData = collectFormData();
+      const params = new URLSearchParams({
+        action:    'submitSurvey',
+        email:     currentUser.email,
+        rowIndex:  currentSurveyRow.rowIndex,
+        program:   currentSurveyRow.courseName,
+        semester:  currentSurveyRow.semester,
+        ...formData
+      });
+
+      const res    = await fetch(CONFIG.APPS_SCRIPT_URL + '?' + params);
+      const result = await res.json();
+
+      if (result.success) {
+        document.getElementById('successOverlay').classList.add('show');
+        setTimeout(() => { closeModal(); loadCourses(); }, 2200);
+      } else {
+        throw new Error(result.error || 'Lỗi không xác định');
+      }
+    } catch (err) {
+      alert('Gửi thất bại. Vui lòng thử lại.\nLỗi: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Gửi khảo sát';
+    }
   }
 
   // ── Utilities ─────────────────────────────────────
   function parseJwt(token) {
-    const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const b64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
     return JSON.parse(decodeURIComponent(
-      atob(b64).split('').map(c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join('')
+      atob(b64).split('').map(c => '%' + c.charCodeAt(0).toString(16).padStart(2,'0')).join('')
     ));
   }
-
   function esc(s) {
-    return String(s ?? '')
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 </script>
 </body>
