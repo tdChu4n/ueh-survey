@@ -90,32 +90,25 @@ const Icon = {
 // ---------- Top nav ----------
 function TopNav() {
   return (
-    <header className="nav">
+    <header className="nav" style={{ background: '#006b5e' }}>
       <div className="nav__brand">
-        <div className="nav__mark" style={{ letterSpacing: "0.6px" }}>MY</div>
-        <div>
-          <div className="nav__brand-name">Mymy</div>
-          <div className="nav__brand-sub">Activity Insight</div>
+        <div style={{ lineHeight: 1 }}>
+          <div style={{ color: '#fff', fontSize: 22, fontWeight: 900, letterSpacing: 1 }}>UEH</div>
+          <div style={{ color: '#f90', fontSize: 9, fontWeight: 700, letterSpacing: 2 }}>UNIVERSITY</div>
         </div>
       </div>
-      <nav className="nav__links">
-        <a className="nav__link nav__link--active"><Icon.Home /> Trang chủ</a>
-        <a className="nav__link"><Icon.Activity /> Hoạt động</a>
-        <a className="nav__link"><Icon.Admin /> Quản trị</a>
-      </nav>
       <div className="nav__spacer" />
       <div className="nav__user">
-        <div className="nav__avatar">AN</div>
+        <div className="nav__avatar" style={{ background: '#004d44', border: '1.5px solid rgba(255,255,255,0.3)' }}>QT</div>
         <div>
-          <div className="nav__user-name">An Nguyễn — Ban điều phối</div>
-          <div className="nav__user-mail">an.nguyen@mymy.edu</div>
+          <div className="nav__user-name">Youth. Đoàn - Hội khoa Toán - Thống kê</div>
+          <div className="nav__user-mail">doanhoi.ttk@ueh.edu.vn</div>
         </div>
         <svg className="nav__user-chev" width="12" height="12" viewBox="0 0 12 12" fill="none">
           <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
     </header>);
-
 }
 
 // ---------- Banner ----------

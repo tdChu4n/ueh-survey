@@ -10,7 +10,7 @@
     body { font-family: Arial, Helvetica, sans-serif; background: #efefef; color: #333; }
 
     /* ── Nav bar ── */
-    :root { --brand: #3b2d8a; --brand-dark: #2a1f6b; --brand-light: #4e3ea0; }
+    :root { --brand: #006b5e; --brand-dark: #004d44; --brand-light: #00856e; }
 
     .top-nav {
       background: var(--brand);
@@ -50,11 +50,12 @@
     .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
     .btn-nav-login {
-      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35);
-      color: #fff; padding: 6px 16px; border-radius: 20px; cursor: pointer;
-      font-size: 13px; display: flex; align-items: center; gap: 6px; transition: background .15s;
+      background: #1a1a35; border: none;
+      color: #fff; padding: 8px 18px; border-radius: 6px; cursor: pointer;
+      font-size: 13px; display: flex; align-items: center; gap: 7px; transition: background .15s;
+      font-weight: 500;
     }
-    .btn-nav-login:hover { background: rgba(255,255,255,.25); }
+    .btn-nav-login:hover { background: #0f0f25; }
 
     .admin-nav-info { display: none; align-items: center; gap: 10px; }
     .admin-nav-info .admin-name { color: #fff; font-size: 13px; }
@@ -347,10 +348,9 @@
 <!-- Nav bar -->
 <nav class="top-nav">
   <div class="ttk-logo-wrap">
-    <div class="ttk-logo-circle">TTK</div>
-    <div class="ttk-brand">
-      <strong>Youth. Đoàn - Hội</strong>
-      Khoa Toán - Thống kê
+    <div style="line-height:1;">
+      <div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:1px;">UEH</div>
+      <div style="color:#f90;font-size:9px;font-weight:700;letter-spacing:2px;">UNIVERSITY</div>
     </div>
   </div>
 
