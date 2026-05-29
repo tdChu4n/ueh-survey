@@ -9,7 +9,7 @@
 //  4. Copy URL vào CONFIG.APPS_SCRIPT_URL trong ueh-survey.html
 // ═══════════════════════════════════════════════════════════════════
 
-const SPREADSHEET_ID    = 'YOUR_SPREADSHEET_ID';
+const SPREADSHEET_ID    = '1aVz5dF1EBr9FOiiDrLKr8dK2awj1ovEtS_euRK8EayA';
 const SHEET_ASSIGNMENTS = 'Assignments';   // Admin quản lý danh sách khảo sát
 const SHEET_RESPONSES   = 'Responses';     // Dữ liệu do sinh viên gửi về
 
@@ -27,8 +27,9 @@ const SHEET_RESPONSES   = 'Responses';     // Dữ liệu do sinh viên gửi v�
 function doGet(e) {
   const action = e.parameter.action;
 
-  if (action === 'getCourses')   return handleGetCourses(e.parameter.email);
-  if (action === 'submitSurvey') return handleSubmitSurvey(e.parameter);
+  if (action === 'getCourses')    return handleGetCourses(e.parameter.email);
+  if (action === 'submitSurvey')  return handleSubmitSurvey(e.parameter);
+  if (action === 'getResponses')  return handleGetResponses();
 
   return jsonOut({ error: 'Unknown action' });
 }
@@ -117,6 +118,50 @@ function handleSubmitSurvey(p) {
     Logger.log('handleSubmitSurvey error: ' + err.message);
     return jsonOut({ success: false, error: err.message });
   }
+}
+
+
+// ── Trả toàn bộ dữ liệu phản hồi cho admin dashboard ───────────
+function handleGetResponses() {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_RESPONSES);
+  if (!sheet) return jsonOut({ success: true, responses: [] });
+
+  const rows      = sheet.getDataRange().getValues();
+  const responses = [];
+
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r[1]) continue; // bỏ hàng trống
+
+    responses.push({
+      id:       'R' + String(i).padStart(3, '0'),
+      ts:       fmtDate(r[0]),
+      email:    String(r[1]  || ''),
+      semester: String(r[2]  || ''),
+      program:  String(r[3]  || ''),
+      DVTT1: num(r[4]),  DVTT2: num(r[5]),  DVTT3: num(r[6]),  DVTT4: num(r[7]),
+      CLCT1: num(r[8]),  CLCT2: num(r[9]),  CLCT3: num(r[10]), CLCT4: num(r[11]), CLCT5: num(r[12]),
+      CSVC1: num(r[13]), CSVC2: num(r[14]), CSVC3: num(r[15]),
+      GTCT1: num(r[16]), GTCT2: num(r[17]),
+      SHL1:  num(r[18]), SHL2:  num(r[19]), SHL3:  num(r[20]),
+      LTT1:  num(r[21]), LTT2:  num(r[22]), LTT3:  num(r[23]), LTT4:  num(r[24]),
+      overall:  num(r[25]),
+      learn:    String(r[26] || ''),
+      trouble:  String(r[27] || ''),
+      interest: String(r[28] || ''),
+      feedback: String(r[29] || ''),
+    });
+  }
+
+  return jsonOut({ success: true, responses });
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const dt = new Date(d);
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
 }
 
 

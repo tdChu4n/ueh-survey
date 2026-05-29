@@ -2,6 +2,10 @@
 
 const { useState, useMemo, useEffect } = React;
 
+// ── Live data từ Google Sheets ────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyP9XvRCgVKV7y_SEtQ4Oz1bBlNkgnKzhqT19DrtqhFngE4C3qLq0Yb60buuM_12H_R/exec';
+// ─────────────────────────────────────────────────────
+
 function Footer() {
   return (
     <footer className="footer">
@@ -68,9 +72,30 @@ function App() {
   });
   useEffect(() => { localStorage.setItem("mymy.program", program); }, [program]);
 
+  // dataKey tăng khi live data về → ép React re-render với data mới
+  const [dataKey,   setDataKey]   = useState(0);
+  const [loading,   setLoading]   = useState(true);
+  const [updatedAt, setUpdatedAt] = useState(null);
+
+  useEffect(() => {
+    fetch(APPS_SCRIPT_URL + '?action=getResponses')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.responses?.length > 0) {
+          window.SURVEY_RESPONSES = data.responses;
+          const progs = [...new Set(data.responses.map(r => r.program))].filter(Boolean);
+          if (progs.length) window.PROGRAMS = progs;
+          setUpdatedAt(new Date().toLocaleTimeString('vi-VN'));
+          setDataKey(k => k + 1);
+        }
+      })
+      .catch(() => {}) // fallback: dùng dữ liệu tĩnh trong survey-data.js
+      .finally(() => setLoading(false));
+  }, []);
+
   const responses = useMemo(
     () => filterByProgram(program),
-    [program]
+    [program, dataKey]
   );
 
   return (
@@ -79,6 +104,20 @@ function App() {
       <Banner crumb="Chi tiết hoạt động" title={
         program === "__ALL__" ? "Tổng quan tất cả chương trình" : program
       } />
+      {loading && (
+        <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
+          ⏳ Đang tải dữ liệu từ Google Sheets...
+        </div>
+      )}
+      {!loading && updatedAt && (
+        <div style={{ textAlign:'right', padding:'4px 24px', fontSize:11, color:'#888' }}>
+          ✓ Cập nhật lúc {updatedAt}
+          <button onClick={() => window.location.reload()} style={{
+            marginLeft:8, fontSize:11, padding:'1px 8px',
+            border:'1px solid #ccc', borderRadius:3, cursor:'pointer', background:'#fff'
+          }}>↻ Làm mới</button>
+        </div>
+      )}
       <main className="main">
         <ActivityCard program={program} onChange={setProgram} responses={responses} />
         <DescriptiveSection responses={responses} />
