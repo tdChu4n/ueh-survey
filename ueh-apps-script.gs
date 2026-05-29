@@ -10,12 +10,12 @@
 // ═══════════════════════════════════════════════════════════════════
 
 const SPREADSHEET_ID    = '1aVz5dF1EBr9FOiiDrLKr8dK2awj1ovEtS_euRK8EayA';
-const SHEET_ASSIGNMENTS = 'Assignments';   // Admin quản lý danh sách khảo sát
-const SHEET_RESPONSES   = 'Responses';     // Dữ liệu do sinh viên gửi về
+const SHEET_ASSIGNMENTS = 'Assignments'; // Admin thêm/xóa chương trình tại đây
+const SHEET_RESPONSES   = 'Responses';  // Dữ liệu do sinh viên gửi về
 
-// Cấu trúc sheet "Assignments":
-// A: email | B: semester | C: courseName | D: status | E: completedAt
-// (Không cần cột formLink nữa vì form được nhúng thẳng vào web)
+// Cấu trúc sheet "Assignments" (admin quản lý):
+// A: semester | B: courseName
+// (Thêm hàng mới = thêm chương trình, mọi user đều thấy)
 
 // Cấu trúc sheet "Responses" (tự động tạo nếu chưa có):
 // timestamp | email | semester | program |
@@ -35,24 +35,41 @@ function doGet(e) {
 }
 
 
-// ── Lấy danh sách môn học của sinh viên ─────────────────────────
+// ── Lấy danh sách chương trình + trạng thái của user ────────────
 function handleGetCourses(email) {
   if (!email) return jsonOut({ success: false, courses: [] });
 
-  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_ASSIGNMENTS);
-  const rows  = sheet.getDataRange().getValues();
-  const norm  = email.trim().toLowerCase();
-  const courses = [];
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-  for (let i = 1; i < rows.length; i++) {
-    const [rowEmail, semester, courseName, status] = rows[i];
-    if (!rowEmail) continue;
-    if (rowEmail.trim().toLowerCase() !== norm) continue;
+  // 1. Đọc danh sách chương trình từ Assignments (admin quản lý)
+  const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
+  if (!assignSheet) return jsonOut({ success: true, courses: [] });
+  const assignRows = assignSheet.getDataRange().getValues();
+
+  // 2. Kiểm tra user đã hoàn thành chương trình nào trong Responses
+  const respSheet = ss.getSheetByName(SHEET_RESPONSES);
+  const completed = new Set();
+  if (respSheet) {
+    const respRows = respSheet.getDataRange().getValues();
+    const norm     = email.trim().toLowerCase();
+    for (let i = 1; i < respRows.length; i++) {
+      if (String(respRows[i][1]).trim().toLowerCase() === norm) {
+        completed.add(String(respRows[i][3]).trim()); // cột D = program
+      }
+    }
+  }
+
+  // 3. Ghép danh sách chương trình + trạng thái
+  const courses = [];
+  for (let i = 1; i < assignRows.length; i++) {
+    const [semester, courseName] = assignRows[i];
+    if (!courseName) continue;
+    const name = String(courseName).trim();
     courses.push({
       rowIndex:   i + 1,
-      semester:   semester   || '',
-      courseName: courseName || '',
-      status:     status     || 'Chưa thực hiện',
+      semester:   String(semester || '').trim(),
+      courseName: name,
+      status:     completed.has(name) ? 'Đã thực hiện' : 'Chưa thực hiện',
     });
   }
 
@@ -65,15 +82,7 @@ function handleSubmitSurvey(p) {
   try {
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-    // 1. Cập nhật trạng thái trong Assignments
-    const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
-    const rowIndex    = parseInt(p.rowIndex);
-    if (rowIndex > 1) {
-      assignSheet.getRange(rowIndex, 4).setValue('Đã thực hiện');
-      assignSheet.getRange(rowIndex, 5).setValue(new Date());
-    }
-
-    // 2. Ghi dữ liệu vào sheet Responses
+    // Ghi dữ liệu vào sheet Responses (trạng thái tự check từ đây)
     let respSheet = ss.getSheetByName(SHEET_RESPONSES);
     if (!respSheet) {
       respSheet = ss.insertSheet(SHEET_RESPONSES);
