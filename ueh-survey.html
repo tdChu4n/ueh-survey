@@ -334,13 +334,58 @@
     .success-title { font-size: 20px; font-weight: bold; color: #005c50; }
     .success-sub { font-size: 14px; color: #666; }
 
-    @media (max-width: 600px) {
-      .container { padding: 20px 12px; }
-      .survey-table { font-size: 12px; }
+    /* === Responsive === */
+
+    /* Tablet (≤ 900px) */
+    @media (max-width: 900px) {
+      .top-nav { padding: 0 14px; gap: 0; }
+      .ttk-logo-wrap { margin-right: 12px; }
+      .container { padding: 24px 20px; }
+      footer { padding: 20px 20px !important; }
+    }
+
+    /* Mobile (≤ 640px) */
+    @media (max-width: 640px) {
+      /* Nav */
+      .top-nav { padding: 0 10px; height: 52px; }
+      .ttk-brand { display: none; }
+      .ttk-logo-wrap { margin-right: 8px; }
+      #navUserEmail { display: none; }
+      .admin-nav-info .admin-email { display: none; }
+      .btn-nav-logout { font-size: 11px; padding: 3px 8px; }
+
+      /* Container */
+      .container { padding: 16px 12px; }
+
+      /* Survey table: cuộn ngang thay vì tràn */
+      #tableContainer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .survey-table { font-size: 12px; min-width: 430px; }
       .survey-table th, .survey-table td { padding: 8px 6px; }
-      .page-title { font-size: 17px; }
-      .modal-panel { max-height: 100vh; border-radius: 0; }
-      .modal-overlay { padding: 0; }
+
+      /* Page title */
+      .page-title { font-size: 16px; }
+      .page-desc { font-size: 13px; }
+
+      /* Footer */
+      footer { padding: 16px 12px !important; font-size: 12px !important; }
+
+      /* Login modal */
+      .login-inner { padding: 24px 18px; }
+      .login-logo-badge { width: 52px; height: 52px; font-size: 16px; border-radius: 10px; }
+
+      /* Survey modal: full screen */
+      .modal-overlay { padding: 0; align-items: flex-end; }
+      .modal-panel { max-height: 95vh; border-radius: 12px 12px 0 0; }
+      .modal-hdr { padding: 12px 14px; }
+      .modal-body { padding: 14px; }
+      .modal-footer { padding: 10px 14px; }
+      .btn-submit, .btn-cancel { padding: 8px 16px; font-size: 13px; }
+    }
+
+    /* Small phone (≤ 400px) */
+    @media (max-width: 400px) {
+      #navUserName { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .admin-nav-info .admin-name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     }
   </style>
 </head>

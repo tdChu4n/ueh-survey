@@ -633,6 +633,117 @@ button {
 .muted { color: var(--ink-muted); }
 .mono  { font-family: var(--font-mono); }
 
+/* ====================================================
+   RESPONSIVE
+   ==================================================== */
+
+/* --- Tablet (≤ 1024px) --- */
+@media (max-width: 1024px) {
+  .nav { padding: 10px 20px; gap: 16px; }
+
+  .banner { padding: 28px 28px; margin: 20px 20px 0; }
+  .banner__title { font-size: 24px; }
+
+  .main { padding: 20px 20px 48px; }
+
+  /* 3-col stat grid → 2-col on tablet */
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Stat-card-col: make the two stacked cards sit side by side */
+  .stat-card__col { flex-direction: row; gap: 12px; }
+  .stat-card__col .stat-card { flex: 1; }
+
+  .footer { padding: 24px 28px; margin: 32px 20px 20px; }
+}
+
+/* --- Mobile (≤ 768px) --- */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav { padding: 10px 14px; gap: 10px; flex-wrap: nowrap; }
+  .nav__brand-sub { display: none; }
+  .nav__user { gap: 8px; padding: 4px 4px; }
+  .nav__user-mail { display: none; }
+  .nav__user-name { font-size: 12px; white-space: normal; max-width: 130px;
+                    overflow: hidden; text-overflow: ellipsis; }
+  .nav__avatar { width: 30px; height: 30px; font-size: 11px; }
+
+  /* Banner */
+  .banner { padding: 20px 16px; margin: 12px 12px 0; border-radius: 4px; }
+  .banner__title { font-size: 20px; }
+
+  /* Main */
+  .main { padding: 14px 12px 36px; gap: 14px; }
+
+  /* Section */
+  .section { padding: 16px; border-radius: 12px; }
+
+  /* Stat grid → 1-col */
+  .stat-grid { grid-template-columns: 1fr !important; }
+
+  /* stat-card-col side by side inside the single column */
+  .stat-card__col { flex-direction: row; gap: 10px; }
+
+  /* Two & three col → stack */
+  .two-col { grid-template-columns: 1fr !important; }
+  .three-col { grid-template-columns: 1fr !important; }
+
+  /* Stat strip → 2×2 */
+  .stat-strip { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-strip__value { font-size: 22px; }
+
+  /* Rank row: hide the wide progress bar column */
+  .rank-row {
+    grid-template-columns: 24px 56px 1fr 52px 72px;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .rank-row__bar { display: none; }
+  .rank-row__name { font-size: 13px; }
+
+  /* Activity card: cuộn ngang */
+  .activity { padding: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .activity__head { flex-wrap: wrap; gap: 8px; }
+  .activity__title { font-size: 14px; }
+  .activity-table { min-width: 680px; font-size: 12px; }
+  .activity-table th { padding-bottom: 8px; padding-right: 10px; }
+  .activity-table td { padding: 12px 10px 0 0; }
+
+  /* Split → stack */
+  .split { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Sub card */
+  .sub-card { padding: 14px; }
+
+  /* Footer */
+  .footer { padding: 18px 14px; margin: 18px 12px 12px; border-radius: 4px; gap: 12px; }
+  .footer__row { gap: 10px; }
+}
+
+/* --- Small phone (≤ 480px) --- */
+@media (max-width: 480px) {
+  /* Nav: hide user name too, keep avatar + logout */
+  .nav__user-name { display: none; }
+  .nav { gap: 8px; }
+
+  .banner__title { font-size: 17px; }
+
+  /* Stat strip → 1-col */
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .stat-strip__value { font-size: 20px; }
+
+  /* stat-card-col → stack again (too cramped side by side on 320px) */
+  .stat-card__col { flex-direction: column; }
+
+  /* Rank row: tighter */
+  .rank-row { grid-template-columns: 20px 48px 1fr 44px; gap: 8px; padding: 8px 10px; }
+  .rank-row__val { font-size: 12px; }
+  .badge { font-size: 10px; padding: 2px 6px; }
+
+  .section { padding: 12px; }
+  .sub-card { padding: 12px; }
+  .main { padding: 10px 10px 28px; gap: 12px; }
+}
+
 /* Empty / loading hint */
 .loading {
   display: grid;
