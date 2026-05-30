@@ -619,13 +619,7 @@
   function showStudentView() {
     document.getElementById('chooseView').style.display  = 'none';
     document.getElementById('studentView').style.display = 'block';
-    // Re-render Google button nếu chưa có
-    if (!document.getElementById('googleSignInBtn').hasChildNodes()) {
-      google.accounts.id.renderButton(
-        document.getElementById('googleSignInBtn'),
-        { theme: 'outline', size: 'large', text: 'sign_in_with', shape: 'rectangular', logo_alignment: 'left' }
-      );
-    }
+    tryRenderGoogleBtn(); // render ngay nếu library đã sẵn sàng, hoặc chờ onGoogleLibraryLoad
   }
   function doAdminLogin() {
     const u = document.getElementById('adminUser').value.trim();
@@ -659,13 +653,27 @@
   let currentSurveyRow = null;
 
   // ── Google Sign-In ────────────────────────────────
+  let googleReady = false;
+
   window.onGoogleLibraryLoad = function () {
     google.accounts.id.initialize({
       client_id: CONFIG.GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse,
     });
-    // Button sẽ được render khi user chọn "Sinh viên" trong modal
+    googleReady = true;
+    tryRenderGoogleBtn(); // render ngay nếu student view đang mở
   };
+
+  function tryRenderGoogleBtn() {
+    if (!googleReady) return;
+    const btn = document.getElementById('googleSignInBtn');
+    if (btn && !btn.hasChildNodes()) {
+      google.accounts.id.renderButton(btn, {
+        theme: 'outline', size: 'large', text: 'sign_in_with',
+        shape: 'rectangular', logo_alignment: 'left', width: 280,
+      });
+    }
+  }
 
   function handleCredentialResponse(response) {
     const p = parseJwt(response.credential);
