@@ -8,22 +8,22 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyP9XvRCgVKV7y_
 
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer" style={{ background: '#006b5e' }}>
       <div className="footer__row">
         <Icon.Building className="footer__icon" />
         <div className="footer__brand-stack">
-          <div>Mymy — Hệ thống tổng hợp khảo sát hoạt động sinh viên</div>
-          <div>Ban Phát triển sinh viên</div>
-          <div>CLB Học thuật Mymy</div>
+          <div>Đoàn Thanh niên - Hội Sinh viên Đại học Kinh tế TP. Hồ Chí Minh</div>
+          <div>Đoàn khoa Toán - Thống kê</div>
+          <div>Liên Chi hội sinh viên khoa Toán - Thống kê</div>
         </div>
       </div>
       <div className="footer__row">
         <Icon.Pin className="footer__icon" />
-        <div>123 Đường Demo, Phường Mẫu, Thành phố Hư Cấu</div>
+        <div>279 Nguyễn Tri Phương, Phường Diên Hồng, Thành phố Hồ Chí Minh</div>
       </div>
       <div className="footer__row">
         <Icon.Mail className="footer__icon" />
-        <div>Email: hello@mymy.edu</div>
+        <div>Email: doanhoi.ttk@ueh.edu.vn</div>
       </div>
     </footer>
   );
