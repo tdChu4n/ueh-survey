@@ -44,8 +44,8 @@ function ActivityCard({ program, onChange, responses }) {
             <td>01</td>
             <td>Khảo sát sau hoạt động</td>
             <td>Cấp khoa</td>
-            <td>Ban Phát triển sinh viên</td>
-            <td>CLB Học thuật Mymy</td>
+            <td>Đoàn khoa Toán - Thống kê</td>
+            <td>Liên Chi hội sinh viên khoa Toán - Thống kê</td>
             <td className="mono">{first}</td>
             <td className="mono">{last}</td>
             <td className="mono">{responses.length}</td>
