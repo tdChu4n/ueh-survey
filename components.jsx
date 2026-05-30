@@ -104,10 +104,16 @@ function TopNav() {
           <div className="nav__user-name">Youth. Đoàn - Hội khoa Toán - Thống kê</div>
           <div className="nav__user-mail">doanhoi.ttk@ueh.edu.vn</div>
         </div>
-        <svg className="nav__user-chev" width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
       </div>
+      <button
+        onClick={() => { sessionStorage.removeItem('adminLoggedIn'); window.location.href = 'ueh-survey.html'; }}
+        style={{
+          background: 'rgba(255,255,255,.12)', border: '1px solid rgba(255,255,255,.3)',
+          color: '#fff', padding: '5px 14px', borderRadius: '4px',
+          cursor: 'pointer', fontSize: '12px', marginLeft: '12px', whiteSpace: 'nowrap'
+        }}>
+        Đăng xuất
+      </button>
     </header>);
 }
 
