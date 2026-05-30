@@ -82,8 +82,8 @@ function App() {
       .then(r => r.json())
       .then(data => {
         if (data.success) {
-          if (data.responses?.length > 0) window.SURVEY_RESPONSES = data.responses;
-          if (data.programs?.length > 0)  window.PROGRAMS = data.programs;
+          window.SURVEY_RESPONSES = data.responses || [];   // luôn ghi đè, kể cả khi rỗng
+          if (data.programs?.length > 0) window.PROGRAMS = data.programs;
           setUpdatedAt(new Date().toLocaleTimeString('vi-VN'));
           setDataKey(k => k + 1);
         }
