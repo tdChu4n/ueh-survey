@@ -52,8 +52,10 @@ function handleGetCourses(email) {
   if (respSheet) {
     const respRows = respSheet.getDataRange().getValues();
     const norm     = email.trim().toLowerCase();
-    for (let i = 1; i < respRows.length; i++) {
-      if (String(respRows[i][1]).trim().toLowerCase() === norm) {
+    for (let i = 0; i < respRows.length; i++) {
+      const rowEmail = String(respRows[i][1]).trim();
+      if (!rowEmail.includes('@')) continue; // bỏ header hoặc hàng rỗng
+      if (rowEmail.toLowerCase() === norm) {
         completed.add(String(respRows[i][3]).trim()); // cột D = program
       }
     }
@@ -139,9 +141,10 @@ function handleGetResponses() {
   const rows      = sheet.getDataRange().getValues();
   const responses = [];
 
-  for (let i = 1; i < rows.length; i++) {
+  for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
-    if (!r[1]) continue; // bỏ hàng trống
+    const emailVal = String(r[1] || '').trim();
+    if (!emailVal.includes('@')) continue; // bỏ header hoặc hàng rỗng
 
     responses.push({
       id:       'R' + String(i).padStart(3, '0'),

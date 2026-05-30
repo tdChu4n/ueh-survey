@@ -647,27 +647,43 @@
   function handleCredentialResponse(response) {
     const p = parseJwt(response.credential);
     currentUser = { email: p.email, name: p.name, picture: p.picture };
+    sessionStorage.setItem('studentUser', JSON.stringify(currentUser));
     closeLoginModal();
-    // Hiện thông tin trong nav
+    applyStudentUI();
+    loadCourses();
+  }
+
+  function applyStudentUI() {
     document.getElementById('btnNavLogin').style.display    = 'none';
     document.getElementById('studentNavInfo').style.display = 'flex';
-    document.getElementById('navAvatar').src                = p.picture;
-    document.getElementById('navUserName').textContent      = p.name;
-    document.getElementById('navUserEmail').textContent     = p.email;
-    // Hiện survey
+    document.getElementById('navAvatar').src                = currentUser.picture;
+    document.getElementById('navUserName').textContent      = currentUser.name;
+    document.getElementById('navUserEmail').textContent     = currentUser.email;
     document.getElementById('loginSection').style.display   = 'none';
     document.getElementById('surveySection').style.display  = 'block';
-    loadCourses();
   }
 
   function signOut() {
     google.accounts.id.disableAutoSelect();
+    sessionStorage.removeItem('studentUser');
     currentUser = null;
-    document.getElementById('btnNavLogin').style.display    = 'flex';
+    document.getElementById('btnNavLogin').style.display    = 'none';
     document.getElementById('studentNavInfo').style.display = 'none';
     document.getElementById('surveySection').style.display  = 'none';
     document.getElementById('loginSection').style.display   = 'block';
   }
+
+  // Khôi phục login sinh viên sau F5
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = sessionStorage.getItem('studentUser');
+    if (saved) {
+      try {
+        currentUser = JSON.parse(saved);
+        applyStudentUI();
+        loadCourses();
+      } catch { sessionStorage.removeItem('studentUser'); }
+    }
+  });
 
   // ── Load danh sách môn học ────────────────────────
   async function loadCourses() {
