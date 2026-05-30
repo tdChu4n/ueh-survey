@@ -7,7 +7,8 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background: #efefef; color: #333; }
+    body { font-family: Arial, Helvetica, sans-serif; background: #efefef; color: #333; display:flex; flex-direction:column; min-height:100vh; }
+    .container { flex: 1; }
 
     /* ── Nav bar ── */
     :root { --brand: #006b5e; --brand-dark: #004d44; --brand-light: #00856e; }
@@ -468,6 +469,28 @@
     </div>
   </div>
 </div>
+
+<!-- Footer -->
+<footer style="background:#006b5e;color:rgba(255,255,255,.9);padding:28px 40px;margin-top:auto;font-size:13px;line-height:1.8;">
+  <div style="max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;align-items:flex-start;gap:12px;">
+      <span style="font-size:18px;flex-shrink:0;">🏛</span>
+      <div>
+        <div>Đoàn Thanh niên - Hội Sinh viên Đại học Kinh tế TP. Hồ Chí Minh</div>
+        <div>Đoàn khoa Toán - Thống kê</div>
+        <div>Liên Chi hội sinh viên khoa Toán - Thống kê</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:16px;flex-shrink:0;">📍</span>
+      <span>279 Nguyễn Tri Phương, Phường Diên Hồng, Thành phố Hồ Chí Minh</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:16px;flex-shrink:0;">✉</span>
+      <span>Email: doanhoi.ttk@ueh.edu.vn</span>
+    </div>
+  </div>
+</footer>
 
 <!-- ══ SURVEY MODAL ══ -->
 <div class="modal-overlay" id="surveyModal">
