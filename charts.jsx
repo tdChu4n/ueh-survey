@@ -67,8 +67,9 @@ function HBarChart({ items, max = 7 }) {
       })}
       {/* bars */}
       {items.map((it, i) => {
-        const y = 10 + i * rowH;
-        const w = ((it.value - 1) / (max - 1)) * innerW;
+        const y  = 10 + i * rowH;
+        const w  = it.value <= 0 ? 0 : Math.max(0, ((it.value - 1) / (max - 1)) * innerW);
+        const tx = padL + w + 8; // text luôn sau bar, không bị âm
         return (
           <g key={i}>
             <text x={padL - 10} y={y + rowH/2 - 2} textAnchor="end"
@@ -77,11 +78,13 @@ function HBarChart({ items, max = 7 }) {
             </text>
             <rect x={padL} y={y + 6} width={innerW} height={rowH - 18}
                   fill="oklch(0.97 0.008 280)" rx={3} />
-            <rect x={padL} y={y + 6} width={Math.max(2, w)} height={rowH - 18}
-                  fill={it.color} fillOpacity="0.35" stroke={it.color} strokeWidth={1.2} rx={3} />
-            <text x={padL + w + 6} y={y + rowH/2 - 1} fontSize={11}
+            {w > 0 && (
+              <rect x={padL} y={y + 6} width={w} height={rowH - 18}
+                    fill={it.color} fillOpacity="0.35" stroke={it.color} strokeWidth={1.2} rx={3} />
+            )}
+            <text x={tx} y={y + rowH/2 - 1} fontSize={11}
                   fontFamily="var(--font-mono)" fill="var(--ink-soft)">
-              {it.value.toFixed(2)}
+              {it.value > 0 ? it.value.toFixed(2) : '—'}
             </text>
           </g>
         );
