@@ -99,6 +99,24 @@ function HBarChart({ items, max = 7 }) {
   );
 }
 
+// Catmull-Rom → cubic bezier: tạo đường cong mượt qua tất cả điểm
+function smoothCurve(points, tension = 0.35) {
+  if (points.length < 2) return '';
+  let d = `M ${points[0][0]} ${points[0][1]}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i - 1] || points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] || points[i + 1];
+    const cp1x = p1[0] + (p2[0] - p0[0]) * tension;
+    const cp1y = p1[1] + (p2[1] - p0[1]) * tension;
+    const cp2x = p2[0] - (p3[0] - p1[0]) * tension;
+    const cp2y = p2[1] - (p3[1] - p1[1]) * tension;
+    d += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2[0]} ${p2[1]}`;
+  }
+  return d;
+}
+
 // ---------- Multi-line distribution chart ----------
 function LineChart({ series, xLabels, yMax }) {
   // series: [{ name, color, data: number[] }], data length === xLabels.length
@@ -107,7 +125,6 @@ function LineChart({ series, xLabels, yMax }) {
   const innerW = width - padL - padR;
   const innerH = height - padT - padB;
   const maxY = yMax ?? Math.max(1, ...series.flatMap(s => s.data));
-  // round up to nice number
   const niceMax = Math.ceil(maxY / 5) * 5;
   const yTicks = [];
   const step = niceMax <= 10 ? 2 : niceMax <= 20 ? 5 : 10;
@@ -137,15 +154,15 @@ function LineChart({ series, xLabels, yMax }) {
       ))}
       <text x={padL - 28} y={padT + 8} fontSize={10} fill="var(--ink-muted)"
             fontFamily="var(--font-mono)">Số phiếu</text>
-      {/* lines */}
+      {/* smooth curves */}
       {series.map((s, i) => {
-        const pts = s.data.map((v, idx) => `${xs[idx]},${yFor(v)}`).join(" ");
+        const pts = s.data.map((v, idx) => [xs[idx], yFor(v)]);
         return (
           <g key={i}>
-            <polyline fill="none" stroke={s.color} strokeWidth={2} strokeLinejoin="round"
-                      points={pts} />
-            {s.data.map((v, idx) => (
-              <circle key={idx} cx={xs[idx]} cy={yFor(v)} r={3.5}
+            <path d={smoothCurve(pts)} fill="none" stroke={s.color}
+                  strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+            {pts.map(([cx, cy], idx) => (
+              <circle key={idx} cx={cx} cy={cy} r={3.5}
                       fill="white" stroke={s.color} strokeWidth={1.6} />
             ))}
           </g>
