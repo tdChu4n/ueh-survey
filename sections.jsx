@@ -61,11 +61,15 @@ function ActivityCard({ program, onChange, responses }) {
   );
 }
 
-// ---------- Descriptive section: stat cards + gender donut + faculty/cohort bars ----------
-function DescriptiveSection({ responses }) {
+// ---------- Descriptive section: stat cards + gender donut + faculty + cohort ----------
+function DescriptiveSection({ responses, program }) {
   const total = responses.length;
-  const overallAvg = total
-    ? responses.reduce((a, r) => a + r.overall, 0) / total : 0;
+
+  // Tổng số sinh viên tham gia (admin điền thủ công cột C sheet Assignments)
+  const pMap = window.PARTICIPANT_MAP || {};
+  const totalParticipants = program === "__ALL__"
+    ? Object.values(pMap).reduce((a, b) => a + b, 0)
+    : pMap[program] || 0;
 
   // Giới tính
   const gCounts = { Nam: 0, "Nữ": 0, "Khác": 0 };
@@ -90,12 +94,11 @@ function DescriptiveSection({ responses }) {
     .sort((a, b) => b.n - a.n);
 
   // Theo khóa
-  const cohortOrder = ["51", "50", "49"];
   const cohCounts = {};
   for (const r of responses) {
     if (r.cohort) cohCounts[r.cohort] = (cohCounts[r.cohort] || 0) + 1;
   }
-  const cohorts = cohortOrder
+  const cohorts = ["51","50","49"]
     .filter(k => cohCounts[k] > 0)
     .map(k => ({ label: `Khóa ${k}`, n: cohCounts[k] }));
 
@@ -103,18 +106,19 @@ function DescriptiveSection({ responses }) {
 
   return (
     <Section icon={Icon.ChartBar} title="Thống kê mô tả" soft>
+      {/* Top: 3 cột */}
       <div className="stat-grid">
-        {/* Left: 2 stat cards */}
+        {/* Cột trái: 2 stat card */}
         <div className="stat-card__col">
+          <div className="stat-card">
+            <div className="stat-card__label">Tổng số sinh viên tham gia</div>
+            <div className="stat-card__value">{totalParticipants || "—"}</div>
+            <div className="stat-card__sub">người tham gia chương trình</div>
+          </div>
           <div className="stat-card">
             <div className="stat-card__label">Tổng số thực hiện khảo sát</div>
             <div className="stat-card__value">{total}</div>
             <div className="stat-card__sub">phiếu khảo sát hợp lệ</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-card__label">Điểm tổng quan TB</div>
-            <div className="stat-card__value">{overallAvg.toFixed(2)}</div>
-            <div className="stat-card__sub">trên thang điểm 7</div>
           </div>
         </div>
 
@@ -151,33 +155,23 @@ function DescriptiveSection({ responses }) {
           </h3>
           {faculties.length ? faculties.map((f, i) => (
             <ProgramBar key={i} label={f.label} value={f.n} max={maxN} tone="good" />
-          )) : <p style={{ fontSize: 13, color: "var(--ink-muted)" }}>Chưa có dữ liệu khoa.</p>}
+          )) : <p style={{ fontSize: 13, color: "var(--ink-muted)" }}>Chưa có dữ liệu.</p>}
         </div>
       </div>
 
-      <div className="stat-grid--bottom stat-grid">
-        {/* Theo khóa */}
-        <div className="sub-card">
-          <h3 className="sub-card__title">
-            <Icon.ChartBar style={{ color: "var(--ink-soft)" }} />
-            Thống kê sinh viên tham gia theo khóa
-          </h3>
-          {cohorts.length ? cohorts.map((c, i) => (
-            <ProgramBar key={i} label={c.label} value={c.n} max={maxN} tone="low" />
-          )) : <p style={{ fontSize: 13, color: "var(--ink-muted)" }}>Chưa có dữ liệu khóa.</p>}
-        </div>
-
-        {/* Điểm TB theo nhân tố */}
-        <div className="sub-card">
-          <h3 className="sub-card__title">
-            <Icon.Report style={{ color: "var(--ink-soft)" }} />
-            Điểm TB theo nhân tố
-          </h3>
-          {FACTORS.map((f) => {
-            const m = factorMean(responses, f);
-            return <BarRow key={f.code} code={f.code} label={f.name}
-                           value={m} tone={ratingLabel(m).tone} />;
-          })}
+      {/* Bottom: Theo khóa — full width */}
+      <div className="sub-card" style={{ marginTop: 16 }}>
+        <h3 className="sub-card__title">
+          <Icon.ChartBar style={{ color: "var(--ink-soft)" }} />
+          Thống kê sinh viên tham gia theo khóa
+        </h3>
+        <div className="two-col" style={{ marginTop: 8 }}>
+          <div>
+            {cohorts.length ? cohorts.map((c, i) => (
+              <ProgramBar key={i} label={c.label} value={c.n} max={maxN} tone="low" />
+            )) : <p style={{ fontSize: 13, color: "var(--ink-muted)" }}>Chưa có dữ liệu.</p>}
+          </div>
+          <div /> {/* spacer để giữ layout cân */}
         </div>
       </div>
     </Section>

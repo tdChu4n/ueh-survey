@@ -173,17 +173,24 @@ function handleGetResponses() {
     });
   }
 
-  // Đọc danh sách chương trình từ Assignments để dashboard luôn khớp
-  const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
-  const programs    = [];
+  // Đọc danh sách chương trình + số lượng tham gia từ Assignments
+  // Cấu trúc Assignments: A=semester | B=courseName | C=participants (admin điền thủ công)
+  const assignSheet  = ss.getSheetByName(SHEET_ASSIGNMENTS);
+  const programs     = [];
+  const participantMap = {};
   if (assignSheet) {
     const aRows = assignSheet.getDataRange().getValues();
     for (let i = 1; i < aRows.length; i++) {
-      if (aRows[i][1]) programs.push(String(aRows[i][1]).trim());
+      if (aRows[i][1]) {
+        const name = String(aRows[i][1]).trim();
+        programs.push(name);
+        const n = parseInt(aRows[i][2]);
+        if (!isNaN(n)) participantMap[name] = n;
+      }
     }
   }
 
-  return jsonOut({ success: true, responses, programs });
+  return jsonOut({ success: true, responses, programs, participantMap });
 }
 
 function fmtDate(d) {

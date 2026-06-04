@@ -82,8 +82,9 @@ function App() {
       .then(r => r.json())
       .then(data => {
         if (data.success) {
-          window.SURVEY_RESPONSES = data.responses || [];   // luôn ghi đè, kể cả khi rỗng
+          window.SURVEY_RESPONSES = data.responses || [];
           if (data.programs?.length > 0) window.PROGRAMS = data.programs;
+          window.PARTICIPANT_MAP  = data.participantMap || {};
           setUpdatedAt(new Date().toLocaleTimeString('vi-VN'));
           setDataKey(k => k + 1);
         }
@@ -119,7 +120,7 @@ function App() {
       )}
       <main className="main">
         <ActivityCard program={program} onChange={setProgram} responses={responses} />
-        <DescriptiveSection responses={responses} />
+        <DescriptiveSection responses={responses} program={program} />
         <ReportTabs responses={responses} />
       </main>
       <Footer />
