@@ -99,22 +99,47 @@ function HBarChart({ items, max = 7 }) {
   );
 }
 
-// Catmull-Rom → cubic bezier: tạo đường cong mượt qua tất cả điểm
-function smoothCurve(points, tension = 0.35) {
-  if (points.length < 2) return '';
-  let d = `M ${points[0][0]} ${points[0][1]}`;
-  for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[i - 1] || points[i];
-    const p1 = points[i];
-    const p2 = points[i + 1];
-    const p3 = points[i + 2] || points[i + 1];
-    const cp1x = p1[0] + (p2[0] - p0[0]) * tension;
-    const cp1y = p1[1] + (p2[1] - p0[1]) * tension;
-    const cp2x = p2[0] - (p3[0] - p1[0]) * tension;
-    const cp2y = p2[1] - (p3[1] - p1[1]) * tension;
-    d += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2[0]} ${p2[1]}`;
+// Monotone cubic interpolation (Fritsch-Carlson):
+// đảm bảo đường cong KHÔNG bao giờ vượt ra ngoài range dữ liệu
+function smoothCurve(points) {
+  const n = points.length;
+  if (n < 2) return '';
+
+  // Độ dốc giữa các cặp điểm liên tiếp
+  const d = [];
+  for (let i = 0; i < n - 1; i++) {
+    const dx = points[i+1][0] - points[i][0];
+    const dy = points[i+1][1] - points[i][1];
+    d.push(dx === 0 ? 0 : dy / dx);
   }
-  return d;
+
+  // Tiếp tuyến tại mỗi điểm
+  const m = new Array(n);
+  m[0] = d[0];
+  m[n-1] = d[n-2];
+  for (let i = 1; i < n - 1; i++) {
+    m[i] = (d[i-1] * d[i] <= 0) ? 0 : (d[i-1] + d[i]) / 2;
+  }
+
+  // Điều kiện Fritsch-Carlson: chống overshoot
+  for (let i = 0; i < n - 1; i++) {
+    if (d[i] === 0) { m[i] = 0; m[i+1] = 0; continue; }
+    const a = m[i] / d[i], b = m[i+1] / d[i];
+    const h = Math.sqrt(a * a + b * b);
+    if (h > 3) { m[i] = (3 / h) * a * d[i]; m[i+1] = (3 / h) * b * d[i]; }
+  }
+
+  // Tạo SVG path với cubic bezier
+  let path = `M ${points[0][0]} ${points[0][1]}`;
+  for (let i = 0; i < n - 1; i++) {
+    const dx = (points[i+1][0] - points[i][0]) / 3;
+    const cp1x = points[i][0] + dx;
+    const cp1y = points[i][1] + m[i] * dx;
+    const cp2x = points[i+1][0] - dx;
+    const cp2y = points[i+1][1] - m[i+1] * dx;
+    path += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${points[i+1][0]} ${points[i+1][1]}`;
+  }
+  return path;
 }
 
 // ---------- Multi-line distribution chart ----------
