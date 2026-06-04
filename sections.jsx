@@ -61,54 +61,54 @@ function ActivityCard({ program, onChange, responses }) {
   );
 }
 
-// ---------- Descriptive section: stat cards + donut + program bars ----------
+// ---------- Descriptive section: stat cards + gender donut + faculty/cohort bars ----------
 function DescriptiveSection({ responses }) {
-  // Distribution of overall ratings → tone buckets
-  const buckets = [
-    { key: "good", label: "Tốt (≥6)", color: "var(--c-good)" },
-    { key: "ok",   label: "Khá (5)", color: "oklch(0.65 0.14 200)" },
-    { key: "mid",  label: "TB (3–4)", color: "var(--c-low)" },
-  ];
-  const counts = { good: 0, ok: 0, mid: 0 };
+  const total = responses.length;
+  const overallAvg = total
+    ? responses.reduce((a, r) => a + r.overall, 0) / total : 0;
+
+  // Giới tính
+  const gCounts = { Nam: 0, "Nữ": 0, "Khác": 0 };
   for (const r of responses) {
-    if (r.overall >= 6) counts.good++;
-    else if (r.overall >= 5) counts.ok++;
-    else counts.mid++;
+    if (r.gender === "Nam") gCounts["Nam"]++;
+    else if (r.gender === "Nữ") gCounts["Nữ"]++;
+    else if (r.gender) gCounts["Khác"]++;
   }
-  const donutData = buckets.map((b) => ({
-    label: b.label, value: counts[b.key], color: b.color
-  }));
-  const overallAvg = responses.length
-    ? responses.reduce((a, r) => a + r.overall, 0) / responses.length
-    : 0;
+  const genderData = [
+    { label: "Nam",  value: gCounts["Nam"],  color: "oklch(0.42 0.18 260)" },
+    { label: "Nữ",   value: gCounts["Nữ"],   color: "oklch(0.62 0.14 230)" },
+    { label: "Khác", value: gCounts["Khác"], color: "oklch(0.78 0.08 220)" },
+  ];
 
-  // Program participation bars (count per program)
-  const programCounts = PROGRAMS.map((p) => ({
-    program: p,
-    n: SURVEY_RESPONSES.filter(r => r.program === p).length,
-  })).sort((a, b) => b.n - a.n);
-  const maxN = Math.max(1, ...programCounts.map(x => x.n));
-
-  // Concern-tag bars (mối quan tâm học kỳ)
-  const tagCounts = {};
-  for (const r of SURVEY_RESPONSES) {
-    const k = r.interest;
-    if (!k) continue;
-    tagCounts[k] = (tagCounts[k] || 0) + 1;
+  // Theo khoa
+  const facCounts = {};
+  for (const r of responses) {
+    if (r.faculty) facCounts[r.faculty] = (facCounts[r.faculty] || 0) + 1;
   }
-  const interests = Object.entries(tagCounts)
+  const faculties = Object.entries(facCounts)
     .map(([k, v]) => ({ label: k, n: v }))
     .sort((a, b) => b.n - a.n);
-  const maxInterest = Math.max(1, ...interests.map(x => x.n));
+
+  // Theo khóa
+  const cohortOrder = ["51", "50", "49"];
+  const cohCounts = {};
+  for (const r of responses) {
+    if (r.cohort) cohCounts[r.cohort] = (cohCounts[r.cohort] || 0) + 1;
+  }
+  const cohorts = cohortOrder
+    .filter(k => cohCounts[k] > 0)
+    .map(k => ({ label: `Khóa ${k}`, n: cohCounts[k] }));
+
+  const maxN = Math.max(1, total);
 
   return (
     <Section icon={Icon.ChartBar} title="Thống kê mô tả" soft>
       <div className="stat-grid">
-        {/* Left column: 2 stacked stat cards */}
+        {/* Left: 2 stat cards */}
         <div className="stat-card__col">
           <div className="stat-card">
-            <div className="stat-card__label">Tổng số phản hồi</div>
-            <div className="stat-card__value">{responses.length}</div>
+            <div className="stat-card__label">Tổng số thực hiện khảo sát</div>
+            <div className="stat-card__value">{total}</div>
             <div className="stat-card__sub">phiếu khảo sát hợp lệ</div>
           </div>
           <div className="stat-card">
@@ -118,27 +118,24 @@ function DescriptiveSection({ responses }) {
           </div>
         </div>
 
-        {/* Donut */}
+        {/* Giới tính donut */}
         <div className="sub-card">
           <h3 className="sub-card__title">
             <Icon.PieIcon style={{ color: "var(--ink-soft)" }} />
-            Phân bố mức đánh giá
+            Giới tính
           </h3>
           <div className="donut-wrap">
-            <Donut
-              data={donutData}
-              centerValue={overallAvg.toFixed(1)}
-              centerLabel="điểm TB"
-            />
+            <Donut data={genderData} size={160} thickness={26}
+                   centerValue={total} centerLabel="phiếu" />
             <div className="donut-legend">
-              {donutData.map((d, i) => (
+              {genderData.map((d, i) => (
                 <div key={i} className="donut-legend__item">
                   <div className="donut-legend__row">
                     <span className="donut-legend__dot" style={{ background: d.color }} />
                     <span>{d.label}</span>
                   </div>
                   <span className="donut-legend__pct">
-                    {responses.length ? Math.round((d.value / responses.length) * 100) : 0}%
+                    {total ? Math.round((d.value / total) * 100) : 0}%
                   </span>
                 </div>
               ))}
@@ -146,41 +143,31 @@ function DescriptiveSection({ responses }) {
           </div>
         </div>
 
-        {/* Per-program participation */}
+        {/* Theo khoa */}
         <div className="sub-card">
           <h3 className="sub-card__title">
             <Icon.Report style={{ color: "var(--ink-soft)" }} />
-            Phản hồi theo chương trình
+            Thống kê sinh viên tham gia theo khoa
           </h3>
-          {programCounts.map((p) => (
-            <ProgramBar
-              key={p.program}
-              label={p.program}
-              value={p.n}
-              max={SURVEY_RESPONSES.length}
-              tone={p.n >= 3 ? "good" : p.n >= 2 ? "mid" : "low"}
-            />
-          ))}
+          {faculties.length ? faculties.map((f, i) => (
+            <ProgramBar key={i} label={f.label} value={f.n} max={maxN} tone="good" />
+          )) : <p style={{ fontSize: 13, color: "var(--ink-muted)" }}>Chưa có dữ liệu khoa.</p>}
         </div>
       </div>
 
       <div className="stat-grid--bottom stat-grid">
+        {/* Theo khóa */}
         <div className="sub-card">
           <h3 className="sub-card__title">
             <Icon.ChartBar style={{ color: "var(--ink-soft)" }} />
-            Mối quan tâm học kỳ này
+            Thống kê sinh viên tham gia theo khóa
           </h3>
-          {interests.map((it, i) => (
-            <ProgramBar
-              key={i}
-              label={it.label}
-              value={it.n}
-              max={SURVEY_RESPONSES.length}
-              tone={it.n >= 4 ? "good" : it.n >= 2 ? "mid" : "low"}
-            />
-          ))}
+          {cohorts.length ? cohorts.map((c, i) => (
+            <ProgramBar key={i} label={c.label} value={c.n} max={maxN} tone="low" />
+          )) : <p style={{ fontSize: 13, color: "var(--ink-muted)" }}>Chưa có dữ liệu khóa.</p>}
         </div>
 
+        {/* Điểm TB theo nhân tố */}
         <div className="sub-card">
           <h3 className="sub-card__title">
             <Icon.Report style={{ color: "var(--ink-soft)" }} />
@@ -188,10 +175,8 @@ function DescriptiveSection({ responses }) {
           </h3>
           {FACTORS.map((f) => {
             const m = factorMean(responses, f);
-            const tone = ratingLabel(m).tone;
-            return (
-              <BarRow key={f.code} code={f.code} label={f.name} value={m} tone={tone} />
-            );
+            return <BarRow key={f.code} code={f.code} label={f.name}
+                           value={m} tone={ratingLabel(m).tone} />;
           })}
         </div>
       </div>

@@ -163,7 +163,7 @@ function BarRow({ code, label, value, max = 7, tone }) {
 }
 
 // ---------- Generic progress bar with percentage on right ----------
-function ProgramBar({ label, value, max, tone }) {
+function ProgramBar({ label, value, max, tone, suffix = "Tham gia" }) {
   const pct = max ? Math.round(value / max * 100) : 0;
   const fillCls =
   tone === "good" ? "bar__fill" :
@@ -173,7 +173,7 @@ function ProgramBar({ label, value, max, tone }) {
     <div className="bar-row">
       <div className="bar-row__head">
         <div className="bar-row__label">{label}</div>
-        <span className="bar-row__pct">{pct}% · n={value}</span>
+        <span className="bar-row__pct">{pct}% {suffix}</span>
       </div>
       <div className="bar"><div className={fillCls} style={{ width: pct + "%" }} /></div>
     </div>);
