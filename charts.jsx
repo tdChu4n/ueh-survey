@@ -177,8 +177,8 @@ function LineChart({ series, xLabels, yMax }) {
           {lab}
         </text>
       ))}
-      <text x={padL - 28} y={padT + 8} fontSize={10} fill="var(--ink-muted)"
-            fontFamily="var(--font-mono)">Số phiếu</text>
+      <text x={padL} y={padT - 4} fontSize={10} fill="var(--ink-muted)"
+            fontFamily="var(--font-mono)" textAnchor="start">Số phiếu</text>
       {/* smooth curves */}
       {series.map((s, i) => {
         const pts = s.data.map((v, idx) => [xs[idx], yFor(v)]);
