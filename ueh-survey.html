@@ -301,6 +301,18 @@
     .text-section textarea:focus { outline: none; border-color: #005c50; }
     .text-section textarea.invalid { border-color: #e00; }
 
+    /* Info grid (gender / cohort / faculty) */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 12px; margin-bottom: 18px; }
+    .info-field label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; }
+    .info-field label .req { color: #c00; }
+    .info-field select {
+      width: 100%; border: 1px solid #ccc; border-radius: 6px;
+      padding: 8px 10px; font-size: 13px; font-family: inherit;
+      background: #fff; cursor: pointer; transition: border .15s;
+    }
+    .info-field select:focus { outline: none; border-color: #005c50; }
+    .info-field select.invalid { border-color: #e00; }
+
     /* Email display */
     .email-display {
       background: #f8f8f8; border: 1px solid #ddd; border-radius: 6px;
@@ -346,6 +358,8 @@
 
     /* Mobile (≤ 640px) */
     @media (max-width: 640px) {
+      .info-grid { grid-template-columns: 1fr 1fr; }
+      .info-grid .info-field:last-child { grid-column: 1 / -1; }
       /* Nav */
       .top-nav { padding: 0 10px; height: 52px; }
       .ttk-brand { display: none; }
@@ -834,6 +848,38 @@
       <span style="color:#888;font-size:12px;margin-left:8px;">(Được ghi nhận tự động)</span>
     </div>`;
 
+    // Thông tin cá nhân
+    const FACULTIES = [
+      'Khoa Toán - Thống kê','Khoa Lý luận chính trị','Khoa Thiết kế Truyền thông',
+      'Khoa Công nghệ thông tin kinh doanh','Khoa Ngoại ngữ',
+      'Khoa Kinh doanh quốc tế - Marketing','Khoa Quản trị','Khoa Tài chính',
+      'Khoa Ngân hàng','Khoa Kế toán','Khoa Du lịch','Khoa Tài chính công',
+      'Khoa Luật','Khoa Quản lý nhà nước',
+    ];
+    html += `<div class="info-grid">
+      <div class="info-field">
+        <label>Giới tính</label>
+        <select id="field_gender" name="gender">
+          <option value="">-- Chọn --</option>
+          <option>Nam</option><option>Nữ</option><option>Khác</option>
+        </select>
+      </div>
+      <div class="info-field">
+        <label>Khóa</label>
+        <select id="field_cohort" name="cohort">
+          <option value="">-- Chọn --</option>
+          <option>49</option><option>50</option><option>51</option>
+        </select>
+      </div>
+      <div class="info-field">
+        <label>Khoa <span class="req">*</span></label>
+        <select id="field_faculty" name="faculty">
+          <option value="">-- Chọn khoa --</option>
+          ${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}
+        </select>
+      </div>
+    </div>`;
+
     // Factor sections (Likert 1-7)
     for (const factor of FORM_SCHEMA.factors) {
       html += `<div class="factor-card">
@@ -887,6 +933,15 @@
 
   // ── Validate ──────────────────────────────────────
   function validateForm() {
+    const faculty = document.getElementById('field_faculty');
+    if (!faculty.value) {
+      faculty.classList.add('invalid');
+      faculty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      alert('Vui lòng chọn Khoa.');
+      return false;
+    }
+    faculty.classList.remove('invalid');
+
     const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
     for (const item of allItems) {
       if (!document.querySelector(`input[name="${item.code}"]:checked`)) {
@@ -913,6 +968,9 @@
   // ── Collect data ──────────────────────────────────
   function collectFormData() {
     const data = {};
+    data.gender  = document.getElementById('field_gender')?.value  || '';
+    data.cohort  = document.getElementById('field_cohort')?.value  || '';
+    data.faculty = document.getElementById('field_faculty')?.value || '';
     const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
     for (const item of allItems) {
       const sel = document.querySelector(`input[name="${item.code}"]:checked`);
