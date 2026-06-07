@@ -825,6 +825,9 @@ button {
 @media (max-width: 768px) {
   /* Nav */
   .nav { padding: 10px 14px; gap: 10px; flex-wrap: nowrap; }
+  .nav__brand { flex-shrink: 1 !important; min-width: 0; gap: 6px !important; }
+  .nav__brand img { height: 30px !important; }
+  .nav__brand > div { height: 22px !important; }
   .nav__brand-sub { display: none; }
   .nav__user { gap: 8px; padding: 4px 4px; }
   .nav__user-mail { display: none; }
@@ -904,6 +907,8 @@ button {
   /* Nav: hide user name too, keep avatar + logout */
   .nav__user-name { display: none; }
   .nav { gap: 8px; }
+  .nav__brand img { height: 22px !important; }
+  .nav__brand { gap: 4px !important; }
 
   .banner__title { font-size: 17px; }
 
