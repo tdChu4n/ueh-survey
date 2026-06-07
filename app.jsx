@@ -29,19 +29,48 @@ function Footer() {
   );
 }
 
-// ── Sidebar chọn chương trình ──────────────────────────
-function ProgramSidebar({ selectedPrograms, onToggle, onToggleYear, onSelectAll, onClearAll }) {
+// ── Sidebar chọn chương trình (2 tầng: năm → hoạt động) ─
+function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onSelectAll, onClearAll }) {
   const allPrograms = window.PROGRAMS || [];
   const yearMap     = window.PROGRAM_YEARS || {};
 
-  // Nhóm theo năm (giảm dần)
+  // Nhóm chương trình theo năm
   const byYear = {};
   for (const p of allPrograms) {
     const y = String(yearMap[p] || "Khác");
     if (!byYear[y]) byYear[y] = [];
     byYear[y].push(p);
   }
-  const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+  const allYears = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+  // Tầng 1: năm nào đang được hiển thị (mặc định = tất cả)
+  const [visibleYears, setVisibleYears] = useState(() => new Set(allYears));
+
+  // Khi API load xong và allYears thay đổi, tự thêm năm mới vào visibleYears
+  useEffect(() => {
+    setVisibleYears(prev => {
+      const next = new Set(prev);
+      allYears.forEach(y => next.add(y));
+      return next;
+    });
+  }, [allYears.join(",")]);
+
+  const toggleVisibleYear = (year) => {
+    const willShow = !visibleYears.has(year);
+    setVisibleYears(prev => {
+      const next = new Set(prev);
+      if (next.has(year)) next.delete(year); else next.add(year);
+      return next;
+    });
+    // Khi hiện năm → tự chọn hết chương trình của năm đó
+    // Khi ẩn năm → tự bỏ chọn hết chương trình của năm đó
+    onBatchSet(byYear[year] || [], willShow);
+  };
+
+  // Chương trình hiển thị = chỉ những năm đang được tick
+  const visiblePrograms = allPrograms.filter(p =>
+    visibleYears.has(String(yearMap[p] || "Khác"))
+  );
 
   return (
     <aside className="sidebar">
@@ -53,33 +82,35 @@ function ProgramSidebar({ selectedPrograms, onToggle, onToggleYear, onSelectAll,
         </div>
       </div>
 
-      <div className="sidebar__body">
-        {years.map(year => {
-          const yearPrograms = byYear[year];
-          const allChecked  = yearPrograms.every(p => selectedPrograms.has(p));
-          const someChecked = yearPrograms.some(p => selectedPrograms.has(p));
-          return (
-            <div key={year} className="sidebar__year-group">
-              {/* Year row — click label = toggle tất cả chương trình trong năm */}
-              <label className="sidebar__year-label">
-                <input
-                  type="checkbox"
-                  checked={allChecked}
-                  ref={el => { if (el) el.indeterminate = someChecked && !allChecked; }}
-                  onChange={() => onToggleYear(yearPrograms, allChecked)}
-                />
-                <span>{year}</span>
+      {/* Tầng 1: chọn năm */}
+      <div className="sidebar__year-section">
+        <div className="sidebar__section-label">Chọn năm</div>
+        <div className="sidebar__year-chips">
+          {allYears.map(year => {
+            const on = visibleYears.has(year);
+            return (
+              <label key={year} className={"sidebar__year-chip" + (on ? " sidebar__year-chip--on" : "")}>
+                <input type="checkbox" checked={on} onChange={() => toggleVisibleYear(year)} />
+                {year}
               </label>
-              {yearPrograms.map(p => {
-                const checked = selectedPrograms.has(p);
-                return (
-                  <label key={p} className={"sidebar__item" + (checked ? " sidebar__item--on" : "")}>
-                    <input type="checkbox" checked={checked} onChange={() => onToggle(p)} />
-                    <span className="sidebar__item-name">{p}</span>
-                  </label>
-                );
-              })}
-            </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Tầng 2: chọn từng hoạt động */}
+      <div className="sidebar__body">
+        {visiblePrograms.length === 0 ? (
+          <div style={{ padding:"16px 14px", fontSize:12, color:"#94a3b8", textAlign:"center" }}>
+            Chọn năm để xem hoạt động
+          </div>
+        ) : visiblePrograms.map(p => {
+          const checked = selectedPrograms.has(p);
+          return (
+            <label key={p} className={"sidebar__item" + (checked ? " sidebar__item--on" : "")}>
+              <input type="checkbox" checked={checked} onChange={() => onToggle(p)} />
+              <span className="sidebar__item-name">{p}</span>
+            </label>
           );
         })}
       </div>
@@ -233,11 +264,12 @@ function App() {
     });
   };
 
-  const handleToggleYear = (yearPrograms, allChecked) => {
+  // Thêm hoặc bỏ một nhóm chương trình cùng lúc (dùng khi toggle năm)
+  const handleBatchSet = (programs, shouldSelect) => {
     setSelectedPrograms(prev => {
       const next = new Set(prev);
-      if (allChecked) yearPrograms.forEach(p => next.delete(p));
-      else            yearPrograms.forEach(p => next.add(p));
+      if (shouldSelect) programs.forEach(p => next.add(p));
+      else              programs.forEach(p => next.delete(p));
       return next;
     });
   };
@@ -264,7 +296,7 @@ function App() {
         <ProgramSidebar
           selectedPrograms={selectedPrograms}
           onToggle={handleToggle}
-          onToggleYear={handleToggleYear}
+          onBatchSet={handleBatchSet}
           onSelectAll={() => setSelectedPrograms(new Set(window.PROGRAMS))}
           onClearAll={() => setSelectedPrograms(new Set())}
         />

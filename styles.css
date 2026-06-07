@@ -702,28 +702,55 @@ button {
   padding: 8px 0 4px;
 }
 
-.sidebar__year-group { padding: 0 0 6px; }
-
-.sidebar__year-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+/* Tầng 1: chọn năm */
+.sidebar__year-section {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar__section-label {
   font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .12em;
+  font-weight: 700;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--brand-500);
-  padding: 6px 14px 4px;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.sidebar__year-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.sidebar__year-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-soft);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
   cursor: pointer;
   user-select: none;
+  transition: background .12s, border-color .12s, color .12s;
 }
-.sidebar__year-label input[type="checkbox"] {
-  accent-color: var(--brand-500);
-  width: 13px; height: 13px;
-  cursor: pointer;
-  flex-shrink: 0;
+.sidebar__year-chip input[type="checkbox"] { display: none; }
+.sidebar__year-chip:hover {
+  border-color: var(--brand-500);
+  color: var(--brand-700);
+  background: var(--brand-100);
 }
-.sidebar__year-label:hover { color: var(--brand-700); }
+.sidebar__year-chip--on {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  color: #fff;
+}
+.sidebar__year-chip--on:hover {
+  background: var(--brand-700);
+  border-color: var(--brand-700);
+  color: #fff;
+}
 
 .sidebar__item {
   display: flex;
