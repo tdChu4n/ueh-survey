@@ -14,11 +14,12 @@ const SHEET_ASSIGNMENTS = 'Assignments'; // Admin thêm/xóa chương trình t�
 const SHEET_RESPONSES   = 'Responses';  // Dữ liệu do sinh viên gửi về
 
 // Cấu trúc sheet "Assignments" (admin quản lý):
-// A: semester | B: courseName | C: participants | D: locked (gõ bất kỳ ký tự vào = khoá)
+// A: year (năm dương lịch, vd: 2026) | B: courseName | C: participants | D: locked (gõ bất kỳ ký tự = khoá)
 // (Thêm hàng mới = thêm chương trình, mọi user đều thấy)
 
 // Cấu trúc sheet "Responses" (tự động tạo nếu chưa có):
-// timestamp | email | semester | program |
+// timestamp | email | year | program |
+// gender | cohort | faculty |
 // DVTT1-4 | CLCT1-5 | CSVC1-3 | GTCT1-2 | SHL1-3 | LTT1-4 |
 // overall | learn | trouble | interest | feedback
 
@@ -64,13 +65,13 @@ function handleGetCourses(email) {
   // 3. Ghép danh sách chương trình + trạng thái
   const courses = [];
   for (let i = 1; i < assignRows.length; i++) {
-    const [semester, courseName, , lockedRaw] = assignRows[i];
+    const [year, courseName, , lockedRaw] = assignRows[i];
     if (!courseName) continue;
     const name   = String(courseName).trim();
     const locked = String(lockedRaw || '').trim() !== ''; // có giá trị = khoá
     courses.push({
       rowIndex:   i + 1,
-      semester:   String(semester || '').trim(),
+      year:       String(year || '').trim(),
       courseName: name,
       locked,
       status:     completed.has(name) ? 'Đã thực hiện' : (locked ? 'Đã khoá' : 'Chưa thực hiện'),
@@ -92,7 +93,7 @@ function handleSubmitSurvey(p) {
       respSheet = ss.insertSheet(SHEET_RESPONSES);
       // Tạo header
       respSheet.appendRow([
-        'Dấu thời gian','Email','Học kỳ','Chương trình',
+        'Dấu thời gian','Email','Năm','Chương trình',
         'Giới tính','Khóa','Khoa',
         'DVTT1','DVTT2','DVTT3','DVTT4',
         'CLCT1','CLCT2','CLCT3','CLCT4','CLCT5',
@@ -103,19 +104,19 @@ function handleSubmitSurvey(p) {
         'Tổng quan',
         'Bài học/Giá trị áp dụng',
         'Khó khăn/Trải nghiệm chưa thoải mái',
-        'Mối quan tâm học kỳ này',
+        'Mối quan tâm',
         'Góp ý'
       ]);
     }
 
     respSheet.appendRow([
       new Date(),
-      p.email      || '',
-      p.semester   || '',
-      p.program    || '',
-      p.gender     || '',
-      p.cohort     || '',
-      p.faculty    || '',
+      p.email    || '',
+      p.year     || '',
+      p.program  || '',
+      p.gender   || '',
+      p.cohort   || '',
+      p.faculty  || '',
       num(p.DVTT1), num(p.DVTT2), num(p.DVTT3), num(p.DVTT4),
       num(p.CLCT1), num(p.CLCT2), num(p.CLCT3), num(p.CLCT4), num(p.CLCT5),
       num(p.CSVC1), num(p.CSVC2), num(p.CSVC3),
@@ -153,14 +154,14 @@ function handleGetResponses() {
     if (!emailVal.includes('@')) continue; // bỏ header hoặc hàng rỗng
 
     responses.push({
-      id:       'R' + String(i).padStart(3, '0'),
-      ts:       fmtDate(r[0]),
-      email:    String(r[1]  || ''),
-      semester: String(r[2]  || ''),
-      program:  String(r[3]  || ''),
-      gender:   String(r[4]  || ''),
-      cohort:   String(r[5]  || ''),
-      faculty:  String(r[6]  || ''),
+      id:      'R' + String(i).padStart(3, '0'),
+      ts:      fmtDate(r[0]),
+      email:   String(r[1] || ''),
+      year:    String(r[2] || ''),
+      program: String(r[3] || ''),
+      gender:  String(r[4] || ''),
+      cohort:  String(r[5] || ''),
+      faculty: String(r[6] || ''),
       DVTT1: num(r[7]),  DVTT2: num(r[8]),  DVTT3: num(r[9]),  DVTT4: num(r[10]),
       CLCT1: num(r[11]), CLCT2: num(r[12]), CLCT3: num(r[13]), CLCT4: num(r[14]), CLCT5: num(r[15]),
       CSVC1: num(r[16]), CSVC2: num(r[17]), CSVC3: num(r[18]),
@@ -175,24 +176,23 @@ function handleGetResponses() {
     });
   }
 
-  // Đọc danh sách chương trình + số lượng tham gia từ Assignments
-  // Cấu trúc Assignments: A=semester | B=courseName | C=participants (admin điền thủ công)
-  const assignSheet  = ss.getSheetByName(SHEET_ASSIGNMENTS);
-  const programs     = [];
+  // Đọc danh sách chương trình từ Assignments
+  // Cấu trúc: A=year | B=courseName | C=participants | D=locked
+  const assignSheet    = ss.getSheetByName(SHEET_ASSIGNMENTS);
+  const programs       = [];
   const participantMap = {};
   const programYears   = {};
   if (assignSheet) {
     const aRows = assignSheet.getDataRange().getValues();
     for (let i = 1; i < aRows.length; i++) {
       if (aRows[i][1]) {
-        const name    = String(aRows[i][1]).trim();
+        const name = String(aRows[i][1]).trim();
         programs.push(name);
         const n = parseInt(aRows[i][2]);
         if (!isNaN(n)) participantMap[name] = n;
-        // Trích năm dương lịch từ cột A (vd: "Năm học 2025-2026" → 2026)
-        const semStr  = String(aRows[i][0] || '');
-        const years   = semStr.match(/\d{4}/g);
-        programYears[name] = years ? parseInt(years[years.length - 1]) : new Date().getFullYear();
+        // Cột A giờ là năm dương lịch trực tiếp (vd: 2026)
+        const y = parseInt(aRows[i][0]);
+        programYears[name] = isNaN(y) ? new Date().getFullYear() : y;
       }
     }
   }

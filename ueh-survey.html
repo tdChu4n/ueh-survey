@@ -820,7 +820,7 @@
       }
       return `<tr class="${locked && !done ? 'row-locked' : ''}">
         <td style="text-align:center;width:46px;">${i + 1}</td>
-        <td style="width:190px;">${esc(c.semester)}</td>
+        <td style="width:100px;">${esc(c.year)}</td>
         <td>${esc(c.courseName)}</td>
         <td style="text-align:center;width:135px;">${cell}</td>
       </tr>`;
@@ -829,7 +829,7 @@
       <table class="survey-table">
         <thead><tr>
           <th style="text-align:center;">TT</th>
-          <th>HỌC KỲ KHẢO SÁT</th>
+          <th>NĂM</th>
           <th>TÊN HỌC PHẦN / TÊN PHIẾU</th>
           <th style="text-align:center;">TRẠNG THÁI</th>
         </tr></thead>
@@ -1015,7 +1015,7 @@
         email:     currentUser.email,
         rowIndex:  currentSurveyRow.rowIndex,
         program:   currentSurveyRow.courseName,
-        semester:  currentSurveyRow.semester,
+        year:      currentSurveyRow.year,
         ...formData
       });
 
