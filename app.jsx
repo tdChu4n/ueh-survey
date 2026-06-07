@@ -40,8 +40,71 @@ function ReportTabs({ responses }) {
   });
   useEffect(() => { localStorage.setItem("mymy.tab", active); }, [active]);
 
+  const [cohortFilter,  setCohortFilter]  = useState("__ALL__");
+  const [facultyFilter, setFacultyFilter] = useState("__ALL__");
+
+  const availableCohorts = useMemo(() =>
+    ["49","50","51"].filter(k => responses.some(r => r.cohort === k)),
+    [responses]
+  );
+  const availableFaculties = useMemo(() =>
+    [...new Set(responses.map(r => r.faculty).filter(Boolean))].sort(),
+    [responses]
+  );
+
+  const filtered = useMemo(() => {
+    let r = responses;
+    if (cohortFilter  !== "__ALL__") r = r.filter(x => x.cohort  === cohortFilter);
+    if (facultyFilter !== "__ALL__") r = r.filter(x => x.faculty === facultyFilter);
+    return r;
+  }, [responses, cohortFilter, facultyFilter]);
+
+  const hasFilter = cohortFilter !== "__ALL__" || facultyFilter !== "__ALL__";
+
   return (
     <Section icon={Icon.Report} title="Báo cáo sau chương trình">
+
+      {/* Bộ lọc */}
+      <div style={{
+        display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+        marginBottom: 16, padding: "10px 14px",
+        background: "var(--surface-soft,#f6f8fa)", borderRadius: 10,
+        border: "1px solid var(--border,#e2e8f0)"
+      }}>
+        <span style={{ fontSize: 12, color: "#64748b", fontWeight: 600, whiteSpace: "nowrap" }}>Lọc theo:</span>
+
+        <select value={cohortFilter} onChange={e => setCohortFilter(e.target.value)}
+                style={{ fontFamily: "inherit", fontSize: 13,
+                         border: "1px solid #cbd5e1", borderRadius: 8,
+                         padding: "5px 10px", background: "#fff", cursor: "pointer" }}>
+          <option value="__ALL__">— Tất cả khóa —</option>
+          {availableCohorts.map(k => <option key={k} value={k}>Khóa {k}</option>)}
+        </select>
+
+        <select value={facultyFilter} onChange={e => setFacultyFilter(e.target.value)}
+                style={{ fontFamily: "inherit", fontSize: 13,
+                         border: "1px solid #cbd5e1", borderRadius: 8,
+                         padding: "5px 10px", background: "#fff", cursor: "pointer", maxWidth: 240 }}>
+          <option value="__ALL__">— Tất cả khoa —</option>
+          {availableFaculties.map(f => <option key={f} value={f}>{f}</option>)}
+        </select>
+
+        {hasFilter && (
+          <button onClick={() => { setCohortFilter("__ALL__"); setFacultyFilter("__ALL__"); }}
+                  style={{ fontSize: 12, color: "#dc2626", background: "#fef2f2",
+                           border: "1px solid #fca5a5", borderRadius: 6,
+                           padding: "4px 10px", cursor: "pointer" }}>
+            ✕ Bỏ lọc
+          </button>
+        )}
+
+        {hasFilter && (
+          <span style={{ fontSize: 12, color: "#64748b" }}>
+            — {filtered.length} / {responses.length} phiếu
+          </span>
+        )}
+      </div>
+
       <div className="tabs">
         {tabs.map(t => {
           const Ico = t.icon;
@@ -57,10 +120,10 @@ function ReportTabs({ responses }) {
       </div>
       {(() => {
         if (active === "__SUMMARY__")
-          return <SummaryTabContent responses={responses} onFactorClick={setActive} />;
-        if (active === "__QUAL__")    return <QualitativeTabContent responses={responses} />;
+          return <SummaryTabContent responses={filtered} onFactorClick={setActive} />;
+        if (active === "__QUAL__")    return <QualitativeTabContent responses={filtered} />;
         const f = FACTORS.find(x => x.code === active);
-        return f ? <FactorTabContent factor={f} responses={responses} /> : null;
+        return f ? <FactorTabContent factor={f} responses={filtered} /> : null;
       })()}
     </Section>
   );
@@ -71,9 +134,6 @@ function App() {
     return localStorage.getItem("mymy.program") || PROGRAMS[0];
   });
   useEffect(() => { localStorage.setItem("mymy.program", program); }, [program]);
-
-  const [cohortFilter,  setCohortFilter]  = useState("__ALL__");
-  const [facultyFilter, setFacultyFilter] = useState("__ALL__");
 
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
@@ -95,39 +155,16 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Lấy danh sách khóa + khoa có trong dữ liệu (động)
-  const availableCohorts = useMemo(() => {
-    const s = new Set(SURVEY_RESPONSES.map(r => r.cohort).filter(Boolean));
-    return ["49","50","51"].filter(k => s.has(k));
-  }, [dataKey]);
-
-  const availableFaculties = useMemo(() => {
-    const s = new Set(SURVEY_RESPONSES.map(r => r.faculty).filter(Boolean));
-    return [...s].sort();
-  }, [dataKey]);
-
-  // Lọc responses theo chương trình + khóa + khoa
-  const responses = useMemo(() => {
-    let r = filterByProgram(program);
-    if (cohortFilter  !== "__ALL__") r = r.filter(x => x.cohort  === cohortFilter);
-    if (facultyFilter !== "__ALL__") r = r.filter(x => x.faculty === facultyFilter);
-    return r;
-  }, [program, cohortFilter, facultyFilter, dataKey]);
-
-  // Reset bộ lọc phụ khi đổi chương trình
-  const handleProgramChange = (p) => { setProgram(p); setCohortFilter("__ALL__"); setFacultyFilter("__ALL__"); };
-
-  const filterLabel = [
-    cohortFilter  !== "__ALL__" ? `Khóa ${cohortFilter}` : null,
-    facultyFilter !== "__ALL__" ? facultyFilter : null,
-  ].filter(Boolean).join(" · ");
+  const responses = useMemo(
+    () => filterByProgram(program),
+    [program, dataKey]
+  );
 
   return (
     <>
       <TopNav />
       <Banner crumb="Chi tiết hoạt động" title={
-        (program === "__ALL__" ? "Tổng quan tất cả chương trình" : program)
-        + (filterLabel ? ` — ${filterLabel}` : "")
+        program === "__ALL__" ? "Tổng quan tất cả chương trình" : program
       } />
       {loading && (
         <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
@@ -144,12 +181,7 @@ function App() {
         </div>
       )}
       <main className="main">
-        <ActivityCard
-          program={program} onChange={handleProgramChange} responses={responses}
-          cohortFilter={cohortFilter}  onCohortChange={setCohortFilter}
-          facultyFilter={facultyFilter} onFacultyChange={setFacultyFilter}
-          availableCohorts={availableCohorts} availableFaculties={availableFaculties}
-        />
+        <ActivityCard program={program} onChange={setProgram} responses={responses} />
         <DescriptiveSection responses={responses} program={program} />
         <ReportTabs responses={responses} />
       </main>
