@@ -24,17 +24,19 @@
       box-shadow: 0 2px 8px rgba(0,0,0,.3);
     }
 
-    /* TTK logo */
-    .ttk-logo-wrap { display: flex; align-items: center; gap: 10px; margin-right: 24px; flex-shrink: 0; }
-    .ttk-logo-circle {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 2px solid rgba(255,255,255,.8);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 13px; font-weight: 900; letter-spacing: 0.5px;
-      background: rgba(255,255,255,.12);
+    /* Logo cụm góc trái */
+    .ttk-logo-wrap {
+      display: flex; align-items: center; gap: 10px;
+      margin-right: 20px; flex-shrink: 0;
     }
-    .ttk-brand { color: #fff; font-size: 12px; line-height: 1.4; max-width: 160px; }
-    .ttk-brand strong { font-size: 13px; display: block; }
+    .nav-logo {
+      height: 42px; width: auto; object-fit: contain;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+      flex-shrink: 0;
+    }
+    .nav-logo-divider {
+      width: 1px; height: 30px; background: rgba(255,255,255,.3); flex-shrink: 0;
+    }
 
     /* Nav links */
     .nav-links { display: flex; align-items: stretch; flex: 1; }
@@ -356,7 +358,8 @@
     /* Tablet (≤ 900px) */
     @media (max-width: 900px) {
       .top-nav { padding: 0 14px; gap: 0; }
-      .ttk-logo-wrap { margin-right: 12px; }
+      .ttk-logo-wrap { margin-right: 12px; gap: 8px; }
+      .nav-logo { height: 36px; }
       .container { padding: 24px 20px; }
       footer { padding: 20px 20px !important; }
     }
@@ -367,8 +370,9 @@
       .info-grid .info-field:last-child { grid-column: 1 / -1; }
       /* Nav */
       .top-nav { padding: 0 10px; height: 52px; }
-      .ttk-brand { display: none; }
-      .ttk-logo-wrap { margin-right: 8px; }
+      .ttk-logo-wrap { margin-right: 8px; gap: 6px; }
+      .nav-logo { height: 30px; }
+      .nav-logo-divider { height: 22px; }
       #navUserEmail { display: none; }
       .admin-nav-info .admin-email { display: none; }
       .btn-nav-logout { font-size: 11px; padding: 3px 8px; }
@@ -413,10 +417,13 @@
 <!-- Nav bar -->
 <nav class="top-nav">
   <div class="ttk-logo-wrap">
-    <div style="line-height:1;">
-      <div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:1px;">UEH</div>
-      <div style="color:#f90;font-size:9px;font-weight:700;letter-spacing:2px;">UNIVERSITY</div>
-    </div>
+    <img src="Logo UEH xanh.png"
+         alt="Logo UEH" class="nav-logo">
+    <div class="nav-logo-divider"></div>
+    <img src="Huy_Hiệu_Đoàn.png"
+         alt="Logo Đoàn" class="nav-logo">
+    <img src="logo-hoi-sinh-vien-viet-nam-vector-02.png"
+         alt="Logo Hội Sinh viên" class="nav-logo">
   </div>
 
   <div class="nav-right">
