@@ -72,7 +72,9 @@ function App() {
   });
   useEffect(() => { localStorage.setItem("mymy.program", program); }, [program]);
 
-  // dataKey tăng khi live data về → ép React re-render với data mới
+  const [cohortFilter,  setCohortFilter]  = useState("__ALL__");
+  const [facultyFilter, setFacultyFilter] = useState("__ALL__");
+
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -89,20 +91,43 @@ function App() {
           setDataKey(k => k + 1);
         }
       })
-      .catch(() => {}) // fallback: dùng dữ liệu tĩnh trong survey-data.js
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  const responses = useMemo(
-    () => filterByProgram(program),
-    [program, dataKey]
-  );
+  // Lấy danh sách khóa + khoa có trong dữ liệu (động)
+  const availableCohorts = useMemo(() => {
+    const s = new Set(SURVEY_RESPONSES.map(r => r.cohort).filter(Boolean));
+    return ["49","50","51"].filter(k => s.has(k));
+  }, [dataKey]);
+
+  const availableFaculties = useMemo(() => {
+    const s = new Set(SURVEY_RESPONSES.map(r => r.faculty).filter(Boolean));
+    return [...s].sort();
+  }, [dataKey]);
+
+  // Lọc responses theo chương trình + khóa + khoa
+  const responses = useMemo(() => {
+    let r = filterByProgram(program);
+    if (cohortFilter  !== "__ALL__") r = r.filter(x => x.cohort  === cohortFilter);
+    if (facultyFilter !== "__ALL__") r = r.filter(x => x.faculty === facultyFilter);
+    return r;
+  }, [program, cohortFilter, facultyFilter, dataKey]);
+
+  // Reset bộ lọc phụ khi đổi chương trình
+  const handleProgramChange = (p) => { setProgram(p); setCohortFilter("__ALL__"); setFacultyFilter("__ALL__"); };
+
+  const filterLabel = [
+    cohortFilter  !== "__ALL__" ? `Khóa ${cohortFilter}` : null,
+    facultyFilter !== "__ALL__" ? facultyFilter : null,
+  ].filter(Boolean).join(" · ");
 
   return (
     <>
       <TopNav />
       <Banner crumb="Chi tiết hoạt động" title={
-        program === "__ALL__" ? "Tổng quan tất cả chương trình" : program
+        (program === "__ALL__" ? "Tổng quan tất cả chương trình" : program)
+        + (filterLabel ? ` — ${filterLabel}` : "")
       } />
       {loading && (
         <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
@@ -119,7 +144,12 @@ function App() {
         </div>
       )}
       <main className="main">
-        <ActivityCard program={program} onChange={setProgram} responses={responses} />
+        <ActivityCard
+          program={program} onChange={handleProgramChange} responses={responses}
+          cohortFilter={cohortFilter}  onCohortChange={setCohortFilter}
+          facultyFilter={facultyFilter} onFacultyChange={setFacultyFilter}
+          availableCohorts={availableCohorts} availableFaculties={availableFaculties}
+        />
         <DescriptiveSection responses={responses} program={program} />
         <ReportTabs responses={responses} />
       </main>

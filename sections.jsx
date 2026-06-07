@@ -3,7 +3,9 @@
 const { useState: _useState, useMemo: _useMemo } = React;
 
 // ---------- Activity info card (program selector + table) ----------
-function ActivityCard({ program, onChange, responses }) {
+function ActivityCard({ program, onChange, responses,
+  cohortFilter, onCohortChange, facultyFilter, onFacultyChange,
+  availableCohorts = [], availableFaculties = [] }) {
   const dates = responses.map(r => r.ts).filter(Boolean);
   const sorted = [...dates].sort();
   const first = sorted[0]?.split(" ")[0] ?? "—";
@@ -22,6 +24,21 @@ function ActivityCard({ program, onChange, responses }) {
           <select value={program} onChange={(e) => onChange(e.target.value)}>
             <option value="__ALL__">— Tất cả chương trình —</option>
             {PROGRAMS.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+
+          <span className="muted" style={{ fontSize: 12, marginLeft: 8 }}>Khóa:</span>
+          <select value={cohortFilter} onChange={(e) => onCohortChange(e.target.value)}
+                  disabled={availableCohorts.length === 0}>
+            <option value="__ALL__">— Tất cả —</option>
+            {availableCohorts.map(k => <option key={k} value={k}>Khóa {k}</option>)}
+          </select>
+
+          <span className="muted" style={{ fontSize: 12, marginLeft: 8 }}>Khoa:</span>
+          <select value={facultyFilter} onChange={(e) => onFacultyChange(e.target.value)}
+                  disabled={availableFaculties.length === 0}
+                  style={{ maxWidth: 200 }}>
+            <option value="__ALL__">— Tất cả —</option>
+            {availableFaculties.map(f => <option key={f} value={f}>{f}</option>)}
           </select>
         </div>
       </div>
