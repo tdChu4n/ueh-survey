@@ -30,7 +30,7 @@ function Footer() {
 }
 
 // ── Sidebar chọn chương trình ──────────────────────────
-function ProgramSidebar({ selectedPrograms, onToggle, onSelectAll, onClearAll }) {
+function ProgramSidebar({ selectedPrograms, onToggle, onToggleYear, onSelectAll, onClearAll }) {
   const allPrograms = window.PROGRAMS || [];
   const yearMap     = window.PROGRAM_YEARS || {};
 
@@ -54,20 +54,34 @@ function ProgramSidebar({ selectedPrograms, onToggle, onSelectAll, onClearAll })
       </div>
 
       <div className="sidebar__body">
-        {years.map(year => (
-          <div key={year} className="sidebar__year-group">
-            <div className="sidebar__year-label">{year}</div>
-            {byYear[year].map(p => {
-              const checked = selectedPrograms.has(p);
-              return (
-                <label key={p} className={"sidebar__item" + (checked ? " sidebar__item--on" : "")}>
-                  <input type="checkbox" checked={checked} onChange={() => onToggle(p)} />
-                  <span className="sidebar__item-name">{p}</span>
-                </label>
-              );
-            })}
-          </div>
-        ))}
+        {years.map(year => {
+          const yearPrograms = byYear[year];
+          const allChecked  = yearPrograms.every(p => selectedPrograms.has(p));
+          const someChecked = yearPrograms.some(p => selectedPrograms.has(p));
+          return (
+            <div key={year} className="sidebar__year-group">
+              {/* Year row — click label = toggle tất cả chương trình trong năm */}
+              <label className="sidebar__year-label">
+                <input
+                  type="checkbox"
+                  checked={allChecked}
+                  ref={el => { if (el) el.indeterminate = someChecked && !allChecked; }}
+                  onChange={() => onToggleYear(yearPrograms, allChecked)}
+                />
+                <span>{year}</span>
+              </label>
+              {yearPrograms.map(p => {
+                const checked = selectedPrograms.has(p);
+                return (
+                  <label key={p} className={"sidebar__item" + (checked ? " sidebar__item--on" : "")}>
+                    <input type="checkbox" checked={checked} onChange={() => onToggle(p)} />
+                    <span className="sidebar__item-name">{p}</span>
+                  </label>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
 
       <div className="sidebar__foot">
@@ -219,18 +233,18 @@ function App() {
     });
   };
 
-  const allLen = (window.PROGRAMS || []).length;
-  const selCount = selectedPrograms.size;
-  const bannerTitle =
-    selCount === 0        ? "Chưa chọn chương trình nào"
-    : selCount === 1      ? [...selectedPrograms][0]
-    : selCount === allLen ? "Tổng quan tất cả chương trình"
-    :                       `${selCount} chương trình được chọn`;
+  const handleToggleYear = (yearPrograms, allChecked) => {
+    setSelectedPrograms(prev => {
+      const next = new Set(prev);
+      if (allChecked) yearPrograms.forEach(p => next.delete(p));
+      else            yearPrograms.forEach(p => next.add(p));
+      return next;
+    });
+  };
 
   return (
     <>
       <TopNav />
-      <Banner crumb="Chi tiết hoạt động" title={bannerTitle} />
       {loading && (
         <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
           ⏳ Đang tải dữ liệu từ Google Sheets...
@@ -250,6 +264,7 @@ function App() {
         <ProgramSidebar
           selectedPrograms={selectedPrograms}
           onToggle={handleToggle}
+          onToggleYear={handleToggleYear}
           onSelectAll={() => setSelectedPrograms(new Set(window.PROGRAMS))}
           onClearAll={() => setSelectedPrograms(new Set())}
         />

@@ -276,6 +276,7 @@ button {
   vertical-align: top;
   font-weight: 500;
 }
+.activity-table td.mono { white-space: nowrap; }
 
 /* ---- Stat cards ---- */
 .stat-grid {
@@ -704,13 +705,25 @@ button {
 .sidebar__year-group { padding: 0 0 6px; }
 
 .sidebar__year-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--brand-500);
   padding: 6px 14px 4px;
+  cursor: pointer;
+  user-select: none;
 }
+.sidebar__year-label input[type="checkbox"] {
+  accent-color: var(--brand-500);
+  width: 13px; height: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.sidebar__year-label:hover { color: var(--brand-700); }
 
 .sidebar__item {
   display: flex;
