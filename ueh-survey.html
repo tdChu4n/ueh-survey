@@ -14,14 +14,15 @@
     :root { --brand: #006b5e; --brand-dark: #004d44; --brand-light: #00856e; }
 
     .top-nav {
-      background: var(--brand);
+      background: #fff;
       padding: 0 24px;
       display: flex;
       align-items: center;
       gap: 0;
       height: 60px;
       position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      border-bottom: 2px solid var(--brand);
     }
 
     /* Logo cụm góc trái */
@@ -31,44 +32,43 @@
     }
     .nav-logo {
       height: 42px; width: auto; object-fit: contain;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
       flex-shrink: 0;
     }
     .nav-logo-divider {
-      width: 1px; height: 30px; background: rgba(255,255,255,.3); flex-shrink: 0;
+      width: 1px; height: 30px; background: #d0d0d0; flex-shrink: 0;
     }
 
     /* Nav links */
     .nav-links { display: flex; align-items: stretch; flex: 1; }
     .nav-link {
-      color: rgba(255,255,255,.8); text-decoration: none;
+      color: #444; text-decoration: none;
       padding: 0 18px; height: 60px; display: flex; align-items: center; gap: 6px;
       font-size: 14px; transition: background .15s, color .15s; white-space: nowrap;
     }
-    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
-    .nav-link.active { background: rgba(255,255,255,.15); color: #fff; }
-    .nav-link svg { width: 16px; height: 16px; opacity: .85; }
+    .nav-link:hover { background: #f0f7f5; color: var(--brand); }
+    .nav-link.active { background: #e6f2ef; color: var(--brand); font-weight: 600; }
+    .nav-link svg { width: 16px; height: 16px; opacity: .7; }
 
     /* Nav right */
     .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
     .btn-nav-login {
-      background: #1a1a35; border: none;
+      background: var(--brand); border: none;
       color: #fff; padding: 8px 18px; border-radius: 6px; cursor: pointer;
       font-size: 13px; display: flex; align-items: center; gap: 7px; transition: background .15s;
       font-weight: 500;
     }
-    .btn-nav-login:hover { background: #0f0f25; }
+    .btn-nav-login:hover { background: var(--brand-dark); }
 
     .admin-nav-info { display: none; align-items: center; gap: 10px; }
-    .admin-nav-info .admin-name { color: #fff; font-size: 13px; }
-    .admin-nav-info .admin-email { color: rgba(255,255,255,.65); font-size: 11px; }
+    .admin-nav-info .admin-name { color: #222; font-size: 13px; font-weight: 600; }
+    .admin-nav-info .admin-email { color: #666; font-size: 11px; }
     .btn-nav-logout {
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
-      color: rgba(255,255,255,.8); padding: 4px 12px; border-radius: 4px;
+      background: #f5f5f5; border: 1px solid #ddd;
+      color: #444; padding: 4px 12px; border-radius: 4px;
       cursor: pointer; font-size: 12px;
     }
-    .btn-nav-logout:hover { background: rgba(255,255,255,.2); }
+    .btn-nav-logout:hover { background: #ffe8e8; border-color: #f99; color: #c00; }
 
     /* Student user bar (below nav) */
     .user-bar {
@@ -435,10 +435,10 @@
 
     <!-- Sinh viên đã đăng nhập (Google) -->
     <div id="studentNavInfo" style="display:none;align-items:center;gap:10px;">
-      <img id="navAvatar" src="" alt="" style="width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.5);">
+      <img id="navAvatar" src="" alt="" style="width:30px;height:30px;border-radius:50%;border:2px solid var(--brand);">
       <div>
-        <div style="color:#fff;font-size:13px;font-weight:600;line-height:1.2;" id="navUserName"></div>
-        <div style="color:rgba(255,255,255,.7);font-size:11px;" id="navUserEmail"></div>
+        <div style="color:#222;font-size:13px;font-weight:600;line-height:1.2;" id="navUserName"></div>
+        <div style="color:#666;font-size:11px;" id="navUserEmail"></div>
       </div>
       <button class="btn-nav-logout" onclick="signOut()">Đăng xuất</button>
     </div>
