@@ -72,16 +72,14 @@ function DescriptiveSection({ responses, program }) {
     : pMap[program] || 0;
 
   // Giới tính
-  const gCounts = { Nam: 0, "Nữ": 0, "Khác": 0 };
+  const gCounts = { Nam: 0, "Nữ": 0 };
   for (const r of responses) {
     if (r.gender === "Nam") gCounts["Nam"]++;
     else if (r.gender === "Nữ") gCounts["Nữ"]++;
-    else if (r.gender) gCounts["Khác"]++;
   }
   const genderData = [
-    { label: "Nam",  value: gCounts["Nam"],  color: "oklch(0.42 0.18 260)" },
-    { label: "Nữ",   value: gCounts["Nữ"],   color: "oklch(0.62 0.14 230)" },
-    { label: "Khác", value: gCounts["Khác"], color: "oklch(0.78 0.08 220)" },
+    { label: "Nam", value: gCounts["Nam"], color: "oklch(0.42 0.18 260)" },
+    { label: "Nữ",  value: gCounts["Nữ"],  color: "oklch(0.62 0.14 230)" },
   ];
 
   // Theo khoa
