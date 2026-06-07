@@ -211,6 +211,11 @@
       cursor: pointer; text-decoration: underline; white-space: nowrap;
     }
     .status-pending:hover { color: #003a99; }
+    .status-locked {
+      color: #888; font-weight: 700; font-size: 13px; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    tr.row-locked td { background: #fafafa; color: #aaa; }
     .state-msg { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 48px; color: #888; font-size: 14px; }
     .spinner {
       display: inline-block; width: 16px; height: 16px;
@@ -797,11 +802,17 @@
       return;
     }
     const rows = courses.map((c, i) => {
-      const done = c.status === 'Đã thực hiện';
-      const cell = done
-        ? `<span class="status-done">&#10004; Đã thực hiện</span>`
-        : `<span class="status-pending" onclick='openModal(${JSON.stringify(c)})'>Chưa thực hiện</span>`;
-      return `<tr>
+      const done   = c.status === 'Đã thực hiện';
+      const locked = c.locked || c.status === 'Đã khoá';
+      let cell;
+      if (done) {
+        cell = `<span class="status-done">&#10004; Đã thực hiện</span>`;
+      } else if (locked) {
+        cell = `<span class="status-locked">&#128274; Đã khoá</span>`;
+      } else {
+        cell = `<span class="status-pending" onclick='openModal(${JSON.stringify(c)})'>Chưa thực hiện</span>`;
+      }
+      return `<tr class="${locked && !done ? 'row-locked' : ''}">
         <td style="text-align:center;width:46px;">${i + 1}</td>
         <td style="width:190px;">${esc(c.semester)}</td>
         <td>${esc(c.courseName)}</td>
@@ -823,6 +834,7 @@
   // ══ MODAL ════════════════════════════════════════
 
   function openModal(course) {
+    if (course.locked || course.status === 'Đã khoá') return;
     currentSurveyRow = course;
     document.getElementById('modalProgramName').textContent = course.courseName;
     document.getElementById('successOverlay').classList.remove('show');

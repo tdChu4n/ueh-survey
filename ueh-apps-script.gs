@@ -14,7 +14,7 @@ const SHEET_ASSIGNMENTS = 'Assignments'; // Admin thêm/xóa chương trình t�
 const SHEET_RESPONSES   = 'Responses';  // Dữ liệu do sinh viên gửi về
 
 // Cấu trúc sheet "Assignments" (admin quản lý):
-// A: semester | B: courseName
+// A: semester | B: courseName | C: participants | D: locked (gõ bất kỳ ký tự vào = khoá)
 // (Thêm hàng mới = thêm chương trình, mọi user đều thấy)
 
 // Cấu trúc sheet "Responses" (tự động tạo nếu chưa có):
@@ -64,14 +64,16 @@ function handleGetCourses(email) {
   // 3. Ghép danh sách chương trình + trạng thái
   const courses = [];
   for (let i = 1; i < assignRows.length; i++) {
-    const [semester, courseName] = assignRows[i];
+    const [semester, courseName, , lockedRaw] = assignRows[i];
     if (!courseName) continue;
-    const name = String(courseName).trim();
+    const name   = String(courseName).trim();
+    const locked = String(lockedRaw || '').trim() !== ''; // có giá trị = khoá
     courses.push({
       rowIndex:   i + 1,
       semester:   String(semester || '').trim(),
       courseName: name,
-      status:     completed.has(name) ? 'Đã thực hiện' : 'Chưa thực hiện',
+      locked,
+      status:     completed.has(name) ? 'Đã thực hiện' : (locked ? 'Đã khoá' : 'Chưa thực hiện'),
     });
   }
 
