@@ -43,17 +43,8 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet }) {
   }
   const allYears = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
 
-  // Tầng 1: năm nào đang được hiển thị (mặc định = tất cả)
-  const [visibleYears, setVisibleYears] = useState(() => new Set(allYears));
-
-  // Khi API load xong và allYears thay đổi, tự thêm năm mới vào visibleYears
-  useEffect(() => {
-    setVisibleYears(prev => {
-      const next = new Set(prev);
-      allYears.forEach(y => next.add(y));
-      return next;
-    });
-  }, [allYears.join(",")]);
+  // Tầng 1: năm nào đang được hiển thị (mặc định = chưa chọn năm nào)
+  const [visibleYears, setVisibleYears] = useState(() => new Set());
 
   const toggleVisibleYear = (year) => {
     const willShow = !visibleYears.has(year);
@@ -226,7 +217,7 @@ function ReportTabs({ responses }) {
 
 // ── App root ───────────────────────────────────────────
 function App() {
-  const [selectedPrograms, setSelectedPrograms] = useState(() => new Set(window.PROGRAMS));
+  const [selectedPrograms, setSelectedPrograms] = useState(() => new Set());
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -239,7 +230,6 @@ function App() {
           window.SURVEY_RESPONSES = data.responses || [];
           if (data.programs?.length > 0) {
             window.PROGRAMS = data.programs;
-            setSelectedPrograms(new Set(data.programs)); // chọn hết khi load lần đầu
           }
           window.PARTICIPANT_MAP = data.participantMap || {};
           if (data.programYears) {

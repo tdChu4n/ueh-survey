@@ -4,9 +4,16 @@ const { useState: _useState, useMemo: _useMemo } = React;
 
 // ---------- Activity info card — bảng mỗi chương trình 1 hàng ----------
 function ActivityCard({ selectedPrograms, responses }) {
-  const programs = selectedPrograms && selectedPrograms.size > 0
-    ? [...selectedPrograms]
-    : (window.PROGRAMS || []);
+  if (!selectedPrograms || selectedPrograms.size === 0) {
+    return (
+      <Section icon={Icon.Activity} title="Hoạt động">
+        <div style={{ padding: "40px 20px", textAlign: "center", color: "#94a3b8", fontSize: 14 }}>
+          Chọn năm và chương trình ở bên trái để xem báo cáo
+        </div>
+      </Section>
+    );
+  }
+  const programs = [...selectedPrograms];
 
   const rows = programs.map(p => {
     const rs = responses.filter(r => r.program === p);
