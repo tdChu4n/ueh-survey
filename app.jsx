@@ -30,7 +30,7 @@ function Footer() {
 }
 
 // ── Sidebar chọn chương trình (2 tầng: năm → hoạt động) ─
-function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onSelectAll, onClearAll }) {
+function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet }) {
   const allPrograms = window.PROGRAMS || [];
   const yearMap     = window.PROGRAM_YEARS || {};
 
@@ -77,8 +77,10 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onSelectAll, o
       <div className="sidebar__head">
         <span className="sidebar__title">Chương trình</span>
         <div className="sidebar__btns">
-          <button className="sidebar__btn" onClick={onSelectAll}>Chọn hết</button>
-          <button className="sidebar__btn sidebar__btn--clear" onClick={onClearAll}>Xóa hết</button>
+          <button className="sidebar__btn"
+                  onClick={() => onBatchSet(visiblePrograms, true)}>Chọn hết</button>
+          <button className="sidebar__btn sidebar__btn--clear"
+                  onClick={() => onBatchSet(visiblePrograms, false)}>Xóa hết</button>
         </div>
       </div>
 
@@ -297,8 +299,6 @@ function App() {
           selectedPrograms={selectedPrograms}
           onToggle={handleToggle}
           onBatchSet={handleBatchSet}
-          onSelectAll={() => setSelectedPrograms(new Set(window.PROGRAMS))}
-          onClearAll={() => setSelectedPrograms(new Set())}
         />
         <main className="main dashboard-main">
           <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />

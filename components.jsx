@@ -91,11 +91,11 @@ const Icon = {
 function TopNav() {
   return (
     <header className="nav" style={{ background: '#006b5e' }}>
-      <div className="nav__brand">
-        <div style={{ lineHeight: 1 }}>
-          <div style={{ color: '#fff', fontSize: 22, fontWeight: 900, letterSpacing: 1 }}>UEH</div>
-          <div style={{ color: '#f90', fontSize: 9, fontWeight: 700, letterSpacing: 2 }}>UNIVERSITY</div>
-        </div>
+      <div className="nav__brand" style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
+        <img src="Logo UEH xanh.png"   alt="UEH"          style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
+        <div style={{ width:1, height:30, background:'rgba(255,255,255,.3)', flexShrink:0 }} />
+        <img src="Huy_Hiệu_Đoàn.png"  alt="Đoàn"         style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
+        <img src="logo-hoi-sinh-vien-viet-nam-vector-02.png" alt="Hội SV" style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
       </div>
       <div className="nav__spacer" />
       <div className="nav__user">
