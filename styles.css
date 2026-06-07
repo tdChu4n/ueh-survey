@@ -634,6 +634,128 @@ button {
 .mono  { font-family: var(--font-mono); }
 
 /* ====================================================
+   DASHBOARD LAYOUT — sidebar + main
+   ==================================================== */
+.dashboard-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  width: 236px;
+  min-width: 200px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar__head {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.sidebar__btns {
+  display: flex;
+  gap: 6px;
+}
+
+.sidebar__btn {
+  flex: 1;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  padding: 4px 6px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.sidebar__btn:hover { background: var(--brand-100); color: var(--brand-700); border-color: var(--brand-500); }
+.sidebar__btn--clear { color: var(--c-bad); border-color: #fca5a5; background: var(--c-bad-soft); }
+.sidebar__btn--clear:hover { background: #fee2e2; }
+
+.sidebar__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0 4px;
+}
+
+.sidebar__year-group { padding: 0 0 6px; }
+
+.sidebar__year-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brand-500);
+  padding: 6px 14px 4px;
+}
+
+.sidebar__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background .12s, border-color .12s;
+}
+.sidebar__item:hover { background: var(--surface-soft); }
+.sidebar__item--on {
+  background: var(--brand-100);
+  border-left-color: var(--brand-500);
+}
+.sidebar__item input[type="checkbox"] {
+  margin-top: 2px;
+  accent-color: var(--brand-500);
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+.sidebar__item-name {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.sidebar__item--on .sidebar__item-name { color: var(--brand-700); font-weight: 600; }
+
+.sidebar__foot {
+  border-top: 1px solid var(--border);
+  padding: 8px 14px;
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* Main area next to sidebar */
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ====================================================
    RESPONSIVE
    ==================================================== */
 
@@ -643,6 +765,9 @@ button {
 
   .banner { padding: 28px 28px; margin: 20px 20px 0; }
   .banner__title { font-size: 24px; }
+
+  /* Sidebar thu hẹp */
+  .sidebar { width: 196px; min-width: 180px; }
 
   .main { padding: 20px 20px 48px; }
 
@@ -699,6 +824,21 @@ button {
   }
   .rank-row__bar { display: none; }
   .rank-row__name { font-size: 13px; }
+
+  /* Sidebar → nằm trên, horizontal scroll */
+  .dashboard-layout { flex-direction: column; }
+  .sidebar {
+    width: 100%; min-width: 0;
+    max-height: none;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+  }
+  .sidebar__body { max-height: 200px; overflow-y: auto; }
+  .sidebar__year-group { display: flex; flex-wrap: wrap; gap: 0; }
+  .sidebar__year-label { width: 100%; }
+  .sidebar__item { padding: 4px 14px; }
 
   /* Activity card: cuộn ngang */
   .activity { padding: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }

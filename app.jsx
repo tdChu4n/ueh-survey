@@ -1,4 +1,4 @@
-/* app.jsx — main shell, tab routing, footer */
+/* app.jsx — main shell, program sidebar, footer */
 
 const { useState, useMemo, useEffect } = React;
 
@@ -29,6 +29,55 @@ function Footer() {
   );
 }
 
+// ── Sidebar chọn chương trình ──────────────────────────
+function ProgramSidebar({ selectedPrograms, onToggle, onSelectAll, onClearAll }) {
+  const allPrograms = window.PROGRAMS || [];
+  const yearMap     = window.PROGRAM_YEARS || {};
+
+  // Nhóm theo năm (giảm dần)
+  const byYear = {};
+  for (const p of allPrograms) {
+    const y = String(yearMap[p] || "Khác");
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(p);
+  }
+  const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+  return (
+    <aside className="sidebar">
+      <div className="sidebar__head">
+        <span className="sidebar__title">Chương trình</span>
+        <div className="sidebar__btns">
+          <button className="sidebar__btn" onClick={onSelectAll}>Chọn hết</button>
+          <button className="sidebar__btn sidebar__btn--clear" onClick={onClearAll}>Xóa hết</button>
+        </div>
+      </div>
+
+      <div className="sidebar__body">
+        {years.map(year => (
+          <div key={year} className="sidebar__year-group">
+            <div className="sidebar__year-label">{year}</div>
+            {byYear[year].map(p => {
+              const checked = selectedPrograms.has(p);
+              return (
+                <label key={p} className={"sidebar__item" + (checked ? " sidebar__item--on" : "")}>
+                  <input type="checkbox" checked={checked} onChange={() => onToggle(p)} />
+                  <span className="sidebar__item-name">{p}</span>
+                </label>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      <div className="sidebar__foot">
+        {selectedPrograms.size}/{allPrograms.length} chương trình
+      </div>
+    </aside>
+  );
+}
+
+// ── Báo cáo sau chương trình (tabs + bộ lọc khóa/khoa) ─
 function ReportTabs({ responses }) {
   const tabs = [
     { id: "__SUMMARY__", label: "Tổng hợp", icon: Icon.ChartBar },
@@ -64,7 +113,7 @@ function ReportTabs({ responses }) {
   return (
     <Section icon={Icon.Report} title="Báo cáo sau chương trình">
 
-      {/* Bộ lọc */}
+      {/* Bộ lọc khóa / khoa */}
       <div style={{
         display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
         marginBottom: 16, padding: "10px 14px",
@@ -97,7 +146,6 @@ function ReportTabs({ responses }) {
             ✕ Bỏ lọc
           </button>
         )}
-
         {hasFilter && (
           <span style={{ fontSize: 12, color: "#64748b" }}>
             — {filtered.length} / {responses.length} phiếu
@@ -129,12 +177,9 @@ function ReportTabs({ responses }) {
   );
 }
 
+// ── App root ───────────────────────────────────────────
 function App() {
-  const [program, setProgram] = useState(() => {
-    return localStorage.getItem("mymy.program") || PROGRAMS[0];
-  });
-  useEffect(() => { localStorage.setItem("mymy.program", program); }, [program]);
-
+  const [selectedPrograms, setSelectedPrograms] = useState(() => new Set(window.PROGRAMS));
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -145,8 +190,14 @@ function App() {
       .then(data => {
         if (data.success) {
           window.SURVEY_RESPONSES = data.responses || [];
-          if (data.programs?.length > 0) window.PROGRAMS = data.programs;
-          window.PARTICIPANT_MAP  = data.participantMap || {};
+          if (data.programs?.length > 0) {
+            window.PROGRAMS = data.programs;
+            setSelectedPrograms(new Set(data.programs)); // chọn hết khi load lần đầu
+          }
+          window.PARTICIPANT_MAP = data.participantMap || {};
+          if (data.programYears) {
+            window.PROGRAM_YEARS = { ...(window.PROGRAM_YEARS || {}), ...data.programYears };
+          }
           setUpdatedAt(new Date().toLocaleTimeString('vi-VN'));
           setDataKey(k => k + 1);
         }
@@ -156,16 +207,30 @@ function App() {
   }, []);
 
   const responses = useMemo(
-    () => filterByProgram(program),
-    [program, dataKey]
+    () => selectedPrograms.size === 0 ? [] : window.filterByPrograms(selectedPrograms),
+    [selectedPrograms, dataKey]
   );
+
+  const handleToggle = p => {
+    setSelectedPrograms(prev => {
+      const next = new Set(prev);
+      if (next.has(p)) next.delete(p); else next.add(p);
+      return next;
+    });
+  };
+
+  const allLen = (window.PROGRAMS || []).length;
+  const selCount = selectedPrograms.size;
+  const bannerTitle =
+    selCount === 0        ? "Chưa chọn chương trình nào"
+    : selCount === 1      ? [...selectedPrograms][0]
+    : selCount === allLen ? "Tổng quan tất cả chương trình"
+    :                       `${selCount} chương trình được chọn`;
 
   return (
     <>
       <TopNav />
-      <Banner crumb="Chi tiết hoạt động" title={
-        program === "__ALL__" ? "Tổng quan tất cả chương trình" : program
-      } />
+      <Banner crumb="Chi tiết hoạt động" title={bannerTitle} />
       {loading && (
         <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
           ⏳ Đang tải dữ liệu từ Google Sheets...
@@ -180,11 +245,20 @@ function App() {
           }}>↻ Làm mới</button>
         </div>
       )}
-      <main className="main">
-        <ActivityCard program={program} onChange={setProgram} responses={responses} />
-        <DescriptiveSection responses={responses} program={program} />
-        <ReportTabs responses={responses} />
-      </main>
+
+      <div className="dashboard-layout">
+        <ProgramSidebar
+          selectedPrograms={selectedPrograms}
+          onToggle={handleToggle}
+          onSelectAll={() => setSelectedPrograms(new Set(window.PROGRAMS))}
+          onClearAll={() => setSelectedPrograms(new Set())}
+        />
+        <main className="main dashboard-main">
+          <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
+          <DescriptiveSection responses={responses} selectedPrograms={selectedPrograms} />
+          <ReportTabs responses={responses} />
+        </main>
+      </div>
       <Footer />
     </>
   );

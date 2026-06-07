@@ -178,19 +178,24 @@ function handleGetResponses() {
   const assignSheet  = ss.getSheetByName(SHEET_ASSIGNMENTS);
   const programs     = [];
   const participantMap = {};
+  const programYears   = {};
   if (assignSheet) {
     const aRows = assignSheet.getDataRange().getValues();
     for (let i = 1; i < aRows.length; i++) {
       if (aRows[i][1]) {
-        const name = String(aRows[i][1]).trim();
+        const name    = String(aRows[i][1]).trim();
         programs.push(name);
         const n = parseInt(aRows[i][2]);
         if (!isNaN(n)) participantMap[name] = n;
+        // Trích năm dương lịch từ cột A (vd: "Năm học 2025-2026" → 2026)
+        const semStr  = String(aRows[i][0] || '');
+        const years   = semStr.match(/\d{4}/g);
+        programYears[name] = years ? parseInt(years[years.length - 1]) : new Date().getFullYear();
       }
     }
   }
 
-  return jsonOut({ success: true, responses, programs, participantMap });
+  return jsonOut({ success: true, responses, programs, participantMap, programYears });
 }
 
 function fmtDate(d) {

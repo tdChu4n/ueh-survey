@@ -2,59 +2,72 @@
 
 const { useState: _useState, useMemo: _useMemo } = React;
 
-// ---------- Activity info card (program selector + table) ----------
-function ActivityCard({ program, onChange, responses }) {
-  const dates = responses.map(r => r.ts).filter(Boolean);
-  const sorted = [...dates].sort();
-  const first = sorted[0]?.split(" ")[0] ?? "—";
-  const last  = sorted.at(-1)?.split(" ")[0] ?? "—";
-  const displayTitle = program === "__ALL__"
-    ? "Tổng quan tất cả chương trình"
-    : program;
+// ---------- Activity info card — bảng mỗi chương trình 1 hàng ----------
+function ActivityCard({ selectedPrograms, responses }) {
+  const programs = selectedPrograms && selectedPrograms.size > 0
+    ? [...selectedPrograms]
+    : (window.PROGRAMS || []);
+
+  const rows = programs.map(p => {
+    const rs = responses.filter(r => r.program === p);
+    const dates = rs.map(r => r.ts).filter(Boolean).sort();
+    return {
+      p,
+      first: dates[0]?.split(" ")[0] ?? "—",
+      last:  dates.at(-1)?.split(" ")[0] ?? "—",
+      count: rs.length,
+      avg:   rs.length ? (rs.reduce((a, r) => a + r.overall, 0) / rs.length).toFixed(2) : "—",
+    };
+  });
+
+  const showTotal = programs.length > 1;
+  const totalAvg  = responses.length
+    ? (responses.reduce((a, r) => a + r.overall, 0) / responses.length).toFixed(2)
+    : "—";
 
   return (
     <div className="activity">
       <div className="activity__head">
         <Icon.Attach style={{ color: "var(--brand-500)" }} />
-        <div className="activity__title">{displayTitle}</div>
-        <div className="activity__select">
-          <span className="muted" style={{ fontSize: 12 }}>Chương trình:</span>
-          <select value={program} onChange={(e) => onChange(e.target.value)}>
-            <option value="__ALL__">— Tất cả chương trình —</option>
-            {PROGRAMS.map((p) => <option key={p} value={p}>{p}</option>)}
-          </select>
+        <div className="activity__title">
+          {programs.length === 0 ? "Chưa chọn chương trình nào"
+            : programs.length === 1 ? programs[0]
+            : `${programs.length} chương trình`}
         </div>
       </div>
       <table className="activity-table">
         <thead>
           <tr>
             <th>STT</th>
+            <th>Chương trình</th>
             <th>Loại</th>
-            <th>Quy mô</th>
             <th>Đơn vị tổ chức</th>
-            <th>Đơn vị phối hợp</th>
             <th>Phản hồi đầu</th>
             <th>Phản hồi cuối</th>
-            <th>Số lượt phản hồi</th>
-            <th>Điểm tổng quan TB</th>
+            <th>Số lượt</th>
+            <th>Điểm TB</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>01</td>
-            <td>Khảo sát sau hoạt động</td>
-            <td>Cấp khoa</td>
-            <td>Đoàn khoa Toán - Thống kê</td>
-            <td>Liên Chi hội sinh viên khoa Toán - Thống kê</td>
-            <td className="mono">{first}</td>
-            <td className="mono">{last}</td>
-            <td className="mono">{responses.length}</td>
-            <td className="mono">
-              {responses.length
-                ? (responses.reduce((a, r) => a + r.overall, 0) / responses.length).toFixed(2)
-                : "—"} / 7
-            </td>
-          </tr>
+          {rows.map((row, i) => (
+            <tr key={row.p}>
+              <td>{String(i + 1).padStart(2, "0")}</td>
+              <td>{row.p}</td>
+              <td>Khảo sát sau hoạt động</td>
+              <td>Đoàn khoa Toán - Thống kê</td>
+              <td className="mono">{row.first}</td>
+              <td className="mono">{row.last}</td>
+              <td className="mono">{row.count}</td>
+              <td className="mono">{row.avg === "—" ? "—" : `${row.avg} / 7`}</td>
+            </tr>
+          ))}
+          {showTotal && (
+            <tr style={{ fontWeight: 600, background: "var(--surface-soft,#f6f8fa)" }}>
+              <td colSpan={6} style={{ textAlign: "right", paddingRight: 12, color: "#64748b" }}>Tổng cộng</td>
+              <td className="mono">{responses.length}</td>
+              <td className="mono">{totalAvg === "—" ? "—" : `${totalAvg} / 7`}</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
@@ -62,14 +75,16 @@ function ActivityCard({ program, onChange, responses }) {
 }
 
 // ---------- Descriptive section: stat cards + gender donut + faculty + cohort ----------
-function DescriptiveSection({ responses, program }) {
+function DescriptiveSection({ responses, selectedPrograms }) {
   const total = responses.length;
 
   // Tổng số sinh viên tham gia (admin điền thủ công cột C sheet Assignments)
   const pMap = window.PARTICIPANT_MAP || {};
-  const totalParticipants = program === "__ALL__"
+  const allPrograms = window.PROGRAMS || [];
+  const isAll = !selectedPrograms || selectedPrograms.size === allPrograms.length;
+  const totalParticipants = isAll
     ? Object.values(pMap).reduce((a, b) => a + b, 0)
-    : pMap[program] || 0;
+    : [...(selectedPrograms || [])].reduce((s, p) => s + (pMap[p] || 0), 0);
 
   // Giới tính
   const gCounts = { Nam: 0, "Nữ": 0 };

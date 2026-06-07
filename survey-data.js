@@ -95,6 +95,16 @@ window.PROGRAMS = [
   "Hoạt động học thuật - kỹ năng"
 ];
 
+// Năm dương lịch của từng chương trình (API sẽ ghi đè khi load xong)
+window.PROGRAM_YEARS = {
+  "Toán - Thống kê 2026": 2026,
+  "Research Maze 2026":   2026,
+  "Competitive Edge":     2026,
+  "Tần Số 304":           2026,
+  "Mymy Career Ready":    2026,
+  "Hoạt động học thuật - kỹ năng": 2026
+};
+
 // ----------------- Aggregation helpers -----------------
 
 const mean = (arr) => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
@@ -102,6 +112,13 @@ const mean = (arr) => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
 window.filterByProgram = function(program) {
   if (!program || program === "__ALL__") return window.SURVEY_RESPONSES;
   return window.SURVEY_RESPONSES.filter(r => r.program === program);
+};
+
+// Lọc theo tập hợp nhiều chương trình (Set hoặc Array)
+window.filterByPrograms = function(programs) {
+  const set = programs instanceof Set ? programs : new Set(programs);
+  if (!set || set.size === 0) return [];
+  return window.SURVEY_RESPONSES.filter(r => set.has(r.program));
 };
 
 // Mean per item code (e.g. CLCT1) for a set of responses.
