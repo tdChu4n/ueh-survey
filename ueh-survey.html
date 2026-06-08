@@ -450,6 +450,181 @@
     .mailbox-textarea.invalid { border-color: #e00; }
     .mailbox-char-hint { font-size: 11px; color: #aaa; text-align: right; margin-top: 4px; }
     .mailbox-note { font-size: 12px; color: #888; margin-top: 14px; font-style: italic; }
+
+    /* ══════════════════════════════════════
+       LANDING PAGE (pre-login)
+       ══════════════════════════════════════ */
+    #loginSection {
+      margin: -32px -60px;
+      padding: 0 !important;
+      text-align: left;
+    }
+    @media (max-width: 900px) { #loginSection { margin: -24px -20px; } }
+    @media (max-width: 640px) { #loginSection { margin: -16px -12px; } }
+
+    /* ── Hero ── */
+    .lp-hero {
+      display: flex; align-items: center; gap: 48px;
+      padding: 64px 60px;
+      background: linear-gradient(135deg, #f0faf7 0%, #e4f3ef 50%, #f5faf8 100%);
+      border-bottom: 1px solid #c9e8e0;
+    }
+    .lp-hero-content { flex: 1; min-width: 0; }
+    .lp-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .lp-badge {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 20px;
+    }
+    .lp-badge--green { background: #006b5e; color: #fff; }
+    .lp-badge--outline { border: 1.5px solid #006b5e; color: #006b5e; }
+    .lp-hero-title {
+      font-size: 30px; font-weight: 800; color: #0a2e28; line-height: 1.3;
+      margin-bottom: 16px; letter-spacing: -.4px;
+    }
+    .lp-hero-title em { font-style: normal; color: #006b5e; }
+    .lp-hero-sub {
+      font-size: 14.5px; color: #4a6b65; line-height: 1.75;
+      margin-bottom: 28px; max-width: 540px;
+    }
+    .lp-btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #006b5e; color: #fff; border: none; border-radius: 10px;
+      padding: 13px 26px; font-size: 14.5px; font-weight: 700;
+      cursor: pointer; transition: background .15s, transform .1s; font-family: inherit;
+    }
+    .lp-btn-primary:hover { background: #004d44; transform: translateY(-1px); }
+
+    /* Hero right — preview card */
+    .lp-hero-visual { flex-shrink: 0; width: 340px; }
+    .lp-preview-card {
+      background: #fff; border-radius: 16px; padding: 22px;
+      box-shadow: 0 6px 28px rgba(0,107,94,.16), 0 1px 4px rgba(0,0,0,.06);
+      border: 1px solid rgba(0,107,94,.12);
+    }
+    .lp-preview-card-title {
+      font-size: 11px; font-weight: 700; color: #006b5e; text-transform: uppercase;
+      letter-spacing: .5px; margin-bottom: 16px; display: flex; align-items: center; gap: 7px;
+    }
+    .lp-preview-card-title::before {
+      content: ''; display: inline-block; width: 7px; height: 7px;
+      border-radius: 50%; background: #34c891;
+    }
+    .lp-pf { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+    .lp-pf-lbl { font-size: 12px; color: #445; flex: 1; line-height: 1.3; }
+    .lp-pf-bar-wrap { width: 80px; height: 5px; background: #e4f0ee; border-radius: 3px; flex-shrink: 0; }
+    .lp-pf-bar { height: 5px; border-radius: 3px; background: #006b5e; }
+    .lp-pf-val { font-size: 12px; font-weight: 700; color: #006b5e; width: 30px; text-align: right; flex-shrink: 0; }
+    .lp-preview-divider { height: 1px; background: #eee; margin: 14px 0; }
+    .lp-preview-footer { display: flex; justify-content: space-between; align-items: center; }
+    .lp-preview-score { font-size: 28px; font-weight: 900; color: #006b5e; line-height: 1; }
+    .lp-preview-score-lbl { font-size: 10px; color: #888; margin-top: 3px; }
+    .lp-preview-badge {
+      background: #e4f5f0; color: #006b5e; font-size: 12px; font-weight: 700;
+      padding: 5px 14px; border-radius: 8px;
+    }
+
+    /* ── Stats bar ── */
+    .lp-stats { display: flex; background: #006b5e; }
+    .lp-stat {
+      flex: 1; text-align: center; padding: 22px 12px;
+      border-right: 1px solid rgba(255,255,255,.15);
+    }
+    .lp-stat:last-child { border-right: none; }
+    .lp-stat-num { font-size: 30px; font-weight: 900; color: #fff; line-height: 1; }
+    .lp-stat-label { font-size: 11.5px; color: rgba(255,255,255,.72); margin-top: 5px; font-weight: 500; }
+
+    /* ── Inner sections ── */
+    .lp-section { padding: 52px 60px; }
+    .lp-section--soft { background: #f7fbf9; border-top: 1px solid #ddeee9; border-bottom: 1px solid #ddeee9; }
+    .lp-eyebrow { font-size: 10.5px; font-weight: 700; color: #006b5e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .lp-sh { font-size: 22px; font-weight: 800; color: #0a2e28; margin-bottom: 8px; }
+    .lp-sdesc { font-size: 13.5px; color: #64748b; margin-bottom: 32px; line-height: 1.7; max-width: 620px; }
+
+    /* Phases */
+    .lp-phases { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .lp-phase {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      padding: 26px 22px; position: relative; overflow: hidden;
+      transition: box-shadow .2s, transform .15s;
+    }
+    .lp-phase:hover { box-shadow: 0 6px 22px rgba(0,107,94,.13); transform: translateY(-2px); }
+    .lp-phase::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #006b5e;
+    }
+    .lp-phase-num { font-size: 38px; font-weight: 900; color: #e4eeec; line-height: 1; margin-bottom: 10px; }
+    .lp-phase-title { font-size: 14.5px; font-weight: 700; color: #0a2e28; margin-bottom: 8px; }
+    .lp-phase-desc { font-size: 13px; color: #64748b; line-height: 1.65; }
+    .lp-phase-tag {
+      display: inline-block; margin-top: 14px; font-size: 10.5px; font-weight: 600;
+      background: #e4f5f0; color: #006b5e; padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* Model */
+    .lp-model { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .lp-model-inputs { display: flex; flex-direction: column; gap: 10px; }
+    .lp-model-input-box {
+      background: #fff; border: 1.5px solid #aed5cc; border-radius: 8px;
+      padding: 9px 16px; font-size: 13px; font-weight: 600; color: #006b5e; white-space: nowrap;
+    }
+    .lp-model-arrow-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .lp-model-arrow { font-size: 22px; color: #94a3b8; line-height: 1; }
+    .lp-model-hyp { font-size: 10px; color: #94a3b8; font-style: italic; }
+    .lp-model-box {
+      background: #006b5e; color: #fff; border-radius: 10px;
+      padding: 13px 18px; font-size: 13px; font-weight: 700; text-align: center;
+      min-width: 110px; box-shadow: 0 3px 12px rgba(0,107,94,.25);
+    }
+
+    /* Factors grid */
+    .lp-factors { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .lp-factor {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 18px; display: flex; gap: 13px; align-items: flex-start;
+      transition: box-shadow .15s;
+    }
+    .lp-factor:hover { box-shadow: 0 4px 16px rgba(0,107,94,.1); }
+    .lp-factor-icon {
+      width: 40px; height: 40px; border-radius: 10px; background: #e4f5f0;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 18px; line-height: 1;
+    }
+    .lp-factor-code { font-size: 10px; font-weight: 700; color: #006b5e; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 3px; }
+    .lp-factor-name { font-size: 13.5px; font-weight: 700; color: #0a2e28; margin-bottom: 3px; }
+    .lp-factor-count { font-size: 11.5px; color: #94a3b8; }
+
+    /* CTA band */
+    .lp-cta { background: linear-gradient(135deg,#006b5e,#004a40); padding: 60px; text-align: center; }
+    .lp-cta-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .lp-cta-sub { font-size: 13.5px; color: rgba(255,255,255,.72); margin-bottom: 28px; line-height: 1.6; }
+    .lp-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: #006b5e; border: none; border-radius: 10px;
+      padding: 13px 30px; font-size: 14.5px; font-weight: 700;
+      cursor: pointer; transition: background .15s; font-family: inherit;
+    }
+    .lp-cta-btn:hover { background: #f0faf7; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .lp-hero { flex-direction: column; padding: 40px 24px; gap: 28px; }
+      .lp-hero-visual { width: 100%; max-width: 420px; }
+      .lp-hero-title { font-size: 22px; }
+      .lp-section { padding: 36px 24px; }
+      .lp-phases { grid-template-columns: 1fr; }
+      .lp-factors { grid-template-columns: repeat(2,1fr); }
+      .lp-cta { padding: 40px 24px; }
+    }
+    @media (max-width: 640px) {
+      .lp-hero { padding: 28px 16px; }
+      .lp-hero-title { font-size: 19px; }
+      .lp-section { padding: 28px 16px; }
+      .lp-factors { grid-template-columns: 1fr; }
+      .lp-stats { flex-wrap: wrap; }
+      .lp-stat { flex: 0 0 50%; border-right: none; border-bottom: 1px solid rgba(255,255,255,.15); }
+      .lp-cta { padding: 32px 16px; }
+      .lp-model { flex-direction: column; }
+      .lp-model-inputs { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    }
   </style>
 </head>
 <body>
@@ -564,13 +739,215 @@
 <!-- Main -->
 <div class="container">
   <!-- Trang chào (chưa đăng nhập) -->
-  <div id="loginSection" style="text-align:center;padding:80px 20px;">
-    <div style="width:72px;height:72px;border-radius:16px;background:var(--brand);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:900;margin-bottom:16px;">TTK</div>
-    <h2 style="font-size:20px;color:#222;margin-bottom:8px;">Hệ thống khảo sát ý kiến sinh viên</h2>
-    <p style="font-size:14px;color:#777;margin-bottom:28px;">Youth. Đoàn - Hội khoa Toán - Thống kê · UEH</p>
-    <button onclick="openLoginModal()" style="background:var(--brand);color:#fff;border:none;border-radius:24px;padding:12px 32px;font-size:15px;font-weight:600;cursor:pointer;">
-      Đăng nhập để tiếp tục
-    </button>
+  <div id="loginSection">
+
+    <!-- ── HERO ── -->
+    <section class="lp-hero">
+      <div class="lp-hero-content">
+        <div class="lp-badge-row">
+          <span class="lp-badge lp-badge--green">CELG Innovation Awards 2026</span>
+          <span class="lp-badge lp-badge--outline">Khoa Toán – Thống kê · UEH</span>
+        </div>
+        <h1 class="lp-hero-title">
+          Hệ thống Khảo sát &amp; Đánh giá<br>
+          <em>chất lượng hoạt động Đoàn – Hội</em>
+        </h1>
+        <p class="lp-hero-sub">
+          Nền tảng số hóa công tác thu nhận, phân tích và trực quan hóa phản hồi của đoàn viên, thanh niên — giúp Ban Chấp hành ra quyết định chiến lược dựa trên dữ liệu thực chứng từ các hoạt động Đoàn – Hội tại UEH.
+        </p>
+        <button onclick="openLoginModal()" class="lp-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+          Đăng nhập để khảo sát
+        </button>
+      </div>
+      <div class="lp-hero-visual">
+        <div class="lp-preview-card">
+          <div class="lp-preview-card-title">Kết quả phân tích mẫu</div>
+          <div class="lp-pf">
+            <div class="lp-pf-lbl">Dịch vụ thông tin</div>
+            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:78%"></div></div>
+            <div class="lp-pf-val">5.46</div>
+          </div>
+          <div class="lp-pf">
+            <div class="lp-pf-lbl">Chất lượng chương trình</div>
+            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:83%"></div></div>
+            <div class="lp-pf-val">5.81</div>
+          </div>
+          <div class="lp-pf">
+            <div class="lp-pf-lbl">Cơ sở vật chất</div>
+            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:71%"></div></div>
+            <div class="lp-pf-val">4.97</div>
+          </div>
+          <div class="lp-pf">
+            <div class="lp-pf-lbl">Giá trị chương trình</div>
+            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:80%"></div></div>
+            <div class="lp-pf-val">5.60</div>
+          </div>
+          <div class="lp-pf">
+            <div class="lp-pf-lbl">Sự hài lòng</div>
+            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:86%"></div></div>
+            <div class="lp-pf-val">6.01</div>
+          </div>
+          <div class="lp-pf">
+            <div class="lp-pf-lbl">Lòng trung thành</div>
+            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:82%"></div></div>
+            <div class="lp-pf-val">5.76</div>
+          </div>
+          <div class="lp-preview-divider"></div>
+          <div class="lp-preview-footer">
+            <div>
+              <div class="lp-preview-score">5.60</div>
+              <div class="lp-preview-score-lbl">Điểm trung bình / 7</div>
+            </div>
+            <div class="lp-preview-badge">Tốt ✓</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STATS ── -->
+    <div class="lp-stats">
+      <div class="lp-stat">
+        <div class="lp-stat-num">21</div>
+        <div class="lp-stat-label">Biến quan sát</div>
+      </div>
+      <div class="lp-stat">
+        <div class="lp-stat-num">6</div>
+        <div class="lp-stat-label">Nhân tố đánh giá</div>
+      </div>
+      <div class="lp-stat">
+        <div class="lp-stat-num">7</div>
+        <div class="lp-stat-label">Mức độ Likert</div>
+      </div>
+      <div class="lp-stat">
+        <div class="lp-stat-num">4</div>
+        <div class="lp-stat-label">Chương trình thí điểm</div>
+      </div>
+    </div>
+
+    <!-- ── 3 GIAI ĐOẠN ── -->
+    <section class="lp-section">
+      <div class="lp-eyebrow">Phương pháp luận</div>
+      <h2 class="lp-sh">Quy trình 3 giai đoạn tích hợp</h2>
+      <p class="lp-sdesc">Hệ thống triển khai theo lộ trình khoa học từ thiết kế công cụ đến báo cáo thông minh, đảm bảo tính chuẩn hóa và khả năng mở rộng toàn trường.</p>
+      <div class="lp-phases">
+        <div class="lp-phase">
+          <div class="lp-phase-num">01</div>
+          <div class="lp-phase-title">Xây dựng công cụ khảo sát</div>
+          <div class="lp-phase-desc">Bộ câu hỏi chuẩn hóa 21 biến quan sát, thang Likert 7 điểm được kiểm định qua EFA và CFA. Kế thừa mô hình POE và SERVQUAL quốc tế, có cơ sở học thuật vững chắc.</div>
+          <span class="lp-phase-tag">Hoàn thành 15/4/2026</span>
+        </div>
+        <div class="lp-phase">
+          <div class="lp-phase-num">02</div>
+          <div class="lp-phase-title">Nền tảng thu thập dữ liệu</div>
+          <div class="lp-phase-desc">Website tích hợp Google Sheets &amp; Google SSO, đồng bộ dữ liệu theo thời gian thực. Triển khai thí điểm trên 4 chương trình: Acoustic Show, Tình nguyện, Sinh viên 5 Tốt, Hội nhập quốc tế.</div>
+          <span class="lp-phase-tag">15/4 – 25/5/2026</span>
+        </div>
+        <div class="lp-phase">
+          <div class="lp-phase-num">03</div>
+          <div class="lp-phase-title">Hệ thống báo cáo thông minh</div>
+          <div class="lp-phase-desc">Dashboard trực quan hóa đa chiều: biểu đồ phân tích theo nhân tố, điểm cao/thấp, lọc theo khoa và khóa — hỗ trợ Ban Chấp hành ra quyết định dựa trên dữ liệu thực chứng.</div>
+          <span class="lp-phase-tag">25/5 – 5/6/2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MÔ HÌNH NGHIÊN CỨU ── -->
+    <section class="lp-section lp-section--soft">
+      <div class="lp-eyebrow">Cơ sở khoa học</div>
+      <h2 class="lp-sh">Mô hình nghiên cứu</h2>
+      <p class="lp-sdesc">Kế thừa từ Yoon, Lee &amp; Lee (2010) — mô hình đánh giá chất lượng sự kiện được ứng dụng rộng rãi trong nghiên cứu học thuật quốc tế (Parasuraman et al., 1988; Kim et al., 2012).</p>
+      <div class="lp-model">
+        <div class="lp-model-inputs">
+          <div class="lp-model-input-box">Dịch vụ thông tin</div>
+          <div class="lp-model-input-box">Chất lượng chương trình</div>
+          <div class="lp-model-input-box">Cơ sở vật chất</div>
+        </div>
+        <div class="lp-model-arrow-col">
+          <div class="lp-model-arrow">→</div>
+          <div class="lp-model-hyp">H1a, H1b, H1c</div>
+        </div>
+        <div class="lp-model-box">Giá trị<br>chương trình</div>
+        <div class="lp-model-arrow-col">
+          <div class="lp-model-arrow">→</div>
+          <div class="lp-model-hyp">H2</div>
+        </div>
+        <div class="lp-model-box">Sự hài lòng</div>
+        <div class="lp-model-arrow-col">
+          <div class="lp-model-arrow">→</div>
+          <div class="lp-model-hyp">H3</div>
+        </div>
+        <div class="lp-model-box">Lòng<br>trung thành</div>
+      </div>
+    </section>
+
+    <!-- ── 6 NHÂN TỐ ── -->
+    <section class="lp-section">
+      <div class="lp-eyebrow">Bộ công cụ khảo sát</div>
+      <h2 class="lp-sh">6 nhân tố đánh giá</h2>
+      <p class="lp-sdesc">Mỗi nhân tố được đo bằng nhiều biến quan sát độc lập, đảm bảo độ tin cậy Cronbach's Alpha và giá trị phân biệt theo chuẩn kiểm định quốc tế.</p>
+      <div class="lp-factors">
+        <div class="lp-factor">
+          <div class="lp-factor-icon">📡</div>
+          <div>
+            <div class="lp-factor-code">DVTT · Đánh giá I</div>
+            <div class="lp-factor-name">Dịch vụ thông tin</div>
+            <div class="lp-factor-count">4 biến quan sát</div>
+          </div>
+        </div>
+        <div class="lp-factor">
+          <div class="lp-factor-icon">🎯</div>
+          <div>
+            <div class="lp-factor-code">CLCT · Đánh giá II</div>
+            <div class="lp-factor-name">Chất lượng chương trình</div>
+            <div class="lp-factor-count">5 biến quan sát</div>
+          </div>
+        </div>
+        <div class="lp-factor">
+          <div class="lp-factor-icon">🏛</div>
+          <div>
+            <div class="lp-factor-code">CSVC · Đánh giá III</div>
+            <div class="lp-factor-name">Cơ sở vật chất</div>
+            <div class="lp-factor-count">3 biến quan sát</div>
+          </div>
+        </div>
+        <div class="lp-factor">
+          <div class="lp-factor-icon">💎</div>
+          <div>
+            <div class="lp-factor-code">GTCT · Đánh giá IV</div>
+            <div class="lp-factor-name">Giá trị chương trình</div>
+            <div class="lp-factor-count">2 biến quan sát</div>
+          </div>
+        </div>
+        <div class="lp-factor">
+          <div class="lp-factor-icon">⭐</div>
+          <div>
+            <div class="lp-factor-code">SHL · Đánh giá V</div>
+            <div class="lp-factor-name">Sự hài lòng của người tham gia</div>
+            <div class="lp-factor-count">3 biến quan sát</div>
+          </div>
+        </div>
+        <div class="lp-factor">
+          <div class="lp-factor-icon">🤝</div>
+          <div>
+            <div class="lp-factor-code">LTT · Đánh giá VI</div>
+            <div class="lp-factor-name">Lòng trung thành</div>
+            <div class="lp-factor-count">4 biến quan sát</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="lp-cta">
+      <h2 class="lp-cta-title">Sẵn sàng tham gia khảo sát?</h2>
+      <p class="lp-cta-sub">Ý kiến của bạn đóng góp thiết thực vào việc nâng cao chất lượng<br>các hoạt động Đoàn – Hội tại Đại học Kinh tế TP. Hồ Chí Minh.</p>
+      <button onclick="openLoginModal()" class="lp-cta-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+        Đăng nhập ngay
+      </button>
+    </section>
+
   </div>
 
   <!-- SURVEY TABLE -->
