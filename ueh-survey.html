@@ -525,8 +525,17 @@
       padding: 5px 14px; border-radius: 8px;
     }
 
-    /* ── Stats bar ── */
-    .lp-stats { display: flex; background: #006b5e; }
+    /* ── Stats bar — full viewport width ── */
+    .lp-stats {
+      display: flex;
+      background: #006b5e;
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+    }
     .lp-stat {
       flex: 1; text-align: center; padding: 22px 10px;
       border-right: 1px solid rgba(255,255,255,.15);
@@ -814,19 +823,19 @@
       </div>
       <div class="lp-stat">
         <div class="lp-stat-num" id="statPrograms">—</div>
-        <div class="lp-stat-label">Chương trình đã khảo sát</div>
+        <div class="lp-stat-label">Sự kiện học kỳ này</div>
       </div>
       <div class="lp-stat">
         <div class="lp-stat-num" id="statCompletion">—</div>
-        <div class="lp-stat-label">Tỉ lệ hoàn thành</div>
+        <div class="lp-stat-label">Tỉ lệ khảo sát hoàn thành</div>
       </div>
       <div class="lp-stat">
         <div class="lp-stat-num" id="statScore">—</div>
-        <div class="lp-stat-label">Điểm đánh giá trung bình</div>
+        <div class="lp-stat-label">Đánh giá trung bình</div>
       </div>
       <div class="lp-stat">
-        <div class="lp-stat-num" id="statFaculties">—</div>
-        <div class="lp-stat-label">Khoa tham gia</div>
+        <div class="lp-stat-num">48h</div>
+        <div class="lp-stat-label">Thời gian phản hồi tối đa</div>
       </div>
     </div>
 
@@ -941,10 +950,9 @@
         if (!d.success) return;
         const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
         set('statResponses',  d.totalResponses > 0 ? d.totalResponses.toLocaleString('vi-VN') + '+' : '0');
-        set('statPrograms',   d.programsCount  > 0 ? d.programsCount  : '0');
+        set('statPrograms',   d.totalPrograms  > 0 ? d.totalPrograms  : '0');
         set('statCompletion', d.completionRate  > 0 ? d.completionRate + '%' : '—');
         set('statScore',      d.avgScore !== '—' ? d.avgScore + '★' : '—');
-        set('statFaculties',  d.facultiesCount > 0 ? d.facultiesCount : '0');
       })
       .catch(() => {});
   }

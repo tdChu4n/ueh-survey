@@ -253,13 +253,15 @@ function handleGetStats() {
     }
   }
 
-  // Từ sheet Assignments — đếm tổng participants
+  // Từ sheet Assignments — đếm tổng participants và tổng sự kiện
   const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
   let totalParticipants = 0;
+  let totalPrograms = 0;
   if (assignSheet) {
     const aRows = assignSheet.getDataRange().getValues();
     for (let i = 1; i < aRows.length; i++) {
       if (!aRows[i][0]) continue;
+      totalPrograms++;
       const n = parseInt(aRows[i][1]);
       if (!isNaN(n)) totalParticipants += n;
     }
@@ -271,6 +273,7 @@ function handleGetStats() {
   return jsonOut({
     success: true,
     totalResponses,
+    totalPrograms,
     programsCount:   programsWithResp.size,
     completionRate:  completion,
     avgScore,
