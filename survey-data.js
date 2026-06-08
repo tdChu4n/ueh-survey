@@ -95,7 +95,7 @@ window.PROGRAMS = [
   "Hoạt động học thuật - kỹ năng"
 ];
 
-// Năm dương lịch của từng chương trình (API sẽ ghi đè khi load xong)
+// Năm dương lịch — tự lấy từ ngayBatDau (API sẽ ghi đè khi load xong)
 window.PROGRAM_YEARS = {
   "Toán - Thống kê 2026": 2026,
   "Research Maze 2026":   2026,
