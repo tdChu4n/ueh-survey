@@ -466,12 +466,12 @@
 
     /* ── Hero ── */
     .lp-hero {
-      display: flex; align-items: center; gap: 48px;
-      padding: 72px 60px;
-      background: linear-gradient(135deg, #f0faf7 0%, #e4f3ef 50%, #f5faf8 100%);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 80px 60px 72px;
+      background: linear-gradient(160deg, #eaf6f2 0%, #d9efe9 40%, #eaf5f0 100%);
     }
-    .lp-hero-content { flex: 1; min-width: 0; max-width: 580px; }
-    .lp-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .lp-hero-content { max-width: 680px; width: 100%; }
+    .lp-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; justify-content: center; }
     .lp-badge {
       font-size: 10.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
       padding: 4px 11px; border-radius: 20px;
@@ -479,21 +479,31 @@
     .lp-badge--green { background: #006b5e; color: #fff; }
     .lp-badge--outline { border: 1.5px solid #006b5e; color: #006b5e; }
     .lp-hero-title {
-      font-size: 32px; font-weight: 800; color: #0a2e28; line-height: 1.3;
-      margin-bottom: 18px; letter-spacing: -.4px;
+      font-size: 36px; font-weight: 800; color: #0a2e28; line-height: 1.25;
+      margin-bottom: 18px; letter-spacing: -.5px;
     }
     .lp-hero-title em { font-style: normal; color: #006b5e; }
     .lp-hero-sub {
-      font-size: 16px; color: #4a6b65; line-height: 1.75;
-      margin-bottom: 32px; max-width: 560px;
+      font-size: 16px; color: #4a6b65; line-height: 1.8;
+      margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto;
     }
+    /* Feature pills */
+    .lp-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 40px; }
+    .lp-pill {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.7); border: 1px solid rgba(0,107,94,.18);
+      border-radius: 30px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: #006b5e;
+      backdrop-filter: blur(4px);
+    }
+    .lp-pill-dot { width: 7px; height: 7px; border-radius: 50%; background: #006b5e; flex-shrink: 0; }
     .lp-btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #006b5e; color: #fff; border: none; border-radius: 10px;
-      padding: 13px 26px; font-size: 14.5px; font-weight: 700;
+      background: #006b5e; color: #fff; border: none; border-radius: 12px;
+      padding: 15px 32px; font-size: 15px; font-weight: 700;
       cursor: pointer; transition: background .15s, transform .1s; font-family: inherit;
+      box-shadow: 0 4px 16px rgba(0,107,94,.3);
     }
-    .lp-btn-primary:hover { background: #004d44; transform: translateY(-1px); }
+    .lp-btn-primary:hover { background: #004d44; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,107,94,.35); }
 
     /* Hero right — preview card */
     .lp-hero-visual { flex-shrink: 0; width: 400px; }
@@ -753,57 +763,21 @@
           <span class="lp-badge lp-badge--outline">Khoa Toán – Thống kê · UEH</span>
         </div>
         <h1 class="lp-hero-title">
-          Hệ thống Khảo sát &amp; Đánh giá <em>chất lượng hoạt động Đoàn – Hội</em>
+          Hệ thống Khảo sát &amp; Đánh giá<br>
+          <em>chất lượng hoạt động Đoàn – Hội</em>
         </h1>
         <p class="lp-hero-sub">
-          Nền tảng số hóa công tác thu nhận, phân tích và trực quan hóa phản hồi của đoàn viên, thanh niên — giúp Ban Chấp hành ra quyết định chiến lược dựa trên dữ liệu thực chứng từ các hoạt động Đoàn – Hội tại UEH.
+          Nền tảng số hóa công tác thu nhận, phân tích và trực quan hóa phản hồi của đoàn viên, thanh niên — giúp Ban Chấp hành ra quyết định chiến lược dựa trên dữ liệu thực chứng.
         </p>
         <button onclick="openLoginModal()" class="lp-btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
           Đăng nhập để khảo sát
         </button>
-      </div>
-      <div class="lp-hero-visual">
-        <div class="lp-preview-card">
-          <div class="lp-preview-card-title">Kết quả phân tích mẫu <span style="font-weight:400;color:#94a3b8;font-style:italic;text-transform:none;letter-spacing:0;">(minh họa)</span></div>
-          <div class="lp-pf">
-            <div class="lp-pf-lbl">Dịch vụ thông tin</div>
-            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:78%"></div></div>
-            <div class="lp-pf-val">5.46</div>
-          </div>
-          <div class="lp-pf">
-            <div class="lp-pf-lbl">Chất lượng chương trình</div>
-            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:83%"></div></div>
-            <div class="lp-pf-val">5.81</div>
-          </div>
-          <div class="lp-pf">
-            <div class="lp-pf-lbl">Cơ sở vật chất</div>
-            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:71%"></div></div>
-            <div class="lp-pf-val">4.97</div>
-          </div>
-          <div class="lp-pf">
-            <div class="lp-pf-lbl">Giá trị chương trình</div>
-            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:80%"></div></div>
-            <div class="lp-pf-val">5.60</div>
-          </div>
-          <div class="lp-pf">
-            <div class="lp-pf-lbl">Sự hài lòng</div>
-            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:86%"></div></div>
-            <div class="lp-pf-val">6.01</div>
-          </div>
-          <div class="lp-pf">
-            <div class="lp-pf-lbl">Lòng trung thành</div>
-            <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:82%"></div></div>
-            <div class="lp-pf-val">5.76</div>
-          </div>
-          <div class="lp-preview-divider"></div>
-          <div class="lp-preview-footer">
-            <div>
-              <div class="lp-preview-score">5.60</div>
-              <div class="lp-preview-score-lbl">Điểm trung bình / 7</div>
-            </div>
-            <div class="lp-preview-badge">Tốt ✓</div>
-          </div>
+        <div class="lp-pills">
+          <div class="lp-pill"><span class="lp-pill-dot"></span>21 biến quan sát</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>6 nhân tố đánh giá</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>Thang Likert 7 điểm</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>Báo cáo tức thời</div>
         </div>
       </div>
     </section>
