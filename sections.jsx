@@ -116,13 +116,20 @@ function DescriptiveSection({ responses, selectedPrograms }) {
     { label: "Nữ",  value: gCounts["Nữ"],  color: "oklch(0.62 0.14 230)" },
   ];
 
-  // Theo khoa
+  // Theo khoa — hiện tất cả, kể cả 0 phiếu
+  const ALL_FACULTIES = [
+    'Khoa Toán - Thống kê','Khoa Lý luận chính trị','Khoa Thiết kế Truyền thông',
+    'Khoa Công nghệ thông tin kinh doanh','Khoa Ngoại ngữ',
+    'Khoa Kinh doanh quốc tế - Marketing','Khoa Quản trị','Khoa Tài chính',
+    'Khoa Ngân hàng','Khoa Kế toán','Khoa Du lịch','Khoa Tài chính công',
+    'Khoa Luật','Khoa Quản lý nhà nước',
+  ];
   const facCounts = {};
   for (const r of responses) {
     if (r.faculty) facCounts[r.faculty] = (facCounts[r.faculty] || 0) + 1;
   }
-  const faculties = Object.entries(facCounts)
-    .map(([k, v]) => ({ label: k, n: v }))
+  const faculties = ALL_FACULTIES
+    .map(k => ({ label: k, n: facCounts[k] || 0 }))
     .sort((a, b) => b.n - a.n);
 
   // Theo khóa
