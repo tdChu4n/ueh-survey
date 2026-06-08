@@ -34,6 +34,7 @@ function doGet(e) {
   if (action === 'getResponses')  return handleGetResponses();
   if (action === 'submitMailbox') return handleSubmitMailbox(e.parameter);
   if (action === 'getMailbox')    return handleGetMailbox();
+  if (action === 'getStats')      return handleGetStats();
   return jsonOut({ error: 'Unknown action' });
 }
 
@@ -225,6 +226,56 @@ function handleGetMailbox() {
   }
   entries.reverse(); // mới nhất lên đầu
   return jsonOut({ success: true, entries });
+}
+
+
+// ── Thống kê tổng hợp công khai ─────────────────────────────────
+function handleGetStats() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+
+  // Từ sheet Responses
+  const respSheet = ss.getSheetByName(SHEET_RESPONSES);
+  let totalResponses = 0;
+  let totalScore = 0;
+  let scoreCount = 0;
+  const programsWithResp = new Set();
+  const faculties = new Set();
+
+  if (respSheet) {
+    const rows = respSheet.getDataRange().getValues();
+    for (let i = 1; i < rows.length; i++) {
+      if (!String(rows[i][1] || '').includes('@')) continue;
+      totalResponses++;
+      if (rows[i][3]) programsWithResp.add(String(rows[i][3]).trim());
+      if (rows[i][6]) faculties.add(String(rows[i][6]).trim());
+      const overall = parseFloat(rows[i][28]);
+      if (!isNaN(overall) && overall >= 1) { totalScore += overall; scoreCount++; }
+    }
+  }
+
+  // Từ sheet Assignments — đếm tổng participants
+  const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
+  let totalParticipants = 0;
+  if (assignSheet) {
+    const aRows = assignSheet.getDataRange().getValues();
+    for (let i = 1; i < aRows.length; i++) {
+      if (!aRows[i][0]) continue;
+      const n = parseInt(aRows[i][1]);
+      if (!isNaN(n)) totalParticipants += n;
+    }
+  }
+
+  const avgScore   = scoreCount > 0 ? (totalScore / scoreCount).toFixed(1) : '—';
+  const completion = totalParticipants > 0 ? Math.round(totalResponses / totalParticipants * 100) : 0;
+
+  return jsonOut({
+    success: true,
+    totalResponses,
+    programsCount:   programsWithResp.size,
+    completionRate:  completion,
+    avgScore,
+    facultiesCount:  faculties.size,
+  });
 }
 
 

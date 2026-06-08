@@ -528,7 +528,7 @@
     /* ── Stats bar ── */
     .lp-stats { display: flex; background: #006b5e; }
     .lp-stat {
-      flex: 1; text-align: center; padding: 22px 12px;
+      flex: 1; text-align: center; padding: 22px 10px;
       border-right: 1px solid rgba(255,255,255,.15);
     }
     .lp-stat:last-child { border-right: none; }
@@ -806,23 +806,27 @@
       </div>
     </section>
 
-    <!-- ── STATS ── -->
+    <!-- ── STATS (dynamic) ── -->
     <div class="lp-stats">
       <div class="lp-stat">
-        <div class="lp-stat-num">21</div>
-        <div class="lp-stat-label">Biến quan sát</div>
+        <div class="lp-stat-num" id="statResponses">—</div>
+        <div class="lp-stat-label">Sinh viên tham gia</div>
       </div>
       <div class="lp-stat">
-        <div class="lp-stat-num">6</div>
-        <div class="lp-stat-label">Nhân tố đánh giá</div>
+        <div class="lp-stat-num" id="statPrograms">—</div>
+        <div class="lp-stat-label">Chương trình đã khảo sát</div>
       </div>
       <div class="lp-stat">
-        <div class="lp-stat-num">7</div>
-        <div class="lp-stat-label">Mức độ Likert</div>
+        <div class="lp-stat-num" id="statCompletion">—</div>
+        <div class="lp-stat-label">Tỉ lệ hoàn thành</div>
       </div>
       <div class="lp-stat">
-        <div class="lp-stat-num">4</div>
-        <div class="lp-stat-label">Chương trình thí điểm</div>
+        <div class="lp-stat-num" id="statScore">—</div>
+        <div class="lp-stat-label">Điểm đánh giá trung bình</div>
+      </div>
+      <div class="lp-stat">
+        <div class="lp-stat-num" id="statFaculties">—</div>
+        <div class="lp-stat-label">Khoa tham gia</div>
       </div>
     </div>
 
@@ -928,6 +932,23 @@
     GOOGLE_CLIENT_ID: '84059448728-7698b8sorrp7p4qrq2shhiapvbsgd22u.apps.googleusercontent.com',
     APPS_SCRIPT_URL:  'https://script.google.com/macros/s/AKfycbyP9XvRCgVKV7y_SEtQ4Oz1bBlNkgnKzhqT19DrtqhFngE4C3qLq0Yb60buuM_12H_R/exec',
   };
+
+  // ── Tải số liệu thống kê công khai (hiển thị trước khi đăng nhập) ──
+  function loadPublicStats() {
+    fetch(CONFIG.APPS_SCRIPT_URL + '?action=getStats')
+      .then(r => r.json())
+      .then(d => {
+        if (!d.success) return;
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        set('statResponses',  d.totalResponses > 0 ? d.totalResponses.toLocaleString('vi-VN') + '+' : '0');
+        set('statPrograms',   d.programsCount  > 0 ? d.programsCount  : '0');
+        set('statCompletion', d.completionRate  > 0 ? d.completionRate + '%' : '—');
+        set('statScore',      d.avgScore !== '—' ? d.avgScore + '★' : '—');
+        set('statFaculties',  d.facultiesCount > 0 ? d.facultiesCount : '0');
+      })
+      .catch(() => {});
+  }
+  loadPublicStats();
 
   // ═══════════════════════════════════════
   //  CẤU TRÚC FORM KHẢO SÁT
