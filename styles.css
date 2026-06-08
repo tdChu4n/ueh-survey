@@ -306,9 +306,9 @@ button {
   margin-bottom: 6px;
 }
 .stat-card__value {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.02em;
 }
@@ -340,9 +340,9 @@ button {
   margin-bottom: 6px;
 }
 .stat-strip__value {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 26px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1;
 }
@@ -353,7 +353,7 @@ button {
   font-size: 12px;
   color: var(--ink-muted);
   margin-top: 6px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 /* ---- Tabs ---- */
