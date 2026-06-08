@@ -280,10 +280,7 @@
       color: #444; background: #f4f6f5; border-bottom: 2px solid #e0e0e0;
       font-weight: 600; line-height: 1.35; white-space: normal; vertical-align: bottom;
     }
-    .likert-table thead th .lbl-num {
-      display: block; font-size: 15px; font-weight: 800; color: #005c50;
-      line-height: 1; margin-bottom: 4px;
-    }
+
     .likert-table thead th.col-lbl { text-align: left; padding-left: 14px; width: 42%; }
     .likert-table tbody td {
       text-align: center; padding: 10px 4px; border-top: 1px solid #f0f0f0;
@@ -1246,7 +1243,7 @@
         <table class="likert-table">
           <thead><tr>
             <th class="col-lbl"></th>
-            ${LIKERT_LABELS.map((lbl,i) => `<th><span class="lbl-num">${i+1}</span>${lbl.replace(/\n/g,'<br>')}</th>`).join('')}
+            ${LIKERT_LABELS.map((lbl) => `<th>${lbl.replace(/\n/g,'<br>')}</th>`).join('')}
           </tr></thead>
           <tbody>`;
       for (const item of factor.items) {
@@ -1267,7 +1264,7 @@
       <table class="likert-table">
         <thead><tr>
           <th class="col-lbl"></th>
-          ${LIKERT_LABELS.map((lbl,i) => `<th><span class="lbl-num">${i+1}</span>${lbl.replace(/\n/g,'<br>')}</th>`).join('')}
+          ${LIKERT_LABELS.map((lbl) => `<th>${lbl.replace(/\n/g,'<br>')}</th>`).join('')}
         </tr></thead>
         <tbody><tr>
           <td class="col-lbl">${esc(FORM_SCHEMA.overall.label)}</td>
