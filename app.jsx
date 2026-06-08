@@ -119,8 +119,8 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet }) {
 function ReportTabs({ responses }) {
   const tabs = [
     { id: "__SUMMARY__", label: "Tổng hợp", icon: Icon.ChartBar },
-    ...FACTORS.map(f => ({ id: f.code, label: f.code })),
-    { id: "__QUAL__", label: "Định tính", icon: Icon.Notes },
+    ...FACTORS.map(f => ({ id: f.code, label: f.name })),
+    { id: "__QUAL__", label: "Phản hồi mở", icon: Icon.Notes },
   ];
   const [active, setActive] = useState(() => {
     return localStorage.getItem("mymy.tab") || "__SUMMARY__";
