@@ -96,7 +96,7 @@ function TopNav() {
         <div style={{ width:1, height:30, background:'rgba(255,255,255,.3)', flexShrink:0 }} />
         <img src="Huy_Hiệu_Đoàn.png"  alt="Đoàn"         style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
         <img src="logo-hoi-sinh-vien-viet-nam-vector-02.png" alt="Hội SV" style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
-        <img src="logo khoa.png" alt="Khoa" style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
+        <img src="logo-khoa.png" alt="Khoa" style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
       </div>
       <div className="nav__spacer" />
       <div className="nav__user">
