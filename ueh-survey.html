@@ -466,10 +466,10 @@
 
     /* ── Hero ── */
     .lp-hero {
-      display: flex; align-items: center; gap: 48px;
-      padding: 64px 60px;
+      display: flex; align-items: center; gap: 56px;
+      padding: 80px 60px;
+      min-height: calc(100vh - 60px);
       background: linear-gradient(135deg, #f0faf7 0%, #e4f3ef 50%, #f5faf8 100%);
-      border-bottom: 1px solid #c9e8e0;
     }
     .lp-hero-content { flex: 1; min-width: 0; }
     .lp-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
@@ -480,13 +480,13 @@
     .lp-badge--green { background: #006b5e; color: #fff; }
     .lp-badge--outline { border: 1.5px solid #006b5e; color: #006b5e; }
     .lp-hero-title {
-      font-size: 30px; font-weight: 800; color: #0a2e28; line-height: 1.3;
-      margin-bottom: 16px; letter-spacing: -.4px;
+      font-size: 38px; font-weight: 800; color: #0a2e28; line-height: 1.25;
+      margin-bottom: 20px; letter-spacing: -.5px;
     }
     .lp-hero-title em { font-style: normal; color: #006b5e; }
     .lp-hero-sub {
-      font-size: 14.5px; color: #4a6b65; line-height: 1.75;
-      margin-bottom: 28px; max-width: 540px;
+      font-size: 16px; color: #4a6b65; line-height: 1.75;
+      margin-bottom: 32px; max-width: 560px;
     }
     .lp-btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
@@ -497,10 +497,10 @@
     .lp-btn-primary:hover { background: #004d44; transform: translateY(-1px); }
 
     /* Hero right — preview card */
-    .lp-hero-visual { flex-shrink: 0; width: 340px; }
+    .lp-hero-visual { flex-shrink: 0; width: 400px; }
     .lp-preview-card {
-      background: #fff; border-radius: 16px; padding: 22px;
-      box-shadow: 0 6px 28px rgba(0,107,94,.16), 0 1px 4px rgba(0,0,0,.06);
+      background: #fff; border-radius: 20px; padding: 28px;
+      box-shadow: 0 8px 40px rgba(0,107,94,.18), 0 2px 8px rgba(0,0,0,.06);
       border: 1px solid rgba(0,107,94,.12);
     }
     .lp-preview-card-title {
@@ -511,14 +511,14 @@
       content: ''; display: inline-block; width: 7px; height: 7px;
       border-radius: 50%; background: #34c891;
     }
-    .lp-pf { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
-    .lp-pf-lbl { font-size: 12px; color: #445; flex: 1; line-height: 1.3; }
-    .lp-pf-bar-wrap { width: 80px; height: 5px; background: #e4f0ee; border-radius: 3px; flex-shrink: 0; }
-    .lp-pf-bar { height: 5px; border-radius: 3px; background: #006b5e; }
-    .lp-pf-val { font-size: 12px; font-weight: 700; color: #006b5e; width: 30px; text-align: right; flex-shrink: 0; }
+    .lp-pf { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+    .lp-pf-lbl { font-size: 13px; color: #445; flex: 1; line-height: 1.3; }
+    .lp-pf-bar-wrap { width: 90px; height: 6px; background: #e4f0ee; border-radius: 3px; flex-shrink: 0; }
+    .lp-pf-bar { height: 6px; border-radius: 3px; background: #006b5e; }
+    .lp-pf-val { font-size: 13px; font-weight: 700; color: #006b5e; width: 32px; text-align: right; flex-shrink: 0; }
     .lp-preview-divider { height: 1px; background: #eee; margin: 14px 0; }
     .lp-preview-footer { display: flex; justify-content: space-between; align-items: center; }
-    .lp-preview-score { font-size: 28px; font-weight: 900; color: #006b5e; line-height: 1; }
+    .lp-preview-score { font-size: 34px; font-weight: 900; color: #006b5e; line-height: 1; }
     .lp-preview-score-lbl { font-size: 10px; color: #888; margin-top: 3px; }
     .lp-preview-badge {
       background: #e4f5f0; color: #006b5e; font-size: 12px; font-weight: 700;
@@ -809,29 +809,6 @@
       </div>
     </section>
 
-    <!-- ── STATS (dynamic) ── -->
-    <div class="lp-stats">
-      <div class="lp-stat">
-        <div class="lp-stat-num" id="statResponses">—</div>
-        <div class="lp-stat-label">Sinh viên tham gia</div>
-      </div>
-      <div class="lp-stat">
-        <div class="lp-stat-num" id="statPrograms">—</div>
-        <div class="lp-stat-label">Sự kiện học kỳ này</div>
-      </div>
-      <div class="lp-stat">
-        <div class="lp-stat-num" id="statCompletion">—</div>
-        <div class="lp-stat-label">Tỉ lệ khảo sát hoàn thành</div>
-      </div>
-      <div class="lp-stat">
-        <div class="lp-stat-num" id="statScore">—</div>
-        <div class="lp-stat-label">Đánh giá trung bình</div>
-      </div>
-      <div class="lp-stat">
-        <div class="lp-stat-num">48h</div>
-        <div class="lp-stat-label">Thời gian phản hồi tối đa</div>
-      </div>
-    </div>
 
   </div>
 
