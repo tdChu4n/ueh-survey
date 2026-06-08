@@ -628,6 +628,63 @@ function QualitativeTabContent({ responses }) {
   );
 }
 
+// ---------- Mailbox section (admin view) ----------
+function MailboxSection({ entries }) {
+  const [search, setSearch] = _useState('');
+
+  const filtered = _useMemo(() => {
+    if (!search.trim()) return entries;
+    const q = search.toLowerCase();
+    return entries.filter(e =>
+      e.email.toLowerCase().includes(q) || e.content.toLowerCase().includes(q)
+    );
+  }, [entries, search]);
+
+  return (
+    <Section icon={Icon.Notes} title="Hòm thư lắng nghe thanh niên">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: 13, color: '#64748b' }}>
+          {entries.length} ý kiến
+        </span>
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Tìm kiếm theo email hoặc nội dung..."
+          style={{
+            flex: 1, minWidth: 200, padding: '7px 12px',
+            border: '1px solid #cbd5e1', borderRadius: 8,
+            fontSize: 13, fontFamily: 'inherit', outline: 'none',
+          }}
+        />
+        {search && (
+          <button onClick={() => setSearch('')}
+                  style={{ fontSize: 12, color: '#dc2626', background: '#fef2f2',
+                           border: '1px solid #fca5a5', borderRadius: 6,
+                           padding: '4px 10px', cursor: 'pointer' }}>
+            ✕ Xóa
+          </button>
+        )}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div style={{ padding: '40px 20px', textAlign: 'center', color: '#94a3b8', fontSize: 14 }}>
+          {entries.length === 0 ? 'Chưa có ý kiến nào được gửi.' : 'Không tìm thấy kết quả.'}
+        </div>
+      ) : (
+        <div className="qual-list">
+          {filtered.map((e, i) => (
+            <div key={i} className="qual-item">
+              <div className="qual-item__quote" style={{ whiteSpace: 'pre-wrap' }}>{e.content}</div>
+              <div className="qual-item__meta">{e.ts} · {e.email}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </Section>
+  );
+}
+
 Object.assign(window, {
-  ActivityCard, DescriptiveSection, FactorTabContent, SummaryTabContent, QualitativeTabContent
+  ActivityCard, DescriptiveSection, FactorTabContent, SummaryTabContent, QualitativeTabContent, MailboxSection
 });

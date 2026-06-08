@@ -5,6 +5,7 @@
 const SPREADSHEET_ID    = '1aVz5dF1EBr9FOiiDrLKr8dK2awj1ovEtS_euRK8EayA';
 const SHEET_ASSIGNMENTS = 'Assignments';
 const SHEET_RESPONSES   = 'Responses';
+const SHEET_MAILBOX     = 'Mailbox';
 
 // Cấu trúc sheet "Assignments" (admin quản lý):
 // A: courseName      — tên chương trình
@@ -28,9 +29,11 @@ const SHEET_RESPONSES   = 'Responses';
 // ── Web App entry point ──────────────────────────────────────────
 function doGet(e) {
   const action = e.parameter.action;
-  if (action === 'getCourses')   return handleGetCourses(e.parameter.email);
-  if (action === 'submitSurvey') return handleSubmitSurvey(e.parameter);
-  if (action === 'getResponses') return handleGetResponses();
+  if (action === 'getCourses')    return handleGetCourses(e.parameter.email);
+  if (action === 'submitSurvey')  return handleSubmitSurvey(e.parameter);
+  if (action === 'getResponses')  return handleGetResponses();
+  if (action === 'submitMailbox') return handleSubmitMailbox(e.parameter);
+  if (action === 'getMailbox')    return handleGetMailbox();
   return jsonOut({ error: 'Unknown action' });
 }
 
@@ -185,6 +188,43 @@ function handleGetResponses() {
   }
 
   return jsonOut({ success: true, responses, programs, participantMap, programYears, programInfo });
+}
+
+
+// ── Hòm thư lắng nghe thanh niên ────────────────────────────────
+function handleSubmitMailbox(p) {
+  try {
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    let sheet = ss.getSheetByName(SHEET_MAILBOX);
+    if (!sheet) {
+      sheet = ss.insertSheet(SHEET_MAILBOX);
+      sheet.appendRow(['Dấu thời gian', 'Email', 'Nội dung']);
+    }
+    sheet.appendRow([new Date(), String(p.email || '(ẩn danh)'), String(p.content || '')]);
+    return jsonOut({ success: true });
+  } catch (err) {
+    return jsonOut({ success: false, error: err.message });
+  }
+}
+
+function handleGetMailbox() {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_MAILBOX);
+  if (!sheet) return jsonOut({ success: true, entries: [] });
+
+  const rows    = sheet.getDataRange().getValues();
+  const entries = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!String(r[2] || '').trim()) continue;
+    entries.push({
+      ts:      fmtDate(r[0]),
+      email:   String(r[1] || ''),
+      content: String(r[2] || ''),
+    });
+  }
+  entries.reverse(); // mới nhất lên đầu
+  return jsonOut({ success: true, entries });
 }
 
 

@@ -221,6 +221,7 @@ function App() {
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
+  const [mailbox,   setMailbox]   = useState([]);
 
   useEffect(() => {
     fetch(APPS_SCRIPT_URL + '?action=getResponses')
@@ -244,6 +245,11 @@ function App() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
+
+    fetch(APPS_SCRIPT_URL + '?action=getMailbox')
+      .then(r => r.json())
+      .then(data => { if (data.success) setMailbox(data.entries || []); })
+      .catch(() => {});
   }, []);
 
   const responses = useMemo(
@@ -297,6 +303,7 @@ function App() {
           <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
           <DescriptiveSection responses={responses} selectedPrograms={selectedPrograms} />
           <ReportTabs responses={responses} />
+          <MailboxSection entries={mailbox} />
         </main>
       </div>
       <Footer />
