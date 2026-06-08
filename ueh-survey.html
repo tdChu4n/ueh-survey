@@ -595,7 +595,6 @@
       </label>
       <textarea class="mailbox-textarea" id="mailboxContent" placeholder="Nhập tâm tư, nguyện vọng hoặc góp ý của bạn tại đây..." oninput="document.getElementById('mailboxCharHint').textContent=this.value.length+' ký tự'"></textarea>
       <div class="mailbox-char-hint" id="mailboxCharHint">0 ký tự</div>
-      <div class="mailbox-note">* Ý kiến của bạn sẽ được gửi kèm địa chỉ email để Ban Tổ chức có thể phản hồi nếu cần.</div>
       <div class="success-overlay" id="mailboxSuccess">
         <div class="success-icon">✓</div>
         <div class="success-title">Đã gửi ý kiến!</div>
@@ -842,6 +841,8 @@
     document.getElementById('studentNavInfo').style.display = 'none';
     document.getElementById('surveySection').style.display  = 'none';
     document.getElementById('loginSection').style.display   = 'block';
+    document.getElementById('mailboxFab').style.display     = 'none';
+    closeMailbox();
   }
 
   // Khôi phục login sinh viên sau F5
