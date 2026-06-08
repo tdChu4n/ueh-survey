@@ -295,6 +295,16 @@
     /* Overall rating (same table style) */
     .overall-card { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 18px; overflow: hidden; }
 
+    /* Keyword highlight */
+    mark.hl { background: #ffe066; padding: 0 1px; border-radius: 2px; color: inherit; }
+
+    /* Scale note inside each factor */
+    .scale-note {
+      font-size: 11px; color: #555; padding: 5px 14px 6px;
+      border-bottom: 1px solid #eee; background: #fafafa;
+      font-style: italic; line-height: 1.6;
+    }
+
     /* Text questions */
     .text-section { margin-bottom: 16px; }
     .text-section label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; line-height: 1.5; }
@@ -668,54 +678,75 @@
   const FORM_SCHEMA = {
     factors: [
       {
-        code: 'DVTT', name: 'Nhân tố I: Dịch vụ thông tin (DVTT)',
+        code: 'DVTT', name: 'Đánh giá I: Dịch vụ thông tin',
         items: [
-          { code: 'DVTT1', label: 'Thông tin về chương trình được cung cấp đầy đủ và kịp thời trước khi tôi tham dự.' },
-          { code: 'DVTT2', label: 'Tôi dễ dàng tìm được khu vực diễn ra hoạt động nhờ bản đồ, biển chỉ dẫn hoặc nhân sự hỗ trợ.' },
-          { code: 'DVTT3', label: 'Các nội dung truyền thông của chương trình cung cấp đủ thông tin để tôi hiểu rõ và đăng ký tham gia.' },
-          { code: 'DVTT4', label: 'Các ấn phẩm truyền thông của chương trình thu hút sự chú ý và khiến tôi muốn tìm hiểu thêm.' },
+          { code: 'DVTT1', label: 'Thông tin về chương trình được cung cấp đầy đủ và kịp thời trước khi tôi tham dự.',
+            labelHtml: '<mark class="hl">Thông tin</mark> về chương trình được cung cấp <mark class="hl">đầy đủ</mark> và <mark class="hl">kịp thời</mark> trước khi tôi tham dự.' },
+          { code: 'DVTT2', label: 'Tôi dễ dàng tìm được khu vực diễn ra hoạt động nhờ bản đồ, biển chỉ dẫn hoặc nhân sự hỗ trợ.',
+            labelHtml: 'Tôi <mark class="hl">dễ dàng tìm</mark> được <mark class="hl">khu vực diễn ra hoạt động</mark> nhờ bản đồ, biển chỉ dẫn hoặc nhân sự hỗ trợ.' },
+          { code: 'DVTT3', label: 'Các nội dung truyền thông của chương trình cung cấp đủ thông tin để tôi hiểu rõ và đăng ký tham gia.',
+            labelHtml: 'Các nội dung <mark class="hl">truyền thông</mark> của chương trình <mark class="hl">cung cấp đủ thông tin</mark> để tôi hiểu rõ và đăng ký tham gia.' },
+          { code: 'DVTT4', label: 'Các ấn phẩm truyền thông của chương trình thu hút sự chú ý và khiến tôi muốn tìm hiểu thêm.',
+            labelHtml: 'Các <mark class="hl">ấn phẩm truyền thông</mark> của chương trình <mark class="hl">thu hút</mark> sự chú ý và khiến tôi muốn tìm hiểu thêm.' },
         ]
       },
       {
-        code: 'CLCT', name: 'Nhân tố II: Chất lượng chương trình (CLCT)',
+        code: 'CLCT', name: 'Đánh giá II: Chất lượng chương trình',
         items: [
-          { code: 'CLCT1', label: 'Nhân sự hỗ trợ (tại chỗ hoặc qua kênh trực tuyến) giải đáp thắc mắc của tôi kịp thời và rõ ràng.' },
-          { code: 'CLCT2', label: 'Các hình thức hoạt động trong chương trình đa dạng, giúp tôi có nhiều cách tiếp cận nội dung khác nhau.' },
-          { code: 'CLCT3', label: 'Nội dung chương trình kích thích tôi muốn tìm hiểu sâu hơn sau khi tham dự.' },
-          { code: 'CLCT4', label: 'Nội dung chương trình phù hợp với mục tiêu và chủ đề của hoạt động.' },
-          { code: 'CLCT5', label: 'Chương trình có bố cục rõ ràng (mở đầu – nội dung chính – kết thúc) và diễn ra đúng thời gian thông báo.' },
+          { code: 'CLCT1', label: 'Nhân sự hỗ trợ (tại chỗ hoặc qua kênh trực tuyến) giải đáp thắc mắc của tôi kịp thời và rõ ràng.',
+            labelHtml: '<mark class="hl">Nhân sự hỗ trợ</mark> (tại chỗ hoặc qua kênh trực tuyến) <mark class="hl">giải đáp</mark> thắc mắc của tôi <mark class="hl">kịp thời và rõ ràng</mark>.' },
+          { code: 'CLCT2', label: 'Các hình thức hoạt động trong chương trình đa dạng, giúp tôi có nhiều cách tiếp cận nội dung khác nhau.',
+            labelHtml: 'Các <mark class="hl">hình thức</mark> hoạt động trong chương trình <mark class="hl">đa dạng</mark>, giúp tôi có nhiều cách tiếp cận nội dung khác nhau.' },
+          { code: 'CLCT3', label: 'Nội dung chương trình kích thích tôi muốn tìm hiểu sâu hơn sau khi tham dự.',
+            labelHtml: 'Nội dung chương trình kích thích <mark class="hl">tôi muốn tìm hiểu sâu hơn</mark> sau khi tham dự.' },
+          { code: 'CLCT4', label: 'Nội dung chương trình phù hợp với mục tiêu và chủ đề của hoạt động.',
+            labelHtml: '<mark class="hl">Nội dung</mark> chương trình phù hợp với <mark class="hl">mục tiêu và chủ đề</mark> của hoạt động.' },
+          { code: 'CLCT5', label: 'Chương trình có bố cục rõ ràng (mở đầu – nội dung chính – kết thúc) và diễn ra đúng thời gian thông báo.',
+            labelHtml: 'Chương trình có <mark class="hl">bố cục rõ ràng</mark> (mở đầu – nội dung chính – kết thúc) và <mark class="hl">diễn ra đúng thời gian</mark> thông báo.' },
         ]
       },
       {
-        code: 'CSVC', name: 'Nhân tố III: Cơ sở vật chất (CSVC)',
+        code: 'CSVC', name: 'Đánh giá III: Cơ sở vật chất',
         items: [
-          { code: 'CSVC1', label: 'Không gian tổ chức phù hợp với quy mô và nội dung chương trình.' },
-          { code: 'CSVC2', label: 'Hệ thống âm thanh, ánh sáng và thiết bị hỗ trợ đáp ứng tốt nhu cầu của chương trình.' },
-          { code: 'CSVC3', label: 'Chỗ ngồi và không gian tham gia tạo cảm giác thoải mái trong suốt chương trình.' },
+          { code: 'CSVC1', label: 'Không gian tổ chức phù hợp với quy mô và nội dung chương trình.',
+            labelHtml: '<mark class="hl">Không gian</mark> tổ chức <mark class="hl">phù hợp</mark> với quy mô và nội dung chương trình.' },
+          { code: 'CSVC2', label: 'Hệ thống âm thanh, ánh sáng và thiết bị hỗ trợ đáp ứng tốt nhu cầu của chương trình.',
+            labelHtml: '<mark class="hl">Hệ thống âm thanh, ánh sáng và thiết bị hỗ trợ</mark> đáp ứng tốt nhu cầu của chương trình.' },
+          { code: 'CSVC3', label: 'Chỗ ngồi và không gian tham gia tạo cảm giác thoải mái trong suốt chương trình.',
+            labelHtml: 'Chỗ ngồi và không gian tham gia tạo <mark class="hl">cảm giác thoải mái</mark> trong suốt chương trình.' },
         ]
       },
       {
-        code: 'GTCT', name: 'Nhân tố IV: Giá trị chương trình (GTCT)',
+        code: 'GTCT', name: 'Đánh giá IV: Giá trị chương trình',
         items: [
-          { code: 'GTCT1', label: 'Những giá trị tôi nhận được từ chương trình xứng đáng với thời gian và công sức tôi đã bỏ ra.' },
-          { code: 'GTCT2', label: 'Chương trình mang lại nhiều điều thú vị và có ích hơn so với kỳ vọng ban đầu của tôi.' },
+          { code: 'GTCT1', label: 'Những giá trị tôi nhận được từ chương trình xứng đáng với thời gian và công sức tôi đã bỏ ra.',
+            labelHtml: 'Những giá trị tôi nhận được từ chương trình <mark class="hl">xứng đáng với thời gian và công sức tôi đã bỏ ra</mark>.' },
+          { code: 'GTCT2', label: 'Chương trình mang lại nhiều điều thú vị và có ích hơn so với kỳ vọng ban đầu của tôi.',
+            labelHtml: 'Chương trình mang lại nhiều điều <mark class="hl">thú vị và có ích hơn so với kỳ vọng ban đầu</mark> của tôi.' },
         ]
       },
       {
-        code: 'SHL', name: 'Nhân tố V: Sự hài lòng (SHL)',
+        code: 'SHL', name: 'Đánh giá V: Sự hài lòng của người tham gia',
         items: [
-          { code: 'SHL1', label: 'Nhìn chung, tôi hài lòng với chương trình này.' },
-          { code: 'SHL2', label: 'Tổng thể, tôi có cảm xúc tích cực khi tham gia chương trình này.' },
-          { code: 'SHL3', label: 'Nhìn lại, việc tham gia chương trình là lựa chọn đúng đắn và có ý nghĩa với tôi.' },
+          { code: 'SHL1', label: 'Nhìn chung, tôi hài lòng với chương trình này.',
+            labelHtml: 'Nhìn chung, tôi <mark class="hl">hài lòng</mark> với chương trình này.' },
+          { code: 'SHL2', label: 'Tổng thể, tôi có cảm xúc tích cực khi tham gia chương trình này.',
+            labelHtml: 'Tổng thể, tôi có <mark class="hl">cảm xúc tích cực</mark> khi tham gia chương trình này.' },
+          { code: 'SHL3', label: 'Nhìn lại, việc tham gia chương trình là lựa chọn đúng đắn và có ý nghĩa với tôi.',
+            labelHtml: 'Nhìn lại, việc tham gia chương trình là <mark class="hl">lựa chọn đúng đắn và có ý nghĩa</mark> với tôi.' },
         ]
       },
       {
-        code: 'LTT', name: 'Nhân tố VI: Lòng trung thành (LTT)',
+        code: 'LTT', name: 'Đánh giá VI: Lòng trung thành',
         items: [
-          { code: 'LTT1', label: 'Tôi sẽ chia sẻ những điều tích cực về chương trình này với người khác.' },
-          { code: 'LTT2', label: 'Nếu chương trình được tổ chức định kỳ, tôi sẽ tiếp tục đăng ký tham dự trong những lần tới.' },
-          { code: 'LTT3', label: 'Tôi sẽ giới thiệu chương trình này cho bạn bè và người quen.' },
-          { code: 'LTT4', label: 'Tôi sẵn sàng cung cấp phản hồi để Ban Tổ chức cải thiện chương trình lần sau.' },
+          { code: 'LTT1', label: 'Tôi sẽ chia sẻ những điều tích cực về chương trình này với người khác.',
+            labelHtml: 'Tôi sẽ <mark class="hl">chia sẻ những điều tích cực</mark> về chương trình này với người khác.' },
+          { code: 'LTT2', label: 'Nếu chương trình được tổ chức định kỳ, tôi sẽ tiếp tục đăng ký tham dự trong những lần tới.',
+            labelHtml: 'Nếu chương trình được tổ chức định kỳ, tôi sẽ <mark class="hl">tiếp tục đăng ký tham dự</mark> trong những lần tới.' },
+          { code: 'LTT3', label: 'Tôi sẽ giới thiệu chương trình này cho bạn bè và người quen.',
+            labelHtml: 'Tôi sẽ <mark class="hl">giới thiệu</mark> chương trình này cho bạn bè và người quen.' },
+          { code: 'LTT4', label: 'Tôi sẵn sàng cung cấp phản hồi để Ban Tổ chức cải thiện chương trình lần sau.',
+            labelHtml: 'Tôi sẵn sàng <mark class="hl">cung cấp phản hồi</mark> để Ban Tổ chức cải thiện chương trình lần sau.' },
         ]
       },
     ],
@@ -972,9 +1003,11 @@
     </div>`;
 
     // Factor sections (Likert 1-7)
+    const SCALE_NOTE = 'Thang đo: 1 = Hoàn toàn không đồng ý · 2 = Không đồng ý · 3 = Hơi không đồng ý · 4 = Trung lập · 5 = Hơi đồng ý · 6 = Đồng ý · 7 = Hoàn toàn đồng ý';
     for (const factor of FORM_SCHEMA.factors) {
       html += `<div class="factor-card">
         <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
+        <div class="scale-note">${esc(SCALE_NOTE)}</div>
         <div class="likert-scroll">
         <table class="likert-table">
           <thead><tr>
@@ -984,7 +1017,7 @@
           <tbody>`;
       for (const item of factor.items) {
         html += `<tr>
-          <td class="col-lbl"><span class="item-code">${esc(item.code)}:</span> ${esc(item.label)}</td>
+          <td class="col-lbl">${item.labelHtml}</td>
           ${[1,2,3,4,5,6,7].map(n =>
             `<td><input type="radio" name="${item.code}" value="${n}" aria-label="${item.code} = ${n}"></td>`
           ).join('')}
