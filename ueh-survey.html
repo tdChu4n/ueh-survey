@@ -466,12 +466,11 @@
 
     /* ── Hero ── */
     .lp-hero {
-      display: flex; align-items: center; gap: 56px;
-      padding: 80px 60px;
-      min-height: calc(100vh - 60px);
+      display: flex; align-items: center; gap: 48px;
+      padding: 72px 60px;
       background: linear-gradient(135deg, #f0faf7 0%, #e4f3ef 50%, #f5faf8 100%);
     }
-    .lp-hero-content { flex: 1; min-width: 0; }
+    .lp-hero-content { flex: 1; min-width: 0; max-width: 580px; }
     .lp-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
     .lp-badge {
       font-size: 10.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
@@ -480,8 +479,8 @@
     .lp-badge--green { background: #006b5e; color: #fff; }
     .lp-badge--outline { border: 1.5px solid #006b5e; color: #006b5e; }
     .lp-hero-title {
-      font-size: 38px; font-weight: 800; color: #0a2e28; line-height: 1.25;
-      margin-bottom: 20px; letter-spacing: -.5px;
+      font-size: 32px; font-weight: 800; color: #0a2e28; line-height: 1.3;
+      margin-bottom: 18px; letter-spacing: -.4px;
     }
     .lp-hero-title em { font-style: normal; color: #006b5e; }
     .lp-hero-sub {
@@ -766,7 +765,7 @@
       </div>
       <div class="lp-hero-visual">
         <div class="lp-preview-card">
-          <div class="lp-preview-card-title">Kết quả phân tích mẫu</div>
+          <div class="lp-preview-card-title">Kết quả phân tích mẫu <span style="font-weight:400;color:#94a3b8;font-style:italic;text-transform:none;letter-spacing:0;">(minh họa)</span></div>
           <div class="lp-pf">
             <div class="lp-pf-lbl">Dịch vụ thông tin</div>
             <div class="lp-pf-bar-wrap"><div class="lp-pf-bar" style="width:78%"></div></div>
