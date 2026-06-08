@@ -274,12 +274,17 @@
 
     .likert-scroll { overflow-x: auto; }
 
-    .likert-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+    .likert-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 680px; }
     .likert-table thead th {
-      text-align: center; padding: 6px 4px; font-size: 12px;
-      color: #555; background: #fafafa; border-bottom: 1px solid #eee; font-weight: 600;
+      text-align: center; padding: 8px 6px; font-size: 11px;
+      color: #444; background: #f4f6f5; border-bottom: 2px solid #e0e0e0;
+      font-weight: 600; line-height: 1.35; white-space: normal; vertical-align: bottom;
     }
-    .likert-table thead th.col-lbl { text-align: left; padding-left: 14px; width: 52%; }
+    .likert-table thead th .lbl-num {
+      display: block; font-size: 15px; font-weight: 800; color: #005c50;
+      line-height: 1; margin-bottom: 4px;
+    }
+    .likert-table thead th.col-lbl { text-align: left; padding-left: 14px; width: 42%; }
     .likert-table tbody td {
       text-align: center; padding: 10px 4px; border-top: 1px solid #f0f0f0;
     }
@@ -1233,16 +1238,15 @@
     </div>`;
 
     // Factor sections (Likert 1-7)
-    const SCALE_NOTE = 'Thang đo: 1 = Hoàn toàn không đồng ý · 2 = Không đồng ý · 3 = Hơi không đồng ý · 4 = Trung lập · 5 = Hơi đồng ý · 6 = Đồng ý · 7 = Hoàn toàn đồng ý';
+    const LIKERT_LABELS = ['Hoàn toàn\nkhông đồng ý','Không\nđồng ý','Hơi không\nđồng ý','Trung lập','Hơi\nđồng ý','Đồng ý','Hoàn toàn\nđồng ý'];
     for (const factor of FORM_SCHEMA.factors) {
       html += `<div class="factor-card">
         <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
-        <div class="scale-note">${esc(SCALE_NOTE)}</div>
         <div class="likert-scroll">
         <table class="likert-table">
           <thead><tr>
             <th class="col-lbl"></th>
-            ${[1,2,3,4,5,6,7].map(n => `<th>${n}</th>`).join('')}
+            ${LIKERT_LABELS.map((lbl,i) => `<th><span class="lbl-num">${i+1}</span>${lbl.replace(/\n/g,'<br>')}</th>`).join('')}
           </tr></thead>
           <tbody>`;
       for (const item of factor.items) {
@@ -1263,12 +1267,12 @@
       <table class="likert-table">
         <thead><tr>
           <th class="col-lbl"></th>
-          ${[1,2,3,4,5,6,7].map(n => `<th>${n}</th>`).join('')}
+          ${LIKERT_LABELS.map((lbl,i) => `<th><span class="lbl-num">${i+1}</span>${lbl.replace(/\n/g,'<br>')}</th>`).join('')}
         </tr></thead>
         <tbody><tr>
           <td class="col-lbl">${esc(FORM_SCHEMA.overall.label)}</td>
-          ${[1,2,3,4,5,6,7].map(n =>
-            `<td><input type="radio" name="overall" value="${n}" aria-label="overall = ${n}"></td>`
+          ${LIKERT_LABELS.map((_,i) =>
+            `<td><input type="radio" name="overall" value="${i+1}" aria-label="overall = ${i+1}"></td>`
           ).join('')}
         </tr></tbody>
       </table></div>
