@@ -105,6 +105,52 @@ window.PROGRAM_YEARS = {
   "Hoạt động học thuật - kỹ năng": 2026
 };
 
+// Thông tin mở rộng từ Assignments cột E-L (API sẽ ghi đè khi load xong)
+window.PROGRAM_INFO = {
+  "Toán - Thống kê 2026": {
+    loaiHoatDong: "3", quyMo: "3",
+    donViToChuc:  "Đoàn khoa Toán - Thống kê",
+    donViPhoiHop: "Liên Chi hội Sinh viên Khoa Toán - Thống kê",
+    ngayBatDau: "01/01/2026", ngayKetThuc: "31/01/2026",
+    batDauKhaoSat: "", ketThucKhaoSat: ""
+  },
+  "Research Maze 2026": {
+    loaiHoatDong: "3", quyMo: "3",
+    donViToChuc:  "Đoàn khoa Toán - Thống kê",
+    donViPhoiHop: "",
+    ngayBatDau: "01/02/2026", ngayKetThuc: "28/02/2026",
+    batDauKhaoSat: "", ketThucKhaoSat: ""
+  },
+  "Competitive Edge": {
+    loaiHoatDong: "3", quyMo: "3",
+    donViToChuc:  "Liên Chi hội Sinh viên Khoa Toán - Thống kê",
+    donViPhoiHop: "",
+    ngayBatDau: "01/03/2026", ngayKetThuc: "31/03/2026",
+    batDauKhaoSat: "", ketThucKhaoSat: ""
+  },
+  "Tần Số 304": {
+    loaiHoatDong: "3", quyMo: "3",
+    donViToChuc:  "Đoàn khoa Toán - Thống kê",
+    donViPhoiHop: "Liên Chi hội Sinh viên Khoa Toán - Thống kê",
+    ngayBatDau: "01/04/2026", ngayKetThuc: "30/04/2026",
+    batDauKhaoSat: "", ketThucKhaoSat: ""
+  },
+  "Mymy Career Ready": {
+    loaiHoatDong: "3", quyMo: "3",
+    donViToChuc:  "Liên Chi hội Sinh viên Khoa Toán - Thống kê",
+    donViPhoiHop: "",
+    ngayBatDau: "01/05/2026", ngayKetThuc: "31/05/2026",
+    batDauKhaoSat: "", ketThucKhaoSat: ""
+  },
+  "Hoạt động học thuật - kỹ năng": {
+    loaiHoatDong: "3", quyMo: "3",
+    donViToChuc:  "Đoàn khoa Toán - Thống kê",
+    donViPhoiHop: "",
+    ngayBatDau: "01/06/2026", ngayKetThuc: "30/06/2026",
+    batDauKhaoSat: "", ketThucKhaoSat: ""
+  }
+};
+
 // ----------------- Aggregation helpers -----------------
 
 const mean = (arr) => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;

@@ -14,8 +14,18 @@ const SHEET_ASSIGNMENTS = 'Assignments'; // Admin thêm/xóa chương trình t�
 const SHEET_RESPONSES   = 'Responses';  // Dữ liệu do sinh viên gửi về
 
 // Cấu trúc sheet "Assignments" (admin quản lý):
-// A: year (năm dương lịch, vd: 2026) | B: courseName | C: participants | D: locked (gõ bất kỳ ký tự = khoá)
-// (Thêm hàng mới = thêm chương trình, mọi user đều thấy)
+// A: year (năm dương lịch, vd: 2026)
+// B: courseName (tên chương trình)
+// C: participants (số lượng tham gia)
+// D: locked (gõ bất kỳ ký tự = khoá)
+// E: loaiHoatDong (mã loại hoạt động, vd: 1 / 2 / 3)
+// F: quyMo (quy mô, vd: 3 / 4)
+// G: donViToChuc (đơn vị tổ chức)
+// H: donViPhoiHop (đơn vị phối hợp)
+// I: ngayBatDau (yyyy-mm-dd)
+// J: ngayKetThuc (yyyy-mm-dd)
+// K: batDauKhaoSat (yyyy-mm-dd)
+// L: ketThucKhaoSat (yyyy-mm-dd)
 
 // Cấu trúc sheet "Responses" (tự động tạo nếu chưa có):
 // timestamp | email | year | program |
@@ -42,12 +52,10 @@ function handleGetCourses(email) {
 
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-  // 1. Đọc danh sách chương trình từ Assignments (admin quản lý)
   const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
   if (!assignSheet) return jsonOut({ success: true, courses: [] });
   const assignRows = assignSheet.getDataRange().getValues();
 
-  // 2. Kiểm tra user đã hoàn thành chương trình nào trong Responses
   const respSheet = ss.getSheetByName(SHEET_RESPONSES);
   const completed = new Set();
   if (respSheet) {
@@ -55,26 +63,33 @@ function handleGetCourses(email) {
     const norm     = email.trim().toLowerCase();
     for (let i = 0; i < respRows.length; i++) {
       const rowEmail = String(respRows[i][1]).trim();
-      if (!rowEmail.includes('@')) continue; // bỏ header hoặc hàng rỗng
+      if (!rowEmail.includes('@')) continue;
       if (rowEmail.toLowerCase() === norm) {
-        completed.add(String(respRows[i][3]).trim()); // cột D = program
+        completed.add(String(respRows[i][3]).trim());
       }
     }
   }
 
-  // 3. Ghép danh sách chương trình + trạng thái
   const courses = [];
   for (let i = 1; i < assignRows.length; i++) {
     const [year, courseName, , lockedRaw] = assignRows[i];
     if (!courseName) continue;
     const name   = String(courseName).trim();
-    const locked = String(lockedRaw || '').trim() !== ''; // có giá trị = khoá
+    const locked = String(lockedRaw || '').trim() !== '';
     courses.push({
-      rowIndex:   i + 1,
-      year:       String(year || '').trim(),
-      courseName: name,
+      rowIndex:       i + 1,
+      year:           String(year || '').trim(),
+      courseName:     name,
       locked,
-      status:     completed.has(name) ? 'Đã thực hiện' : (locked ? 'Đã khoá' : 'Chưa thực hiện'),
+      status:         completed.has(name) ? 'Đã thực hiện' : (locked ? 'Đã khoá' : 'Chưa thực hiện'),
+      loaiHoatDong:   String(assignRows[i][4] || '').trim(),
+      quyMo:          String(assignRows[i][5] || '').trim(),
+      donViToChuc:    String(assignRows[i][6] || '').trim(),
+      donViPhoiHop:   String(assignRows[i][7] || '').trim(),
+      ngayBatDau:     fmtDateOnly(assignRows[i][8]),
+      ngayKetThuc:    fmtDateOnly(assignRows[i][9]),
+      batDauKhaoSat:  fmtDateOnly(assignRows[i][10]),
+      ketThucKhaoSat: fmtDateOnly(assignRows[i][11]),
     });
   }
 
@@ -82,16 +97,14 @@ function handleGetCourses(email) {
 }
 
 
-// ── Lưu phản hồi khảo sát và cập nhật trạng thái ───────────────
+// ── Lưu phản hồi khảo sát ───────────────────────────────────────
 function handleSubmitSurvey(p) {
   try {
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-    // Ghi dữ liệu vào sheet Responses (trạng thái tự check từ đây)
     let respSheet = ss.getSheetByName(SHEET_RESPONSES);
     if (!respSheet) {
       respSheet = ss.insertSheet(SHEET_RESPONSES);
-      // Tạo header
       respSheet.appendRow([
         'Dấu thời gian','Email','Năm','Chương trình',
         'Giới tính','Khóa','Khoa',
@@ -151,7 +164,7 @@ function handleGetResponses() {
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
     const emailVal = String(r[1] || '').trim();
-    if (!emailVal.includes('@')) continue; // bỏ header hoặc hàng rỗng
+    if (!emailVal.includes('@')) continue;
 
     responses.push({
       id:      'R' + String(i).padStart(3, '0'),
@@ -176,40 +189,62 @@ function handleGetResponses() {
     });
   }
 
-  // Đọc danh sách chương trình từ Assignments
-  // Cấu trúc: A=year | B=courseName | C=participants | D=locked
+  // Đọc danh sách chương trình từ Assignments (cột A-L)
   const assignSheet    = ss.getSheetByName(SHEET_ASSIGNMENTS);
   const programs       = [];
   const participantMap = {};
   const programYears   = {};
+  const programInfo    = {};
+
   if (assignSheet) {
     const aRows = assignSheet.getDataRange().getValues();
     for (let i = 1; i < aRows.length; i++) {
-      if (aRows[i][1]) {
-        const name = String(aRows[i][1]).trim();
-        programs.push(name);
-        const n = parseInt(aRows[i][2]);
-        if (!isNaN(n)) participantMap[name] = n;
-        // Cột A giờ là năm dương lịch trực tiếp (vd: 2026)
-        const y = parseInt(aRows[i][0]);
-        programYears[name] = isNaN(y) ? new Date().getFullYear() : y;
-      }
+      if (!aRows[i][1]) continue;
+      const name = String(aRows[i][1]).trim();
+      programs.push(name);
+
+      const n = parseInt(aRows[i][2]);
+      if (!isNaN(n)) participantMap[name] = n;
+
+      const y = parseInt(aRows[i][0]);
+      programYears[name] = isNaN(y) ? new Date().getFullYear() : y;
+
+      // Thông tin mở rộng từ cột E-L
+      programInfo[name] = {
+        loaiHoatDong:   String(aRows[i][4] || '').trim(),
+        quyMo:          String(aRows[i][5] || '').trim(),
+        donViToChuc:    String(aRows[i][6] || '').trim(),
+        donViPhoiHop:   String(aRows[i][7] || '').trim(),
+        ngayBatDau:     fmtDateOnly(aRows[i][8]),
+        ngayKetThuc:    fmtDateOnly(aRows[i][9]),
+        batDauKhaoSat:  fmtDateOnly(aRows[i][10]),
+        ketThucKhaoSat: fmtDateOnly(aRows[i][11]),
+      };
     }
   }
 
-  return jsonOut({ success: true, responses, programs, participantMap, programYears });
-}
-
-function fmtDate(d) {
-  if (!d) return '';
-  const dt = new Date(d);
-  const pad = n => String(n).padStart(2, '0');
-  return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+  return jsonOut({ success: true, responses, programs, participantMap, programYears, programInfo });
 }
 
 
 // ── Helpers ──────────────────────────────────────────────────────
-function num(v)  { const n = parseInt(v); return isNaN(n) ? '' : n; }
+function num(v) { const n = parseInt(v); return isNaN(n) ? '' : n; }
+
+function fmtDate(d) {
+  if (!d) return '';
+  const dt = new Date(d);
+  if (isNaN(dt.getTime())) return '';
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+}
+
+function fmtDateOnly(v) {
+  if (!v) return '';
+  const d = new Date(v);
+  if (isNaN(d.getTime())) return String(v).trim();
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+}
 
 function jsonOut(obj) {
   return ContentService

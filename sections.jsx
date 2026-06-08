@@ -13,57 +13,67 @@ function ActivityCard({ selectedPrograms, responses }) {
       </Section>
     );
   }
-  const programs = [...selectedPrograms];
+  const programs  = [...selectedPrograms];
+  const infoMap   = window.PROGRAM_INFO    || {};
+  const pMap      = window.PARTICIPANT_MAP || {};
 
   const rows = programs.map(p => {
-    const rs = responses.filter(r => r.program === p);
-    const dates = rs.map(r => r.ts).filter(Boolean).sort();
-    return {
-      p,
-      first: dates[0]?.split(" ")[0] ?? "—",
-      last:  dates.at(-1)?.split(" ")[0] ?? "—",
-      count: rs.length,
-      avg:   rs.length ? (rs.reduce((a, r) => a + r.overall, 0) / rs.length).toFixed(2) : "—",
-    };
+    const info = infoMap[p] || {};
+    const rs   = responses.filter(r => r.program === p);
+    const avg  = rs.length
+      ? (rs.reduce((a, r) => a + r.overall, 0) / rs.length).toFixed(2)
+      : "—";
+    return { p, info, slThamGia: pMap[p] || "—", count: rs.length, avg };
   });
 
   const showTotal = programs.length > 1;
+  const totalSL   = programs.reduce((s, p) => s + (pMap[p] || 0), 0);
   const totalAvg  = responses.length
     ? (responses.reduce((a, r) => a + r.overall, 0) / responses.length).toFixed(2)
     : "—";
+
+  const dash = v => v || "—";
 
   return (
     <div className="activity">
       <div className="activity__head">
         <Icon.Attach style={{ color: "var(--brand-500)" }} />
         <div className="activity__title">
-          {programs.length === 0 ? "Chưa chọn chương trình nào"
-            : programs.length === 1 ? programs[0]
-            : `${programs.length} chương trình`}
+          {programs.length === 1 ? programs[0] : `${programs.length} chương trình`}
         </div>
       </div>
       <table className="activity-table">
         <thead>
           <tr>
             <th>STT</th>
-            <th>Chương trình</th>
+            <th>Tên hoạt động</th>
             <th>Loại</th>
+            <th>Quy mô</th>
             <th>Đơn vị tổ chức</th>
-            <th>Phản hồi đầu</th>
-            <th>Phản hồi cuối</th>
-            <th>Số lượt</th>
+            <th>Đơn vị phối hợp</th>
+            <th>SL tham gia</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>BĐ khảo sát</th>
+            <th>KT khảo sát</th>
+            <th>Số phiếu</th>
             <th>Điểm TB</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={row.p}>
-              <td>{String(i + 1).padStart(2, "0")}</td>
+              <td className="mono">{String(i + 1).padStart(2, "0")}</td>
               <td>{row.p}</td>
-              <td>Khảo sát sau hoạt động</td>
-              <td>Đoàn khoa Toán - Thống kê</td>
-              <td className="mono">{row.first}</td>
-              <td className="mono">{row.last}</td>
+              <td className="mono">{dash(row.info.loaiHoatDong)}</td>
+              <td className="mono">{dash(row.info.quyMo)}</td>
+              <td>{dash(row.info.donViToChuc)}</td>
+              <td>{dash(row.info.donViPhoiHop)}</td>
+              <td className="mono">{row.slThamGia}</td>
+              <td className="mono">{dash(row.info.ngayBatDau)}</td>
+              <td className="mono">{dash(row.info.ngayKetThuc)}</td>
+              <td className="mono">{dash(row.info.batDauKhaoSat)}</td>
+              <td className="mono">{dash(row.info.ketThucKhaoSat)}</td>
               <td className="mono">{row.count}</td>
               <td className="mono">{row.avg === "—" ? "—" : `${row.avg} / 7`}</td>
             </tr>
@@ -71,6 +81,8 @@ function ActivityCard({ selectedPrograms, responses }) {
           {showTotal && (
             <tr style={{ fontWeight: 600, background: "var(--surface-soft,#f6f8fa)" }}>
               <td colSpan={6} style={{ textAlign: "right", paddingRight: 12, color: "#64748b" }}>Tổng cộng</td>
+              <td className="mono">{totalSL || "—"}</td>
+              <td colSpan={4}></td>
               <td className="mono">{responses.length}</td>
               <td className="mono">{totalAvg === "—" ? "—" : `${totalAvg} / 7`}</td>
             </tr>

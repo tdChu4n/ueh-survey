@@ -887,7 +887,7 @@ button {
   .activity { padding: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .activity__head { flex-wrap: wrap; gap: 8px; }
   .activity__title { font-size: 14px; }
-  .activity-table { min-width: 680px; font-size: 12px; }
+  .activity-table { min-width: 1200px; font-size: 12px; }
   .activity-table th { padding-bottom: 8px; padding-right: 10px; }
   .activity-table td { padding: 12px 10px 0 0; }
 

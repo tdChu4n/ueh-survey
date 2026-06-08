@@ -235,6 +235,9 @@ function App() {
           if (data.programYears) {
             window.PROGRAM_YEARS = { ...(window.PROGRAM_YEARS || {}), ...data.programYears };
           }
+          if (data.programInfo) {
+            window.PROGRAM_INFO = { ...(window.PROGRAM_INFO || {}), ...data.programInfo };
+          }
           setUpdatedAt(new Date().toLocaleTimeString('vi-VN'));
           setDataKey(k => k + 1);
         }
