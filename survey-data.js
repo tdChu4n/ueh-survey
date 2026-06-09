@@ -117,11 +117,13 @@ window.itemDistribution = function(rs, code) {
 
 // Rating label for a 1-7 score
 window.ratingLabel = function(score) {
-  if (score >= 6) return { text: "Tốt", tone: "good" };
-  if (score >= 5) return { text: "Khá", tone: "ok" };
-  if (score >= 4) return { text: "Trung bình", tone: "mid" };
-  if (score >= 3) return { text: "Yếu", tone: "low" };
-  return { text: "Kém", tone: "bad" };
+  if (score >= 6.5) return { text: "Hoàn toàn đồng ý", tone: "good" };
+  if (score >= 5.5) return { text: "Đồng ý", tone: "good" };
+  if (score >= 4.5) return { text: "Hơi đồng ý", tone: "ok" };
+  if (score >= 3.5) return { text: "Trung lập", tone: "mid" };
+  if (score >= 2.5) return { text: "Hơi không đồng ý", tone: "low" };
+  if (score >= 1.5) return { text: "Không đồng ý", tone: "bad" };
+  return { text: "Hoàn toàn không đồng ý", tone: "bad" };
 };
 
 // Tone -> color

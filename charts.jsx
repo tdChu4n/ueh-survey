@@ -36,7 +36,7 @@ function Donut({ data, size = 180, thickness = 28, centerLabel, centerValue }) {
       ))}
       {centerValue !== undefined && (
         <>
-          <text x={cx} y={cy - 2} textAnchor="middle" fontFamily="var(--font-mono)"
+          <text x={cx} y={cy - 2} textAnchor="middle" fontFamily="var(--font-sans)"
                 fontSize={28} fontWeight={600} fill="var(--ink)" style={{letterSpacing:"-0.02em"}}>
             {centerValue}
           </text>
@@ -73,7 +73,7 @@ function HBarChart({ items, max = 7 }) {
         return (
           <g key={i}>
             <text x={padL - 10} y={y + rowH/2 - 2} textAnchor="end"
-                  fontSize={12} fill="var(--ink)" fontFamily="var(--font-mono)" fontWeight={500}>
+                  fontSize={12} fill="var(--ink)" fontFamily="var(--font-sans)" fontWeight={500}>
               {it.label}
             </text>
             <rect x={padL} y={y + 6} width={innerW} height={rowH - 18}
@@ -83,7 +83,7 @@ function HBarChart({ items, max = 7 }) {
                     fill={it.color} fillOpacity="0.35" stroke={it.color} strokeWidth={1.2} rx={3} />
             )}
             <text x={tx} y={y + rowH/2 - 1} fontSize={11}
-                  fontFamily="var(--font-mono)" fill="var(--ink-soft)">
+                  fontFamily="var(--font-sans)" fill="var(--ink-soft)">
               {it.value > 0 ? it.value.toFixed(2) : 'â€”'}
             </text>
           </g>
@@ -93,7 +93,7 @@ function HBarChart({ items, max = 7 }) {
       {ticks.map(t => {
         const x = padL + ((t - 1) / (max - 1)) * innerW;
         return <text key={t} x={x} y={height - 6} textAnchor="middle"
-                      fontSize={10} fill="var(--ink-muted)" fontFamily="var(--font-mono)">{t}</text>;
+                      fontSize={10} fill="var(--ink-muted)" fontFamily="var(--font-sans)">{t}</text>;
       })}
     </svg>
   );
@@ -167,18 +167,18 @@ function LineChart({ series, xLabels, yMax }) {
           <line x1={padL} y1={yFor(t)} x2={width - padR} y2={yFor(t)}
                 stroke="oklch(0.94 0.005 280)" strokeWidth={1} />
           <text x={padL - 6} y={yFor(t) + 3} textAnchor="end" fontSize={10}
-                fontFamily="var(--font-mono)" fill="var(--ink-muted)">{t}</text>
+                fontFamily="var(--font-sans)" fill="var(--ink-muted)">{t}</text>
         </g>
       ))}
       {/* x labels */}
       {xLabels.map((lab, i) => (
         <text key={i} x={xs[i]} y={height - padB + 16} textAnchor="middle"
-              fontSize={11} fontFamily="var(--font-mono)" fill="var(--ink-muted)">
+              fontSize={11} fontFamily="var(--font-sans)" fill="var(--ink-muted)">
           {lab}
         </text>
       ))}
       <text x={padL} y={padT - 4} fontSize={10} fill="var(--ink-muted)"
-            fontFamily="var(--font-mono)" textAnchor="start">Sá»‘ phiáº¿u</text>
+            fontFamily="var(--font-sans)" textAnchor="start">Sá»‘ phiáº¿u</text>
       {/* smooth curves */}
       {series.map((s, i) => {
         const pts = s.data.map((v, idx) => [xs[idx], yFor(v)]);
@@ -259,7 +259,7 @@ function RadarChart({ axes, values, size = 280, max = 7, min = 1, color = "var(-
         return (
           <text key={idx} x={lx} y={ly} textAnchor="middle"
                 fontSize={12} fontWeight={600} fill="var(--ink)"
-                fontFamily="var(--font-mono)">{label}</text>
+                fontFamily="var(--font-sans)">{label}</text>
         );
       })}
       {/* ring value labels along top axis */}
@@ -268,7 +268,7 @@ function RadarChart({ axes, values, size = 280, max = 7, min = 1, color = "var(-
         const ly = cy - r * norm;
         return (
           <text key={v} x={cx + 4} y={ly + 3} fontSize={9}
-                fill="var(--ink-muted)" fontFamily="var(--font-mono)">{v}</text>
+                fill="var(--ink-muted)" fontFamily="var(--font-sans)">{v}</text>
         );
       })}
     </svg>
@@ -296,7 +296,7 @@ function VBarChart({ items, max = 7, min = 1, height = 260 }) {
           <line x1={padL} y1={yFor(t)} x2={width - padR} y2={yFor(t)}
                 stroke="oklch(0.94 0.005 280)" strokeWidth={1} />
           <text x={padL - 6} y={yFor(t) + 3} textAnchor="end"
-                fontSize={10} fontFamily="var(--font-mono)" fill="var(--ink-muted)">
+                fontSize={10} fontFamily="var(--font-sans)" fill="var(--ink-muted)">
             {t}
           </text>
         </g>
@@ -312,10 +312,10 @@ function VBarChart({ items, max = 7, min = 1, height = 260 }) {
                   fill={it.color} fillOpacity="0.25"
                   stroke={it.color} strokeWidth={1.4} rx={3} />
             <text x={x + barW/2} y={height - padB + 16} textAnchor="middle"
-                  fontSize={11} fontWeight={600} fontFamily="var(--font-mono)"
+                  fontSize={11} fontWeight={600} fontFamily="var(--font-sans)"
                   fill={it.color}>{it.label}</text>
             <text x={x + barW/2} y={height - padB + 30} textAnchor="middle"
-                  fontSize={10} fontFamily="var(--font-mono)" fill="var(--ink-muted)">
+                  fontSize={10} fontFamily="var(--font-sans)" fill="var(--ink-muted)">
               {it.value.toFixed(2)}
             </text>
           </g>
@@ -344,7 +344,7 @@ function Histogram({ data, xLabels, color = "var(--c-mid)", colors, yLabel = "Sá
     <svg width="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
       {/* Y-axis title â€” placed safely above the topmost tick */}
       <text x={padL - 6} y={padT - 18} fontSize={11} fill="var(--ink-muted)"
-            fontFamily="var(--font-mono)" textAnchor="start">
+            fontFamily="var(--font-sans)" textAnchor="start">
         {yLabel}
       </text>
       {yTicks.map((t) => (
@@ -352,7 +352,7 @@ function Histogram({ data, xLabels, color = "var(--c-mid)", colors, yLabel = "Sá
           <line x1={padL} y1={yFor(t)} x2={width - padR} y2={yFor(t)}
                 stroke="oklch(0.94 0.005 280)" strokeWidth={1} />
           <text x={padL - 8} y={yFor(t) + 3} textAnchor="end"
-                fontSize={10} fontFamily="var(--font-mono)" fill="var(--ink-muted)">
+                fontSize={10} fontFamily="var(--font-sans)" fill="var(--ink-muted)">
             {Math.round(t)}
           </text>
         </g>
@@ -372,13 +372,13 @@ function Histogram({ data, xLabels, color = "var(--c-mid)", colors, yLabel = "Sá
             )}
             {v > 0 && (
               <text x={x + barW/2} y={y - labelGap} textAnchor="middle"
-                    fontSize={12} fontFamily="var(--font-mono)" fontWeight={700}
+                    fontSize={12} fontFamily="var(--font-sans)" fontWeight={700}
                     fill={c}>
                 {v}
               </text>
             )}
             <text x={x + barW/2} y={height - padB + 18} textAnchor="middle"
-                  fontSize={12} fontFamily="var(--font-mono)" fontWeight={600}
+                  fontSize={12} fontFamily="var(--font-sans)" fontWeight={600}
                   fill="var(--ink)">
               {xLabels[i]}
             </text>
@@ -387,7 +387,7 @@ function Histogram({ data, xLabels, color = "var(--c-mid)", colors, yLabel = "Sá
       })}
       {/* X-axis title â€” placed below tick labels */}
       <text x={padL + innerW/2} y={height - 8} textAnchor="middle"
-            fontSize={11} fill="var(--ink-muted)" fontFamily="var(--font-mono)">
+            fontSize={11} fill="var(--ink-muted)" fontFamily="var(--font-sans)">
         {xLabel}
       </text>
     </svg>

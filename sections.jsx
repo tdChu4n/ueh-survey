@@ -534,10 +534,11 @@ function SummaryTabContent({ responses, onFactorClick }) {
         />
         <div className="hist-legend">
           {[
-            { range: "1–2", label: "Không hài lòng", color: "oklch(0.62 0.18 25)" },
-            { range: "3",   label: "Yếu",            color: "oklch(0.7 0.16 60)" },
-            { range: "4–5", label: "Trung bình – Khá", color: "oklch(0.55 0.18 240)" },
-            { range: "6–7", label: "Tốt – Rất tốt",  color: "oklch(0.55 0.18 145)" },
+            { range: "1–2", label: "Hoàn toàn không đồng ý / Không đồng ý", color: "oklch(0.62 0.18 25)" },
+            { range: "3",   label: "Hơi không đồng ý", color: "oklch(0.7 0.16 60)" },
+            { range: "4",   label: "Trung lập", color: "oklch(0.62 0.16 240)" },
+            { range: "5",   label: "Hơi đồng ý", color: "oklch(0.55 0.18 240)" },
+            { range: "6–7", label: "Đồng ý / Hoàn toàn đồng ý", color: "oklch(0.55 0.18 145)" },
           ].map((g, i) => (
             <div key={i} className="hist-legend__item">
               <span className="hist-legend__chip" style={{
