@@ -645,8 +645,8 @@ button {
 
 /* ---- Sidebar ---- */
 .sidebar {
-  width: 320px;
-  min-width: 260px;
+  width: 400px;
+  min-width: 320px;
   flex-shrink: 0;
   background: var(--surface);
   border-right: 1px solid var(--border);
