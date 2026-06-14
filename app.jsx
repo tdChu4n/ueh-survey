@@ -301,8 +301,12 @@ function App() {
         />
         <main className="main dashboard-main">
           <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
-          <DescriptiveSection responses={responses} selectedPrograms={selectedPrograms} />
-          <ReportTabs responses={responses} />
+          {selectedPrograms.size > 0 && (
+            <>
+              <DescriptiveSection responses={responses} selectedPrograms={selectedPrograms} />
+              <ReportTabs responses={responses} />
+            </>
+          )}
           <MailboxSection entries={mailbox} />
         </main>
       </div>
