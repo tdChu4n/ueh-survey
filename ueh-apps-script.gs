@@ -10,7 +10,7 @@ const SHEET_MAILBOX     = 'Mailbox';
 // Cấu trúc sheet "Assignments" (admin quản lý):
 // A: courseName      — tên chương trình
 // B: participants    — số lượng tham gia
-// C: locked          — khoá (gõ bất kỳ ký tự = khoá)
+// C: (không dùng - trước đây là locked)
 // D: loaiHoatDong   — mã loại hoạt động (1 / 2 / 3)
 // E: quyMo           — quy mô (3 / 4)
 // F: donViToChuc     — đơn vị tổ chức
@@ -63,10 +63,24 @@ function handleGetCourses(email) {
 
   const courses = [];
   for (let i = 1; i < aRows.length; i++) {
-    const [courseName, , lockedRaw] = aRows[i];
+    const [courseName] = aRows[i];
     if (!courseName) continue;
     const name   = String(courseName).trim();
-    const locked = String(lockedRaw || '').trim() !== '';
+    
+    // Tự động khoá theo ngày hạn chót khảo sát (Cột K, index 10)
+    let locked = false;
+    const deadlineVal = aRows[i][10];
+    if (deadlineVal) {
+      const deadlineDate = new Date(deadlineVal);
+      if (!isNaN(deadlineDate.getTime())) {
+        // Hạn chót kéo dài hết ngày ghi trong ô khảo sát (đến 23:59:59)
+        deadlineDate.setHours(23, 59, 59, 999);
+        if (new Date() > deadlineDate) {
+          locked = true;
+        }
+      }
+    }
+    
     const year   = aRows[i][7] ? new Date(aRows[i][7]).getFullYear() : '';
     courses.push({
       rowIndex:       i + 1,
@@ -93,6 +107,28 @@ function handleGetCourses(email) {
 function handleSubmitSurvey(p) {
   try {
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    
+    // Kiểm tra xem chương trình đã quá hạn khảo sát chưa trước khi lưu
+    const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
+    if (assignSheet) {
+      const aRows = assignSheet.getDataRange().getValues();
+      for (let i = 1; i < aRows.length; i++) {
+        if (String(aRows[i][0]).trim() === String(p.program).trim()) {
+          const deadlineVal = aRows[i][10];
+          if (deadlineVal) {
+            const deadlineDate = new Date(deadlineVal);
+            if (!isNaN(deadlineDate.getTime())) {
+              deadlineDate.setHours(23, 59, 59, 999);
+              if (new Date() > deadlineDate) {
+                return jsonOut({ success: false, error: 'Khảo sát đã đóng do quá hạn chót.' });
+              }
+            }
+          }
+          break;
+        }
+      }
+    }
+
     let respSheet = ss.getSheetByName(SHEET_RESPONSES);
     if (!respSheet) {
       respSheet = ss.insertSheet(SHEET_RESPONSES);
