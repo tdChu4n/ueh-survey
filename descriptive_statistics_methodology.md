@@ -39,11 +39,7 @@ Các phương pháp thống kê mô tả được định nghĩa trong `survey-d
 Trước khi tính toán, hệ thống chỉ giữ lại các phiếu khảo sát hợp lệ bằng cách kiểm tra địa chỉ email chứa ký tự `@`. Hệ thống hỗ trợ lọc đa chiều:
 * **Lọc theo tập hợp chương trình**: Sử dụng cấu trúc dữ liệu `Set` để kiểm tra nhanh một phản hồi có nằm trong các chương trình được chọn hay không.
   
-  *Công thức toán học:*
-  $$
-  R_{\text{filtered}} = \{r \in R_{\text{all}} \mid r.\text{program} \in S_{\text{selected}}\}
-  $$
-  *Dạng văn bản:* **R_filtered = { r ∈ R_all | r.program ∈ S_selected }**
+  **R<sub>filtered</sub> = { r ∈ R<sub>all</sub> | r.program ∈ S<sub>selected</sub> }**
 
 * **Lọc theo Khoa và Khóa**: Lọc trực tiếp trên tập hợp phản hồi đã chọn bằng cách so khớp chuỗi ký tự khoa/khóa đã cấu hình.
 
@@ -52,76 +48,61 @@ Trước khi tính toán, hệ thống chỉ giữ lại các phiếu khảo sá
 ### 2.2. Điểm Trung Bình Biến Quan Sát (Item Mean)
 Điểm trung bình của một biến quan sát *j* (ví dụ: `CLCT1`) trên tập hợp phiếu khảo sát *R* được tính bằng công thức trung bình cộng số học đơn giản:
 
-*Công thức toán học:*
-$$
-\bar{X}_j = \frac{1}{|R_j|} \sum_{r \in R_j} X_{r, j}
-$$
-*Dạng văn bản:* **X̄_j = (1 / N_j) * Σ X_r,j**
+> **X̄<sub>j</sub> = (1 / N<sub>j</sub>) × Σ X<sub>r, j</sub>**
 
 *Trong đó:*
-* *R_j* là tập hợp các phản hồi có điểm số hợp lệ cho biến quan sát *j*.
-* *N_j* là số lượng phản hồi hợp lệ cho biến quan sát *j* ($N_j = |R_j|$).
-* *X_r,j* là điểm số (từ 1 đến 7) mà sinh viên *r* đánh giá cho biến *j*.
-* Cài đặt mã nguồn (`survey-data.js`):
-  ```javascript
-  window.itemMean = function(rs, code) {
-    return mean(rs.map(r => r[code]).filter(v => typeof v === "number"));
-  };
-  ```
+* **R<sub>j</sub>** là tập hợp các phản hồi có điểm số hợp lệ cho biến quan sát *j*.
+* **N<sub>j</sub>** là số lượng phản hồi hợp lệ cho biến quan sát *j* (N<sub>j</sub> = |R<sub>j</sub>|).
+* **X<sub>r, j</sub>** là điểm số (từ 1 đến 7) mà sinh viên *r* đánh giá cho biến *j*.
+* **Σ** là ký hiệu tổng của toàn bộ giá trị đánh giá từ sinh viên *r* thuộc tập hợp R<sub>j</sub>.
+
+*Cài đặt mã nguồn (`survey-data.js`):*
+```javascript
+window.itemMean = function(rs, code) {
+  return mean(rs.map(r => r[code]).filter(v => typeof v === "number"));
+};
+```
 
 ---
 
 ### 2.3. Điểm Trung Bình Nhân Tố (Factor Mean)
 Mỗi nhân tố chính (ví dụ: `CLCT` - Chất lượng chương trình) được cấu thành bởi nhiều biến quan sát thành phần. Điểm trung bình của nhân tố *F* được tính bằng cách lấy trung bình gộp (pooled mean) của tất cả các điểm số thuộc các biến thành phần của nhân tố đó trên toàn bộ tập phiếu khảo sát *R*:
 
-*Công thức toán học:*
-$$
-\bar{X}_F = \frac{1}{\sum_{j \in F} |R_j|} \sum_{j \in F} \sum_{r \in R_j} X_{r, j}
-$$
-*Dạng văn bản:* **X̄_F = (Tổng tất cả điểm các biến thuộc F) / (Tổng số lượt đánh giá các biến thuộc F)**
+> **X̄<sub>F</sub> = (Σ<sub>j ∈ F</sub> Σ<sub>r ∈ R<sub>j</sub></sub> X<sub>r, j</sub>) / Σ<sub>j ∈ F</sub> N<sub>j</sub>**
+>
+> *(Hoặc viết đơn giản: X̄<sub>F</sub> = Tổng toàn bộ điểm các biến thuộc F / Tổng số lượt đánh giá)*
 
-* Cài đặt mã nguồn (`survey-data.js`):
-  ```javascript
-  window.factorMean = function(rs, factor) {
-    const vals = [];
-    for (const r of rs) {
-      for (const it of factor.items) {
-        if (typeof r[it.code] === "number") vals.push(r[it.code]);
-      }
+*Cài đặt mã nguồn (`survey-data.js`):*
+```javascript
+window.factorMean = function(rs, factor) {
+  const vals = [];
+  for (const r of rs) {
+    for (const it of factor.items) {
+      if (typeof r[it.code] === "number") vals.push(r[it.code]);
     }
-    return mean(vals);
-  };
-  ```
+  }
+  return mean(vals);
+};
+```
 
 ---
 
 ### 2.4. Phân Phối Tần Số Phản Hồi (Response Distribution)
 Để biết được số lượng sinh viên chọn từng mức độ đánh giá từ 1 đến 7 cho một biến quan sát *j*, hệ thống đếm tần số xuất hiện của các điểm số:
 
-*Công thức toán học:*
-$$
-D_j = [f_1, f_2, f_3, f_4, f_5, f_6, f_7]
-$$
-*Dạng văn bản:* **D_j = [Tần số điểm 1, Tần số điểm 2, ..., Tần số điểm 7]**
+> **D<sub>j</sub> = [f<sub>1</sub>, f<sub>2</sub>, f<sub>3</sub>, f<sub>4</sub>, f<sub>5</sub>, f<sub>6</sub>, f<sub>7</sub>]**
 
-Với *f_k* là số lượng phiếu khảo sát có mức đánh giá *X_r,j = k* (với $k \in \{1, 2, 3, 4, 5, 6, 7\}$).
+Với **f<sub>k</sub>** là số lượng phiếu khảo sát có mức đánh giá X<sub>r, j</sub> = k (với k ∈ {1, 2, 3, 4, 5, 6, 7}).
 
 ---
 
 ### 2.5. Tỷ Lệ Hài Lòng (Satisfaction Rate)
 Một phản hồi được coi là "Hài lòng" đối với hoạt động nếu điểm đánh giá trung bình của nhân tố Sự hài lòng (`SHL` gồm 3 biến quan sát: `SHL1`, `SHL2`, `SHL3`) đạt từ mức 5.0 trở lên (thang điểm 7):
 
-*Công thức toán học:*
-$$
-\text{Hài Lòng}(r) = \text{True} \iff \frac{X_{r, \text{SHL1}} + X_{r, \text{SHL2}} + X_{r, \text{SHL3}}}{3} \ge 5.0
-$$
-*Dạng văn bản:* **Hài Lòng(r) = True ⟺ (SHL1 + SHL2 + SHL3) / 3 ≥ 5.0**
+> **Hài Lòng(r) = True ⟺ (X<sub>r, SHL1</sub> + X<sub>r, SHL2</sub> + X<sub>r, SHL3</sub>) / 3 ≥ 5.0**
 
 Tỷ lệ hài lòng tổng thể được tính bằng:
-$$
-\text{Tỷ lệ Hài Lòng} = \frac{|\{r \in R \mid \text{Hài Lòng}(r) = \text{True}\}|}{|R|} \times 100\%
-$$
-*Dạng văn bản:* **Tỷ lệ Hài Lòng = (Số phiếu Hài Lòng / Tổng số phiếu) * 100%**
+> **Tỷ lệ Hài Lòng = (Số phiếu Hài Lòng / Tổng số phiếu) × 100%**
 
 ---
 
@@ -139,26 +120,23 @@ $$
 Được sử dụng để hiển thị tỷ lệ giới tính (Nam/Nữ) tham gia hoạt động.
 
 * **Tính toán thông số**:
-  - Bán kính đường tròn trung bình: *R* = (*size* / 2) - (*thickness* / 2)
-  - Tọa độ tâm: (*Cx*, *Cy*) = (*size* / 2, *size* / 2)
+  - Bán kính đường tròn trung bình: **R = (size / 2) - (thickness / 2)**
+  - Tọa độ tâm: **(Cx, Cy) = (size / 2, size / 2)**
   - Tỉ lệ tích lũy của từng phần được chuẩn hóa về đoạn [0, 1].
 * **Thuật toán tạo đường dẫn cung tròn (`arcPath`)**:
-  Để vẽ một cung tròn từ tỉ lệ bắt đầu `start` đến tỉ lệ kết thúc `end`, ta tính góc bắt đầu $\theta_0$ và góc kết thúc $\theta_1$ (trừ đi $\pi/2$ để biểu đồ bắt đầu quay từ đỉnh 12 giờ):
-  $$
-  \theta_0 = \text{start} \times 2\pi - \frac{\pi}{2}, \quad \theta_1 = \text{end} \times 2\pi - \frac{\pi}{2}
-  $$
-  Tọa độ điểm đầu (*x0*, *y0*) và điểm cuối (*x1*, *y1*) của cung tròn trên viền ngoài:
-  $$
-  x_0 = C_x + R \cos(\theta_0), \quad y_0 = C_y + R \sin(\theta_0)
-  $$
-  $$
-  x_1 = C_x + R \cos(\theta_1), \quad y_1 = C_y + R \sin(\theta_1)
-  $$
-  Tham số `large-arc-flag` xác định hướng đi của cung tròn ngắn hay dài (bằng 1 nếu cung tròn có độ dài $> 180^\circ$ tức $\text{end} - \text{start} > 0.5$, ngược lại bằng 0).
+  Để vẽ một cung tròn từ tỉ lệ bắt đầu `start` đến tỉ lệ kết thúc `end`, ta tính góc bắt đầu θ<sub>0</sub> và góc kết thúc θ<sub>1</sub> (trừ đi π/2 để biểu đồ bắt đầu quay từ đỉnh 12 giờ):
+  > **θ<sub>0</sub> = start × 2π - π/2**
+  > **θ<sub>1</sub> = end × 2π - π/2**
+  
+  Tọa độ điểm đầu (x<sub>0</sub>, y<sub>0</sub>) và điểm cuối (x<sub>1</sub>, y<sub>1</sub>) của cung tròn trên viền ngoài:
+  > **x<sub>0</sub> = Cx + R × cos(θ<sub>0</sub>)**
+  > **y<sub>0</sub> = Cy + R × sin(θ<sub>0</sub>)**
+  > **x<sub>1</sub> = Cx + R × cos(θ<sub>1</sub>)**
+  > **y<sub>1</sub> = Cy + R × sin(θ<sub>1</sub>)**
+  
+  Tham số `large-arc-flag` xác định hướng đi của cung tròn ngắn hay dài (bằng 1 nếu cung tròn có độ dài > 180° tức end - start > 0.5, ngược lại bằng 0).
   Đường dẫn SVG được định nghĩa dưới dạng chuỗi vẽ:
-  $$
-  d = \text{"M } x_0 \text{ } y_0 \text{ A } R \text{ } R \text{ 0 } \text{largeArcFlag} \text{ 1 } x_1 \text{ } y_1\text{"}
-  $$
+  > **d = "M " + x<sub>0</sub> + " " + y<sub>0</sub> + " A " + R + " " + R + " 0 " + largeArcFlag + " 1 " + x<sub>1</sub> + " " + y<sub>1</sub>**
 
 ---
 
@@ -167,16 +145,11 @@ Dùng để so sánh điểm trung bình của các biến quan sát hoặc so s
 
 * **Ánh xạ giá trị sang Pixel**:
   Vì điểm đánh giá nằm trong thang từ 1 đến 7, ta cần chuẩn hóa điểm số *V* (thuộc [1, 7]) về đoạn tỉ lệ phần trăm [0, 1] để tính toán chiều rộng/chiều cao trên màn hình:
-  $$
-  \text{Ratio} = \frac{V - 1}{7 - 1} = \frac{V - 1}{6}
-  $$
-  *Dạng văn bản:* **Ratio = (V - 1) / 6**
+  > **Ratio = (V - 1) / 6**
 * **Tính toán kích thước cột ngang**:
-  $$
-  \text{Width}_{\text{bar}} = \text{Ratio} \times \text{InnerWidth}
-  $$
-  *Dạng văn bản:* **Width_bar = Ratio * InnerWidth**
-  Vẽ một thanh chữ nhật màu nền nhạt làm mốc tối đa 7 điểm và đè lên trên một thanh `<rect>` có chiều rộng $\text{Width}_{\text{bar}}$ mang màu sắc đại diện cho mức điểm.
+  > **Width<sub>bar</sub> = Ratio × InnerWidth**
+  
+  Vẽ một thanh chữ nhật màu nền nhạt làm mốc tối đa 7 điểm và đè lên trên một thanh `<rect>` có chiều rộng Width<sub>bar</sub> mang màu sắc đại diện cho mức điểm.
 
 ---
 
@@ -191,26 +164,22 @@ Nếu sử dụng đường nối thẳng (Linear) thì biểu đồ bị gãy k
 
 * **Các bước thuật toán**:
   1. **Tính độ dốc giữa các cặp điểm liên tiếp**:
-     $$
-     d_i = \frac{y_{i+1} - y_i}{x_{i+1} - x_i} \quad \text{với } i = 0, \dots, n-2
-     $$
-  2. **Tính toán tiếp tuyến ban đầu tại mỗi nút $m_i$**:
-     Tại các điểm biên: $m_0 = d_0$, $m_{n-1} = d_{n-2}$.
+     > **d<sub>i</sub> = (y<sub>i+1</sub> - y<sub>i</sub>) / (x<sub>i+1</sub> - x<sub>i</sub>)** (với i = 0, ..., n-2)
+  2. **Tính toán tiếp tuyến ban đầu tại mỗi nút m<sub>i</sub>**:
+     Tại các điểm biên: m<sub>0</sub> = d<sub>0</sub>, m<sub>n-1</sub> = d<sub>n-2</sub>.
      Tại các nút trung gian: Lấy trung bình cộng của độ dốc hai bên liền kề nếu chúng cùng dấu, ngược lại đặt bằng 0:
-     $$
-     m_i = \begin{cases} \frac{d_{i-1} + d_i}{2} & \text{nếu } d_{i-1} \cdot d_i > 0 \\ 0 & \text{nếu } d_{i-1} \cdot d_i \le 0 \end{cases}
-     $$
+     > **m<sub>i</sub> = (d<sub>i-1</sub> + d<sub>i</sub>) / 2** (nếu d<sub>i-1</sub> × d<sub>i</sub> > 0, ngược lại đặt bằng 0)
   3. **Hiệu chỉnh chống vượt ngưỡng (Fritsch-Carlson)**:
-     Với mỗi đoạn $[i, i+1]$, nếu $d_i = 0$ thì đặt $m_i = m_{i+1} = 0$.
-     Nếu không, ta tính hai hệ số tỉ lệ: $\alpha_i = m_i / d_i$ và $\beta_i = m_{i+1} / d_i$.
-     Nếu $\alpha_i^2 + \beta_i^2 > 9$, ta hiệu chỉnh lại các tiếp tuyến để đảm bảo tính đơn điệu (chống overshoot):
-     $$
-     \tau_i = \frac{3}{\sqrt{\alpha_i^2 + \beta_i^2}}, \quad m_i = \tau_i \cdot \alpha_i \cdot d_i, \quad m_{i+1} = \tau_i \cdot \beta_i \cdot d_i
-     $$
+     Với mỗi đoạn [i, i+1], nếu d<sub>i</sub> = 0 thì đặt m<sub>i</sub> = m<sub>i+1</sub> = 0.
+     Nếu không, ta tính hai hệ số tỉ lệ: α<sub>i</sub> = m<sub>i</sub> / d<sub>i</sub> và β<sub>i</sub> = m<sub>i+1</sub> / d<sub>i</sub>.
+     Nếu α<sub>i</sub><sup>2</sup> + β<sub>i</sub><sup>2</sup> > 9, ta hiệu chỉnh lại các tiếp tuyến để đảm bảo tính đơn điệu (chống overshoot):
+     > **τ<sub>i</sub> = 3 / √(α<sub>i</sub><sup>2</sup> + β<sub>i</sub><sup>2</sup>)**
+     > **m<sub>i</sub> = τ<sub>i</sub> × α<sub>i</sub> × d<sub>i</sub>**
+     > **m<sub>i+1</sub> = τ<sub>i</sub> × β<sub>i</sub> × d<sub>i</sub>**
   4. **Tạo chuỗi lệnh Cubic Bezier**:
-     Khoảng cách điều khiển dọc theo trục X là $\Delta x = (x_{i+1} - x_i) / 3$.
-     Điểm điều khiển thứ nhất: $(cp_{1x}, cp_{1y}) = (x_i + \Delta x, y_i + m_i \cdot \Delta x)$
-     Điểm điều khiển thứ hai: $(cp_{2x}, cp_{2y}) = (x_{i+1} - \Delta x, y_{i+1} - m_{i+1} \cdot \Delta x)$
+     Khoảng cách điều khiển dọc theo trục X là Δx = (x<sub>i+1</sub> - x<sub>i</sub>) / 3.
+     Điểm điều khiển thứ nhất: **(cp<sub>1x</sub>, cp<sub>1y</sub>) = (x<sub>i</sub> + Δx, y<sub>i</sub> + m<sub>i</sub> × Δx)**
+     Điểm điều khiển thứ hai: **(cp<sub>2x</sub>, cp<sub>2y</sub>) = (x<sub>i+1</sub> - Δx, y<sub>i+1</sub> - m<sub>i+1</sub> × Δx)**
      Đường cong được nối bằng lệnh `C` của SVG: `C cp1x cp1y, cp2x cp2y, x_next y_next`.
 
 ---
@@ -219,26 +188,18 @@ Nếu sử dụng đường nối thẳng (Linear) thì biểu đồ bị gãy k
 Được sử dụng để vẽ bức tranh toàn cảnh điểm trung bình của cả 6 nhân tố trên cùng một hệ trục.
 
 * **Tính toán thông số**:
-  - Điểm gốc tâm biểu đồ: (*Cx*, *Cy*) = (*size* / 2, *size* / 2)
-  - Bán kính tối đa của trục mạng nhện: $R_{\text{max}} = \text{size}/2 - 44$
-  - Tổng số trục (nhân tố): *n* = 6
+  - Điểm gốc tâm biểu đồ: **(Cx, Cy) = (size / 2, size / 2)**
+  - Bán kính tối đa của trục mạng nhện: **R<sub>max</sub> = size / 2 - 44**
+  - Tổng số trục (nhân tố): **n = 6**
 * **Chuyển đổi sang hệ tọa độ phẳng (Cartesian)**:
-  Để tính tọa độ điểm biểu diễn của nhân tố thứ *i* (có giá trị trung bình chuẩn hóa $\text{norm} \in [0, 1]$ tương ứng thang điểm từ 1 đến 7), ta cần tính góc quay tương ứng $\theta_i$:
-  $$
-  \theta_i = \frac{i}{n} \times 2\pi - \frac{\pi}{2}
-  $$
-  Tọa độ (*xi*, *yi*) của đỉnh trên biểu đồ radar là:
-  $$
-  x_i = C_x + R_{\text{max}} \times \text{norm} \times \cos(\theta_i)
-  $$
-  $$
-  y_i = C_y + R_{\text{max}} \times \text{norm} \times \sin(\theta_i)
-  $$
-  *Dạng văn bản:*
-  - **xi = Cx + R_max * norm * cos(theta_i)**
-  - **yi = Cy + R_max * norm * sin(theta_i)**
+  Để tính tọa độ điểm biểu diễn của nhân tố thứ *i* (có giá trị trung bình chuẩn hóa norm ∈ [0, 1] tương ứng thang điểm từ 1 đến 7), ta cần tính góc quay tương ứng θ<sub>i</sub>:
+  > **θ<sub>i</sub> = (i / n) × 2π - π/2**
+  
+  Tọa độ (x<sub>i</sub>, y<sub>i</sub>) của đỉnh trên biểu đồ radar là:
+  > **x<sub>i</sub> = Cx + R<sub>max</sub> × norm × cos(θ<sub>i</sub>)**
+  > **y<sub>i</sub> = Cy + R<sub>max</sub> × norm × sin(θ<sub>i</sub>)**
 * **Vẽ đa giác liên kết**:
-  Nối chuỗi tọa độ (*x0*, *y0*), (*x1*, *y1*), ..., (*x5*, *y5*) thành một đa giác bằng thẻ `<polygon>` trong SVG với thuộc tính tô nền trong suốt `fillOpacity="0.15"` để người xem dễ dàng quan sát lưới tọa độ bên dưới.
+  Nối chuỗi tọa độ (x<sub>0</sub>, y<sub>0</sub>), (x<sub>1</sub>, y<sub>1</sub>), ..., (x<sub>5</sub>, y<sub>5</sub>) thành một đa giác bằng thẻ `<polygon>` trong SVG với thuộc tính tô nền trong suốt `fillOpacity="0.15"` để người xem dễ dàng quan sát lưới tọa độ bên dưới.
 
 ---
 
