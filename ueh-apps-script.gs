@@ -351,8 +351,8 @@ function handleAddActivity(p) {
       newName,
       parseInt(p.participants || 0),
       '', // C: (không dùng)
-      p.loaiHoatDong || '',
-      p.quyMo || '',
+      num(p.loaiHoatDong),
+      num(p.quyMo),
       p.donViToChuc || '',
       p.donViPhoiHop || '',
       parseDate(p.ngayBatDau),

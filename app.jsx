@@ -367,6 +367,14 @@ function AddActivityModal({ onClose, onSaved }) {
       setError('Số lượng tham gia phải là số nguyên dương.');
       return;
     }
+    if (!form.quyMo || isNaN(form.quyMo) || parseInt(form.quyMo) < 0) {
+      setError('Quy mô phải là số nguyên dương.');
+      return;
+    }
+    if (!form.loaiHoatDong || isNaN(form.loaiHoatDong) || parseInt(form.loaiHoatDong) < 0) {
+      setError('Loại hoạt động phải là số nguyên dương.');
+      return;
+    }
     if (!form.ngayBatDau || !form.ngayKetThuc || !form.batDauKhaoSat || !form.ketThucKhaoSat) {
       setError('Vui lòng điền đầy đủ tất cả các mốc thời gian.');
       return;
@@ -421,15 +429,15 @@ function AddActivityModal({ onClose, onSaved }) {
                 <input type="number" name="participants" value={form.participants} onChange={handleChange} required min="0" placeholder="Số lượng tham gia" />
               </div>
               <div className="form-field">
-                <label>Quy mô (Cấp khoa / Cấp trường...)</label>
-                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} placeholder="Ví dụ: Cấp Khoa" />
+                <label>Quy mô (Điền số) <span className="req">*</span></label>
+                <input type="number" name="quyMo" value={form.quyMo} onChange={handleChange} required min="0" placeholder="Ví dụ: 3" />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
-                <label>Loại hoạt động (Học thuật / Tình nguyện...)</label>
-                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} placeholder="Ví dụ: Học thuật - Kỹ năng" />
+                <label>Loại hoạt động (Điền số) <span className="req">*</span></label>
+                <input type="number" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required min="0" placeholder="Ví dụ: 3" />
               </div>
               <div className="form-field">
                 <label>Đơn vị tổ chức</label>
