@@ -30,7 +30,7 @@ function Footer() {
 }
 
 // ── Sidebar chọn chương trình (2 tầng: năm → hoạt động) ─
-function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet }) {
+function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onAddActivityClick }) {
   const allPrograms = window.PROGRAMS || [];
   const yearMap     = window.PROGRAM_YEARS || {};
 
@@ -73,6 +73,10 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet }) {
           <button className="sidebar__btn sidebar__btn--clear"
                   onClick={() => onBatchSet(visiblePrograms, false)}>Xóa hết</button>
         </div>
+        <button className="sidebar__btn" style={{ marginTop: 8, background: '#006b5e', color: '#fff', border: 'none', padding: '6px' }}
+                onClick={onAddActivityClick}>
+          ➕ Thêm hoạt động
+        </button>
       </div>
 
       {/* Tầng 1: chọn năm */}
@@ -222,8 +226,10 @@ function App() {
   const [loading,   setLoading]   = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
   const [mailbox,   setMailbox]   = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
 
-  useEffect(() => {
+  const loadData = () => {
+    setLoading(true);
     fetch(APPS_SCRIPT_URL + '?action=getResponses')
       .then(r => r.json())
       .then(data => {
@@ -245,6 +251,10 @@ function App() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
 
     fetch(APPS_SCRIPT_URL + '?action=getMailbox')
       .then(r => r.json())
@@ -298,6 +308,7 @@ function App() {
           selectedPrograms={selectedPrograms}
           onToggle={handleToggle}
           onBatchSet={handleBatchSet}
+          onAddActivityClick={() => setShowAddModal(true)}
         />
         <main className="main dashboard-main">
           <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
@@ -311,7 +322,158 @@ function App() {
         </main>
       </div>
       <Footer />
+      {showAddModal && (
+        <AddActivityModal
+          onClose={() => setShowAddModal(false)}
+          onSaved={() => {
+            setShowAddModal(false);
+            loadData();
+          }}
+        />
+      )}
     </>
+  );
+}
+
+// ── AddActivityModal: Panel/Form thêm hoạt động mới ────────────────
+function AddActivityModal({ onClose, onSaved }) {
+  const [form, setForm] = useState({
+    courseName: '',
+    participants: '',
+    loaiHoatDong: '',
+    quyMo: '',
+    donViToChuc: '',
+    donViPhoiHop: '',
+    ngayBatDau: '',
+    ngayKetThuc: '',
+    batDauKhaoSat: '',
+    ketThucKhaoSat: ''
+  });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.courseName.trim()) {
+      setError('Tên hoạt động không được để trống.');
+      return;
+    }
+    if (!form.participants || isNaN(form.participants) || parseInt(form.participants) < 0) {
+      setError('Số lượng tham gia phải là số nguyên dương.');
+      return;
+    }
+    if (!form.ngayBatDau || !form.ngayKetThuc || !form.batDauKhaoSat || !form.ketThucKhaoSat) {
+      setError('Vui lòng điền đầy đủ tất cả các mốc thời gian.');
+      return;
+    }
+    setError('');
+    setSaving(true);
+
+    const params = new URLSearchParams({
+      action: 'addActivity',
+      ...form
+    });
+
+    fetch(APPS_SCRIPT_URL + '?' + params.toString())
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          onSaved();
+        } else {
+          setError(data.error || 'Lỗi không xác định.');
+          setSaving(false);
+        }
+      })
+      .catch(() => {
+        setError('Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại.');
+        setSaving(false);
+      });
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-panel" onClick={e => e.stopPropagation()}>
+        <div className="modal-hdr">
+          <h2>Thêm Hoạt Động Mới</h2>
+          <button className="modal-close" onClick={onClose}>✕</button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="modal-body">
+            {error && (
+              <div style={{ color: 'var(--c-bad)', background: 'var(--c-bad-soft)', padding: '10px 14px', borderRadius: 8, fontSize: 13, fontWeight: 500 }}>
+                ⚠️ {error}
+              </div>
+            )}
+            
+            <div className="form-field">
+              <label>Tên hoạt động <span className="req">*</span></label>
+              <input type="text" name="courseName" value={form.courseName} onChange={handleChange} required placeholder="Ví dụ: Toán - Thống kê Career Ready 2026" />
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Số lượng tham gia <span className="req">*</span></label>
+                <input type="number" name="participants" value={form.participants} onChange={handleChange} required min="0" placeholder="Số lượng tham gia" />
+              </div>
+              <div className="form-field">
+                <label>Quy mô (Cấp khoa / Cấp trường...)</label>
+                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} placeholder="Ví dụ: Cấp Khoa" />
+              </div>
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Loại hoạt động (Học thuật / Tình nguyện...)</label>
+                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} placeholder="Ví dụ: Học thuật - Kỹ năng" />
+              </div>
+              <div className="form-field">
+                <label>Đơn vị tổ chức</label>
+                <input type="text" name="donViToChuc" value={form.donViToChuc} onChange={handleChange} placeholder="Ví dụ: Đoàn khoa Toán - Thống kê" />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label>Đơn vị phối hợp</label>
+              <input type="text" name="donViPhoiHop" value={form.donViPhoiHop} onChange={handleChange} placeholder="Ví dụ: Liên Chi hội sinh viên khoa" />
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Ngày bắt đầu hoạt động <span className="req">*</span></label>
+                <input type="date" name="ngayBatDau" value={form.ngayBatDau} onChange={handleChange} required />
+              </div>
+              <div className="form-field">
+                <label>Ngày kết thúc hoạt động <span className="req">*</span></label>
+                <input type="date" name="ngayKetThuc" value={form.ngayKetThuc} onChange={handleChange} required />
+              </div>
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Ngày bắt đầu khảo sát <span className="req">*</span></label>
+                <input type="date" name="batDauKhaoSat" value={form.batDauKhaoSat} onChange={handleChange} required />
+              </div>
+              <div className="form-field">
+                <label>Hạn chót khảo sát <span className="req">*</span></label>
+                <input type="date" name="ketThucKhaoSat" value={form.ketThucKhaoSat} onChange={handleChange} required />
+              </div>
+            </div>
+          </div>
+          
+          <div className="modal-footer">
+            <button type="button" className="btn-secondary" onClick={onClose} disabled={saving}>Hủy</button>
+            <button type="submit" className="btn-primary" disabled={saving}>
+              {saving ? 'Đang lưu...' : 'Lưu hoạt động'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

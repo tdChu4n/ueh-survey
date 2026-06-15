@@ -35,6 +35,7 @@ function doGet(e) {
   if (action === 'submitMailbox') return handleSubmitMailbox(e.parameter);
   if (action === 'getMailbox')    return handleGetMailbox();
   if (action === 'getStats')      return handleGetStats();
+  if (action === 'addActivity')   return handleAddActivity(e.parameter);
   return jsonOut({ error: 'Unknown action' });
 }
 
@@ -315,6 +316,55 @@ function handleGetStats() {
     avgScore,
     facultiesCount:  faculties.size,
   });
+}
+
+// ── Thêm hoạt động mới vào sheet Assignments ───────────────────────
+function handleAddActivity(p) {
+  try {
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
+    if (!assignSheet) {
+      return jsonOut({ success: false, error: 'Không tìm thấy sheet Assignments.' });
+    }
+    
+    // Kiểm tra xem tên chương trình đã tồn tại chưa để tránh trùng lặp
+    const aRows = assignSheet.getDataRange().getValues();
+    const newName = String(p.courseName || '').trim();
+    if (!newName) {
+      return jsonOut({ success: false, error: 'Tên hoạt động không được để trống.' });
+    }
+    for (let i = 1; i < aRows.length; i++) {
+      if (String(aRows[i][0]).trim().toLowerCase() === newName.toLowerCase()) {
+        return jsonOut({ success: false, error: 'Tên hoạt động đã tồn tại.' });
+      }
+    }
+    
+    const parseDate = (val) => {
+      if (!val) return '';
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? val : d;
+    };
+    
+    // Thêm hàng mới vào Assignments
+    // A: courseName, B: participants, C: (không dùng), D: loaiHoatDong, E: quyMo, F: donViToChuc, G: donViPhoiHop, H: ngayBatDau, I: ngayKetThuc, J: batDauKhaoSat, K: ketThucKhaoSat
+    assignSheet.appendRow([
+      newName,
+      parseInt(p.participants || 0),
+      '', // C: (không dùng)
+      p.loaiHoatDong || '',
+      p.quyMo || '',
+      p.donViToChuc || '',
+      p.donViPhoiHop || '',
+      parseDate(p.ngayBatDau),
+      parseDate(p.ngayKetThuc),
+      parseDate(p.batDauKhaoSat),
+      parseDate(p.ketThucKhaoSat)
+    ]);
+    
+    return jsonOut({ success: true });
+  } catch (err) {
+    return jsonOut({ success: false, error: err.message });
+  }
 }
 
 
