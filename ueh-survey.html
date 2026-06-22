@@ -785,8 +785,8 @@
 
   <!-- SURVEY TABLE -->
   <div id="surveySection">
-    <h1 class="page-title">Danh sách môn học / phiếu khảo sát</h1>
-    <p class="page-desc">Bạn hãy cho ý kiến đánh giá các môn đã học / phiếu khảo sát ở danh sách bên dưới:</p>
+    <h1 class="page-title">Danh sách / phiếu khảo sát các sự kiện</h1>
+    <p class="page-desc">Bạn hãy cho ý kiến đánh giá các sự kiện / phiếu khảo sát ở danh sách bên dưới:</p>
     <div id="tableContainer">
       <div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>
     </div>
@@ -1134,7 +1134,7 @@
   function renderTable(courses) {
     if (!courses.length) {
       document.getElementById('tableContainer').innerHTML =
-        '<div class="state-msg">Không tìm thấy môn học nào được phân công cho tài khoản của bạn.</div>';
+        '<div class="state-msg">Không tìm thấy sự kiện nào được phân công cho tài khoản của bạn.</div>';
       return;
     }
     const rows = courses.map((c, i) => {
@@ -1161,7 +1161,7 @@
         <thead><tr>
           <th style="text-align:center;">TT</th>
           <th>NĂM</th>
-          <th>TÊN HỌC PHẦN / TÊN PHIẾU</th>
+          <th>TÊN SỰ KIỆN / TÊN PHIẾU</th>
           <th style="text-align:center;">HẠN CHÓT KHẢO SÁT</th>
           <th style="text-align:center;">TRẠNG THÁI</th>
         </tr></thead>
