@@ -118,11 +118,12 @@ function DescriptiveSection({ responses, selectedPrograms }) {
 
   // Theo khoa — hiện tất cả, kể cả 0 phiếu
   const ALL_FACULTIES = [
-    'Khoa Toán - Thống kê','Khoa Lý luận chính trị','Khoa Thiết kế Truyền thông',
+    'Khoa Toán - Thống kê','Khoa Kinh tế','Khoa Lý luận chính trị','Khoa Thiết kế Truyền thông',
     'Khoa Công nghệ thông tin kinh doanh','Khoa Ngoại ngữ',
     'Khoa Kinh doanh quốc tế - Marketing','Khoa Quản trị','Khoa Tài chính',
     'Khoa Ngân hàng','Khoa Kế toán','Khoa Du lịch','Khoa Tài chính công',
     'Khoa Luật','Khoa Quản lý nhà nước',
+    'Khác'
   ];
   const facCounts = {};
   for (const r of responses) {
@@ -137,9 +138,9 @@ function DescriptiveSection({ responses, selectedPrograms }) {
   for (const r of responses) {
     if (r.cohort) cohCounts[r.cohort] = (cohCounts[r.cohort] || 0) + 1;
   }
-  const cohorts = ["51","50","49"]
+  const cohorts = ["51","50","49","Khác"]
     .filter(k => cohCounts[k] > 0)
-    .map(k => ({ label: `Khóa ${k}`, n: cohCounts[k] }));
+    .map(k => ({ label: k === 'Khác' ? 'Khác' : `Khóa ${k}`, n: cohCounts[k] }));
 
   const maxN = Math.max(1, total);
 
