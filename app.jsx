@@ -496,11 +496,11 @@ function AddActivityModal({ onClose, onSaved }) {
             <div className="form-row-2">
               <div className="form-field">
                 <label>Tóm tắt hoạt động</label>
-                <textarea name="tomTatHd" value={form.tomTatHd} onChange={handleChange} placeholder="Ví dụ: Chặng 1: Hoạt động Truyền thông giáo dục..." />
+                <textarea name="tomTatHd" value={form.tomTatHd} onChange={handleChange} placeholder="Tóm tắt ngắn gọn nội dung hoạt động..." />
               </div>
               <div className="form-field">
                 <label>Đánh giá hiệu quả HĐ</label>
-                <textarea name="danhGiaHieuQua" value={form.danhGiaHieuQua} onChange={handleChange} placeholder="Ví dụ: 1. Phần việc thanh niên: Dâng hoa và sinh hoạt truyền thống..." />
+                <textarea name="danhGiaHieuQua" value={form.danhGiaHieuQua} onChange={handleChange} placeholder="Đánh giá kết quả, hiệu quả đạt được..." />
               </div>
             </div>
 
