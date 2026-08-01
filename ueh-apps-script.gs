@@ -64,13 +64,13 @@ function handleGetCourses(email) {
 
   const courses = [];
   for (let i = 1; i < aRows.length; i++) {
-    const [courseName] = aRows[i];
+    const courseName = aRows[i][2];
     if (!courseName) continue;
     const name   = String(courseName).trim();
     
-    // Tự động khoá theo ngày hạn chót khảo sát (Cột K, index 10)
+    // Tự động khoá theo ngày hạn chót khảo sát (Cột Q, index 16)
     let locked = false;
-    const deadlineVal = aRows[i][10];
+    const deadlineVal = aRows[i][16];
     if (deadlineVal) {
       const deadlineDate = new Date(deadlineVal);
       if (!isNaN(deadlineDate.getTime())) {
@@ -82,21 +82,21 @@ function handleGetCourses(email) {
       }
     }
     
-    const year   = aRows[i][7] ? new Date(aRows[i][7]).getFullYear() : '';
+    const year   = aRows[i][4] ? new Date(aRows[i][4]).getFullYear() : '';
     courses.push({
       rowIndex:       i + 1,
       year:           String(year),
       courseName:     name,
       locked,
       status:         completed.has(name) ? 'Đã thực hiện' : (locked ? 'Đã khoá' : 'Chưa thực hiện'),
-      loaiHoatDong:   String(aRows[i][3] || '').trim(),
-      quyMo:          String(aRows[i][4] || '').trim(),
-      donViToChuc:    String(aRows[i][5] || '').trim(),
+      loaiHoatDong:   String(aRows[i][0] || '').trim(),
+      quyMo:          String(aRows[i][1] || '').trim(),
+      donViToChuc:    String(aRows[i][3] || '').trim(),
       donViPhoiHop:   String(aRows[i][6] || '').trim(),
-      ngayBatDau:     fmtDateOnly(aRows[i][7]),
-      ngayKetThuc:    fmtDateOnly(aRows[i][8]),
-      batDauKhaoSat:  fmtDateOnly(aRows[i][9]),
-      ketThucKhaoSat: fmtDateOnly(aRows[i][10]),
+      ngayBatDau:     fmtDateOnly(aRows[i][4]),
+      ngayKetThuc:    fmtDateOnly(aRows[i][5]),
+      batDauKhaoSat:  fmtDateOnly(aRows[i][15]),
+      ketThucKhaoSat: fmtDateOnly(aRows[i][16]),
     });
   }
 
@@ -114,8 +114,8 @@ function handleSubmitSurvey(p) {
     if (assignSheet) {
       const aRows = assignSheet.getDataRange().getValues();
       for (let i = 1; i < aRows.length; i++) {
-        if (String(aRows[i][0]).trim() === String(p.program).trim()) {
-          const deadlineVal = aRows[i][10];
+        if (String(aRows[i][2]).trim() === String(p.program).trim()) {
+          const deadlineVal = aRows[i][16];
           if (deadlineVal) {
             const deadlineDate = new Date(deadlineVal);
             if (!isNaN(deadlineDate.getTime())) {
@@ -201,26 +201,26 @@ function handleGetResponses() {
   if (assignSheet) {
     const aRows = assignSheet.getDataRange().getValues();
     for (let i = 1; i < aRows.length; i++) {
-      if (!aRows[i][0]) continue;
-      const name = String(aRows[i][0]).trim();
+      if (!aRows[i][2]) continue;
+      const name = String(aRows[i][2]).trim();
       programs.push(name);
 
-      const n = parseInt(aRows[i][1]);
+      const n = parseInt(aRows[i][7]);
       if (!isNaN(n)) participantMap[name] = n;
 
-      // Lấy năm từ ngayBatDau (cột H, index 7)
-      const y = aRows[i][7] ? new Date(aRows[i][7]).getFullYear() : new Date().getFullYear();
+      // Lấy năm từ ngayBatDau (cột E, index 4)
+      const y = aRows[i][4] ? new Date(aRows[i][4]).getFullYear() : new Date().getFullYear();
       programYears[name] = isNaN(y) ? new Date().getFullYear() : y;
 
       programInfo[name] = {
-        loaiHoatDong:   String(aRows[i][3] || '').trim(),
-        quyMo:          String(aRows[i][4] || '').trim(),
-        donViToChuc:    String(aRows[i][5] || '').trim(),
+        loaiHoatDong:   String(aRows[i][0] || '').trim(),
+        quyMo:          String(aRows[i][1] || '').trim(),
+        donViToChuc:    String(aRows[i][3] || '').trim(),
         donViPhoiHop:   String(aRows[i][6] || '').trim(),
-        ngayBatDau:     fmtDateOnly(aRows[i][7]),
-        ngayKetThuc:    fmtDateOnly(aRows[i][8]),
-        batDauKhaoSat:  fmtDateOnly(aRows[i][9]),
-        ketThucKhaoSat: fmtDateOnly(aRows[i][10]),
+        ngayBatDau:     fmtDateOnly(aRows[i][4]),
+        ngayKetThuc:    fmtDateOnly(aRows[i][5]),
+        batDauKhaoSat:  fmtDateOnly(aRows[i][15]),
+        ketThucKhaoSat: fmtDateOnly(aRows[i][16]),
       };
     }
   }
@@ -334,7 +334,7 @@ function handleAddActivity(p) {
       return jsonOut({ success: false, error: 'Tên hoạt động không được để trống.' });
     }
     for (let i = 1; i < aRows.length; i++) {
-      if (String(aRows[i][0]).trim().toLowerCase() === newName.toLowerCase()) {
+      if (String(aRows[i][2]).trim().toLowerCase() === newName.toLowerCase()) {
         return jsonOut({ success: false, error: 'Tên hoạt động đã tồn tại.' });
       }
     }
@@ -346,17 +346,23 @@ function handleAddActivity(p) {
     };
     
     // Thêm hàng mới vào Assignments
-    // A: courseName, B: participants, C: (không dùng), D: loaiHoatDong, E: quyMo, F: donViToChuc, G: donViPhoiHop, H: ngayBatDau, I: ngayKetThuc, J: batDauKhaoSat, K: ketThucKhaoSat
+    // A: loaiHoatDong, B: quyMo, C: courseName, D: donViToChuc, E: ngayBatDau, F: ngayKetThuc, G: donViPhoiHop, H: participants, I: tongKinhPhi, J: soLieuKhacTen, K: soLieuKhacSl, L: linkVanBan, M: linkMinhChung, N: tomTatHd, O: danhGiaHieuQua, P: batDauKhaoSat, Q: ketThucKhaoSat
     assignSheet.appendRow([
+      p.loaiHoatDong || '',
+      p.quyMo || '',
       newName,
-      parseInt(p.participants || 0),
-      '', // C: (không dùng)
-      num(p.loaiHoatDong),
-      num(p.quyMo),
       p.donViToChuc || '',
-      p.donViPhoiHop || '',
       parseDate(p.ngayBatDau),
       parseDate(p.ngayKetThuc),
+      p.donViPhoiHop || '',
+      parseInt(p.participants || 0),
+      parseInt(p.tongKinhPhi || 0),
+      p.soLieuKhacTen || '',
+      parseInt(p.soLieuKhacSl || 0),
+      p.linkVanBan || '',
+      p.linkMinhChung || '',
+      p.tomTatHd || '',
+      p.danhGiaHieuQua || '',
       parseDate(p.batDauKhaoSat),
       parseDate(p.ketThucKhaoSat)
     ]);

@@ -1042,7 +1042,7 @@ button {
   border: 1px solid var(--border);
   border-radius: 16px;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -1112,7 +1112,7 @@ button {
   color: var(--c-bad);
   margin-left: 3px;
 }
-.form-field input, .form-field select {
+.form-field input, .form-field select, .form-field textarea {
   font-family: inherit;
   font-size: 13.5px;
   padding: 8px 12px;
@@ -1123,9 +1123,13 @@ button {
   color: var(--ink);
   transition: border-color 0.12s, box-shadow 0.12s;
 }
-.form-field input:focus, .form-field select:focus {
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus {
   border-color: var(--brand-500);
   box-shadow: 0 0 0 3px rgba(0, 107, 94, 0.12);
+}
+.form-field textarea {
+  min-height: 70px;
+  resize: vertical;
 }
 .form-row-2 {
   display: grid;

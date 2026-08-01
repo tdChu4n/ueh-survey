@@ -346,6 +346,13 @@ function AddActivityModal({ onClose, onSaved }) {
     donViPhoiHop: '',
     ngayBatDau: '',
     ngayKetThuc: '',
+    tongKinhPhi: '',
+    soLieuKhacTen: '',
+    soLieuKhacSl: '',
+    linkVanBan: '',
+    linkMinhChung: '',
+    tomTatHd: '',
+    danhGiaHieuQua: '',
     batDauKhaoSat: '',
     ketThucKhaoSat: ''
   });
@@ -367,12 +374,20 @@ function AddActivityModal({ onClose, onSaved }) {
       setError('Số lượng tham gia phải là số nguyên dương.');
       return;
     }
-    if (!form.quyMo || isNaN(form.quyMo) || parseInt(form.quyMo) < 0) {
-      setError('Quy mô phải là số nguyên dương.');
+    if (!form.loaiHoatDong.trim()) {
+      setError('Loại hoạt động không được để trống.');
       return;
     }
-    if (!form.loaiHoatDong || isNaN(form.loaiHoatDong) || parseInt(form.loaiHoatDong) < 0) {
-      setError('Loại hoạt động phải là số nguyên dương.');
+    if (!form.quyMo.trim()) {
+      setError('Quy mô hoạt động không được để trống.');
+      return;
+    }
+    if (form.tongKinhPhi && (isNaN(form.tongKinhPhi) || parseFloat(form.tongKinhPhi) < 0)) {
+      setError('Tổng kinh phí phải là số không âm.');
+      return;
+    }
+    if (form.soLieuKhacSl && (isNaN(form.soLieuKhacSl) || parseInt(form.soLieuKhacSl) < 0)) {
+      setError('Số lượng số liệu khác phải là số không âm.');
       return;
     }
     if (!form.ngayBatDau || !form.ngayKetThuc || !form.batDauKhaoSat || !form.ketThucKhaoSat) {
@@ -425,29 +440,68 @@ function AddActivityModal({ onClose, onSaved }) {
 
             <div className="form-row-2">
               <div className="form-field">
-                <label>Số lượng tham gia <span className="req">*</span></label>
-                <input type="number" name="participants" value={form.participants} onChange={handleChange} required min="0" placeholder="Số lượng tham gia" />
+                <label>Loại hoạt động <span className="req">*</span></label>
+                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required placeholder="Ví dụ: Học thuật" />
               </div>
               <div className="form-field">
-                <label>Quy mô (Điền số) <span className="req">*</span></label>
-                <input type="number" name="quyMo" value={form.quyMo} onChange={handleChange} required min="0" placeholder="Ví dụ: 3" />
+                <label>Quy mô hoạt động <span className="req">*</span></label>
+                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} required placeholder="Ví dụ: Cấp Khoa" />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
-                <label>Loại hoạt động (Điền số) <span className="req">*</span></label>
-                <input type="number" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required min="0" placeholder="Ví dụ: 3" />
-              </div>
-              <div className="form-field">
                 <label>Đơn vị tổ chức</label>
                 <input type="text" name="donViToChuc" value={form.donViToChuc} onChange={handleChange} placeholder="Ví dụ: Đoàn khoa Toán - Thống kê" />
               </div>
+              <div className="form-field">
+                <label>Đơn vị phối hợp</label>
+                <input type="text" name="donViPhoiHop" value={form.donViPhoiHop} onChange={handleChange} placeholder="Ví dụ: Liên Chi hội sinh viên khoa" />
+              </div>
             </div>
 
-            <div className="form-field">
-              <label>Đơn vị phối hợp</label>
-              <input type="text" name="donViPhoiHop" value={form.donViPhoiHop} onChange={handleChange} placeholder="Ví dụ: Liên Chi hội sinh viên khoa" />
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Số lượng tham gia <span className="req">*</span></label>
+                <input type="number" name="participants" value={form.participants} onChange={handleChange} required min="0" placeholder="Số lượng tham gia" />
+              </div>
+              <div className="form-field">
+                <label>Tổng kinh phí (VNĐ)</label>
+                <input type="number" name="tongKinhPhi" value={form.tongKinhPhi} onChange={handleChange} min="0" placeholder="Ví dụ: 5000000" />
+              </div>
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Số liệu khác - Tên số liệu</label>
+                <input type="text" name="soLieuKhacTen" value={form.soLieuKhacTen} onChange={handleChange} placeholder="Ví dụ: Số bài báo khoa học" />
+              </div>
+              <div className="form-field">
+                <label>Số liệu khác - Số lượng (SL)</label>
+                <input type="number" name="soLieuKhacSl" value={form.soLieuKhacSl} onChange={handleChange} min="0" placeholder="Ví dụ: 5" />
+              </div>
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Link văn bản</label>
+                <input type="text" name="linkVanBan" value={form.linkVanBan} onChange={handleChange} placeholder="https://drive.google.com/..." />
+              </div>
+              <div className="form-field">
+                <label>Link minh chứng</label>
+                <input type="text" name="linkMinhChung" value={form.linkMinhChung} onChange={handleChange} placeholder="https://drive.google.com/..." />
+              </div>
+            </div>
+
+            <div className="form-row-2">
+              <div className="form-field">
+                <label>Tóm tắt hoạt động</label>
+                <textarea name="tomTatHd" value={form.tomTatHd} onChange={handleChange} placeholder="Tóm tắt ngắn gọn nội dung hoạt động..." />
+              </div>
+              <div className="form-field">
+                <label>Đánh giá hiệu quả HĐ</label>
+                <textarea name="danhGiaHieuQua" value={form.danhGiaHieuQua} onChange={handleChange} placeholder="Đánh giá kết quả, hiệu quả đạt được..." />
+              </div>
             </div>
 
             <div className="form-row-2">
