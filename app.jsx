@@ -441,11 +441,11 @@ function AddActivityModal({ onClose, onSaved }) {
             <div className="form-row-2">
               <div className="form-field">
                 <label>Loại hoạt động <span className="req">*</span></label>
-                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required placeholder="Ví dụ: 1" />
+                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required placeholder="Ví dụ: Hoạt động của đơn vị" />
               </div>
               <div className="form-field">
                 <label>Quy mô hoạt động <span className="req">*</span></label>
-                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} required placeholder="Ví dụ: Hoạt động của đơn vị" />
+                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} required placeholder="Ví dụ: Cấp cơ sở trực thuộc" />
               </div>
             </div>
 
