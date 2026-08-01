@@ -435,72 +435,72 @@ function AddActivityModal({ onClose, onSaved }) {
             
             <div className="form-field">
               <label>Tên hoạt động <span className="req">*</span></label>
-              <input type="text" name="courseName" value={form.courseName} onChange={handleChange} required placeholder="Ví dụ: Toán - Thống kê Career Ready 2026" />
+              <input type="text" name="courseName" value={form.courseName} onChange={handleChange} required placeholder="Ví dụ: 2026_TTK_01_Hành trình Chín tháng Giêng liên khoa Toán - Thống kê và khoa Kinh tế" />
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
                 <label>Loại hoạt động <span className="req">*</span></label>
-                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required placeholder="Ví dụ: Học thuật" />
+                <input type="text" name="loaiHoatDong" value={form.loaiHoatDong} onChange={handleChange} required placeholder="Ví dụ: 1" />
               </div>
               <div className="form-field">
                 <label>Quy mô hoạt động <span className="req">*</span></label>
-                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} required placeholder="Ví dụ: Cấp Khoa" />
+                <input type="text" name="quyMo" value={form.quyMo} onChange={handleChange} required placeholder="Ví dụ: Hoạt động của đơn vị" />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
                 <label>Đơn vị tổ chức</label>
-                <input type="text" name="donViToChuc" value={form.donViToChuc} onChange={handleChange} placeholder="Ví dụ: Đoàn khoa Toán - Thống kê" />
+                <input type="text" name="donViToChuc" value={form.donViToChuc} onChange={handleChange} placeholder="Ví dụ: LCH SV khoa Toán - Thống kê" />
               </div>
               <div className="form-field">
                 <label>Đơn vị phối hợp</label>
-                <input type="text" name="donViPhoiHop" value={form.donViPhoiHop} onChange={handleChange} placeholder="Ví dụ: Liên Chi hội sinh viên khoa" />
+                <input type="text" name="donViPhoiHop" value={form.donViPhoiHop} onChange={handleChange} placeholder="Ví dụ: LCH SV khoa Kinh tế" />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
                 <label>Số lượng tham gia <span className="req">*</span></label>
-                <input type="number" name="participants" value={form.participants} onChange={handleChange} required min="0" placeholder="Số lượng tham gia" />
+                <input type="number" name="participants" value={form.participants} onChange={handleChange} required min="0" placeholder="Ví dụ: 52" />
               </div>
               <div className="form-field">
                 <label>Tổng kinh phí (VNĐ)</label>
-                <input type="number" name="tongKinhPhi" value={form.tongKinhPhi} onChange={handleChange} min="0" placeholder="Ví dụ: 5000000" />
+                <input type="number" name="tongKinhPhi" value={form.tongKinhPhi} onChange={handleChange} min="0" placeholder="Ví dụ: 1150000" />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
                 <label>Số liệu khác - Tên số liệu</label>
-                <input type="text" name="soLieuKhacTen" value={form.soLieuKhacTen} onChange={handleChange} placeholder="Ví dụ: Số bài báo khoa học" />
+                <input type="text" name="soLieuKhacTen" value={form.soLieuKhacTen} onChange={handleChange} placeholder="Ví dụ: Số phần việc thanh niên" />
               </div>
               <div className="form-field">
                 <label>Số liệu khác - Số lượng (SL)</label>
-                <input type="number" name="soLieuKhacSl" value={form.soLieuKhacSl} onChange={handleChange} min="0" placeholder="Ví dụ: 5" />
+                <input type="number" name="soLieuKhacSl" value={form.soLieuKhacSl} onChange={handleChange} min="0" placeholder="Ví dụ: 1" />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
                 <label>Link văn bản</label>
-                <input type="text" name="linkVanBan" value={form.linkVanBan} onChange={handleChange} placeholder="https://drive.google.com/..." />
+                <input type="text" name="linkVanBan" value={form.linkVanBan} onChange={handleChange} placeholder="Ví dụ: https://drive.google.com/file/d/..." />
               </div>
               <div className="form-field">
                 <label>Link minh chứng</label>
-                <input type="text" name="linkMinhChung" value={form.linkMinhChung} onChange={handleChange} placeholder="https://drive.google.com/..." />
+                <input type="text" name="linkMinhChung" value={form.linkMinhChung} onChange={handleChange} placeholder="Ví dụ: https://www.facebook.com/share/p/..." />
               </div>
             </div>
 
             <div className="form-row-2">
               <div className="form-field">
                 <label>Tóm tắt hoạt động</label>
-                <textarea name="tomTatHd" value={form.tomTatHd} onChange={handleChange} placeholder="Tóm tắt ngắn gọn nội dung hoạt động..." />
+                <textarea name="tomTatHd" value={form.tomTatHd} onChange={handleChange} placeholder="Ví dụ: Chặng 1: Hoạt động Truyền thông giáo dục..." />
               </div>
               <div className="form-field">
                 <label>Đánh giá hiệu quả HĐ</label>
-                <textarea name="danhGiaHieuQua" value={form.danhGiaHieuQua} onChange={handleChange} placeholder="Đánh giá kết quả, hiệu quả đạt được..." />
+                <textarea name="danhGiaHieuQua" value={form.danhGiaHieuQua} onChange={handleChange} placeholder="Ví dụ: 1. Phần việc thanh niên: Dâng hoa và sinh hoạt truyền thống..." />
               </div>
             </div>
 
