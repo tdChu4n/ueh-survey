@@ -503,7 +503,7 @@ function AddActivityModal({ onClose, onSaved }) {
           <h2>Thêm Hoạt Động Mới</h2>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
           <div className="modal-body">
             {error && (
               <div style={{ color: 'var(--c-bad)', background: 'var(--c-bad-soft)', padding: '10px 14px', borderRadius: 8, fontSize: 13, fontWeight: 500 }}>
