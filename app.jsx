@@ -66,6 +66,11 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onAddActivityC
   return (
     <aside className="sidebar">
       <div className="sidebar__head">
+        {onHomeClick && (
+          <div style={{ marginBottom: 15, fontSize: 13, color: '#006b5e', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }} onClick={onHomeClick}>
+            <span style={{ fontSize: 16 }}>←</span> Quay lại
+          </div>
+        )}
         <span className="sidebar__title">Chương trình</span>
         <div className="sidebar__btns">
           <button className="sidebar__btn"
@@ -73,10 +78,6 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onAddActivityC
           <button className="sidebar__btn sidebar__btn--clear"
                   onClick={() => onBatchSet(visiblePrograms, false)}>Xóa hết</button>
         </div>
-        <button className="sidebar__btn" style={{ marginTop: 8, background: '#006b5e', color: '#fff', border: 'none', padding: '6px' }}
-                onClick={onAddActivityClick}>
-          ➕ Thêm hoạt động
-        </button>
       </div>
 
       {/* Tầng 1: chọn năm */}
@@ -330,7 +331,7 @@ function App() {
 
   return (
     <>
-      <TopNav showHomeBtn={view !== 'menu'} onHomeClick={() => setView('menu')} />
+      <TopNav />
       {loading && (
         <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
           ⏳ Đang tải dữ liệu từ Google Sheets...
@@ -356,7 +357,7 @@ function App() {
             selectedPrograms={selectedPrograms}
             onToggle={handleToggle}
             onBatchSet={handleBatchSet}
-            onAddActivityClick={() => setShowAddModal(true)}
+            onHomeClick={() => setView('menu')}
           />
           <main className="main dashboard-main">
             <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
@@ -366,7 +367,6 @@ function App() {
                 <ReportTabs responses={responses} />
               </>
             )}
-            <MailboxSection entries={mailbox} />
           </main>
         </div>
       )}
@@ -374,6 +374,9 @@ function App() {
       {view === 'mailbox' && (
         <div className="dashboard-layout" style={{ justifyContent: 'center' }}>
           <main className="main dashboard-main" style={{ maxWidth: 900, margin: '20px auto', width: '100%' }}>
+            <div style={{ marginBottom: 20, fontSize: 14, color: '#006b5e', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6 }} onClick={() => setView('menu')}>
+              <span style={{ fontSize: 18 }}>←</span> Quay lại
+            </div>
             <MailboxSection entries={mailbox} />
           </main>
         </div>
