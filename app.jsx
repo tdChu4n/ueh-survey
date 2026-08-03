@@ -30,7 +30,7 @@ function Footer() {
 }
 
 // ── Sidebar chọn chương trình (2 tầng: năm → hoạt động) ─
-function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onAddActivityClick }) {
+function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onHomeClick }) {
   const allPrograms = window.PROGRAMS || [];
   const yearMap     = window.PROGRAM_YEARS || {};
 
