@@ -1026,7 +1026,7 @@
       document.getElementById('btnNavLogin').style.display  = 'none';
       document.getElementById('adminNavInfo').style.display = 'flex';
       sessionStorage.setItem('adminLoggedIn', '1');
-      window.location.href = 'admin-dashboard.html';
+      window.location.replace('admin-dashboard.html');
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('adminPass').value = '';
@@ -1038,11 +1038,9 @@
     document.getElementById('btnNavLogin').style.display  = 'flex';
     document.getElementById('adminNavInfo').style.display = 'none';
   }
+  
   if (sessionStorage.getItem('adminLoggedIn')) {
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('btnNavLogin').style.display  = 'none';
-      document.getElementById('adminNavInfo').style.display = 'flex';
-    });
+    window.location.replace('admin-dashboard.html');
   }
 
   // ── State ────────────────────────────────────────
