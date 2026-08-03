@@ -264,7 +264,10 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
 
 // ── App root ───────────────────────────────────────────
 function App() {
-  const [view, setView] = useState(() => sessionStorage.getItem('adminView') || 'menu'); // 'menu' | 'dashboard' | 'mailbox'
+  const [view, setView] = useState(() => {
+    const hash = window.location.hash.replace('#', '');
+    return ['menu', 'dashboard', 'mailbox'].includes(hash) ? hash : 'menu';
+  });
   const [selectedPrograms, setSelectedPrograms] = useState(() => new Set());
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
@@ -273,8 +276,23 @@ function App() {
   const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
-    sessionStorage.setItem('adminView', view);
+    if (window.location.hash !== `#${view}`) {
+      window.location.hash = view;
+    }
   }, [view]);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['menu', 'dashboard', 'mailbox'].includes(hash)) {
+        setView(hash);
+      } else {
+        setView('menu');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const loadData = () => {
     setLoading(true);
