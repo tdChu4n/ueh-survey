@@ -354,11 +354,6 @@ function App() {
   return (
     <>
       <TopNav />
-      {loading && (
-        <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
-          ⏳ Đang tải dữ liệu từ Google Sheets...
-        </div>
-      )}
       {!loading && updatedAt && (
         <div style={{ textAlign:'right', padding:'4px 24px', fontSize:11, color:'#888' }}>
           ✓ Cập nhật lúc {updatedAt}
