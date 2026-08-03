@@ -88,7 +88,7 @@ const Icon = {
 };
 
 // ---------- Top nav ----------
-function TopNav() {
+function TopNav({ onHomeClick, showHomeBtn }) {
   return (
     <header className="nav" style={{ background: '#006b5e' }}>
       <div className="nav__brand" style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
@@ -98,6 +98,19 @@ function TopNav() {
         <img src="logo-hoi-sinh-vien-viet-nam-vector-02.png" alt="Hội SV" style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
         <img src="logo-khoa.png" alt="Khoa" style={{ height:42, width:'auto', objectFit:'contain', flexShrink:0 }} />
       </div>
+      
+      {showHomeBtn && (
+        <button className="nav__home-btn" onClick={onHomeClick} style={{
+          display: 'flex', alignItems: 'center', gap: 6,
+          background: 'transparent', border: '1px solid rgba(255,255,255,.3)',
+          color: '#fff', padding: '6px 14px', borderRadius: 6,
+          marginLeft: 20, cursor: 'pointer', fontSize: 13
+        }}>
+          <Icon.Home style={{ width: 16, height: 16 }} />
+          Trang chủ
+        </button>
+      )}
+
       <div className="nav__spacer" />
       <div className="nav__user">
         <div className="nav__avatar" style={{ background: '#004d44', border: '1.5px solid rgba(255,255,255,0.3)' }}>QT</div>

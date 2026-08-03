@@ -219,8 +219,51 @@ function ReportTabs({ responses }) {
   );
 }
 
+// ── Home Menu ──────────────────────────────────────────────
+function HomeMenu({ onViewChange, onAddActivityClick }) {
+  return (
+    <div className="home-menu">
+      <h2 className="home-menu__title">ĐOÀN - HỘI KHOA TOÁN - THỐNG KÊ</h2>
+      
+      <div className="home-menu__section">
+        <div className="home-menu__header">Quản lý hoạt động</div>
+        <div className="home-menu__cards">
+          <div className="home-menu__card" onClick={onAddActivityClick}>
+            Thêm khảo sát hoạt động
+          </div>
+          <div className="home-menu__card" onClick={() => window.open('https://docs.google.com/spreadsheets/d/16TyqIj3iN1cEKuiVtctmi-om1sjW_LjrDLh0E17zIyY/edit?gid=0#gid=0', '_blank')}>
+            Tổng hợp báo cáo Hoạt động cơ sở
+          </div>
+        </div>
+      </div>
+
+      <div className="home-menu__section">
+        <div className="home-menu__header">Báo cáo kết quả khảo sát sau chương trình</div>
+        <div className="home-menu__cards">
+          <div className="home-menu__card" onClick={() => onViewChange('dashboard')}>
+            Xem kết quả khảo sát sinh viên<br/>sau chương trình
+          </div>
+        </div>
+      </div>
+
+      <div className="home-menu__section">
+        <div className="home-menu__header">Tổng hợp Hòm thư lắng nghe</div>
+        <div className="home-menu__cards">
+          <div className="home-menu__card" onClick={() => onViewChange('mailbox')}>
+            Tổng hợp ý kiến sinh viên
+          </div>
+          <div className="home-menu__card disabled">
+            Dữ liệu trả lời
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── App root ───────────────────────────────────────────
 function App() {
+  const [view, setView] = useState('menu'); // 'menu' | 'dashboard' | 'mailbox'
   const [selectedPrograms, setSelectedPrograms] = useState(() => new Set());
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
@@ -287,7 +330,7 @@ function App() {
 
   return (
     <>
-      <TopNav />
+      <TopNav showHomeBtn={view !== 'menu'} onHomeClick={() => setView('menu')} />
       {loading && (
         <div style={{ textAlign:'center', padding:'8px', background:'#fffbe6', fontSize:13, color:'#856404' }}>
           ⏳ Đang tải dữ liệu từ Google Sheets...
@@ -303,24 +346,39 @@ function App() {
         </div>
       )}
 
-      <div className="dashboard-layout">
-        <ProgramSidebar
-          selectedPrograms={selectedPrograms}
-          onToggle={handleToggle}
-          onBatchSet={handleBatchSet}
-          onAddActivityClick={() => setShowAddModal(true)}
-        />
-        <main className="main dashboard-main">
-          <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
-          {selectedPrograms.size > 0 && (
-            <>
-              <DescriptiveSection responses={responses} selectedPrograms={selectedPrograms} />
-              <ReportTabs responses={responses} />
-            </>
-          )}
-          <MailboxSection entries={mailbox} />
-        </main>
-      </div>
+      {view === 'menu' && (
+        <HomeMenu onViewChange={setView} onAddActivityClick={() => setShowAddModal(true)} />
+      )}
+
+      {view === 'dashboard' && (
+        <div className="dashboard-layout">
+          <ProgramSidebar
+            selectedPrograms={selectedPrograms}
+            onToggle={handleToggle}
+            onBatchSet={handleBatchSet}
+            onAddActivityClick={() => setShowAddModal(true)}
+          />
+          <main className="main dashboard-main">
+            <ActivityCard selectedPrograms={selectedPrograms} responses={responses} />
+            {selectedPrograms.size > 0 && (
+              <>
+                <DescriptiveSection responses={responses} selectedPrograms={selectedPrograms} />
+                <ReportTabs responses={responses} />
+              </>
+            )}
+            <MailboxSection entries={mailbox} />
+          </main>
+        </div>
+      )}
+
+      {view === 'mailbox' && (
+        <div className="dashboard-layout" style={{ justifyContent: 'center' }}>
+          <main className="main dashboard-main" style={{ maxWidth: 900, margin: '20px auto', width: '100%' }}>
+            <MailboxSection entries={mailbox} />
+          </main>
+        </div>
+      )}
+
       <Footer />
       {showAddModal && (
         <AddActivityModal
