@@ -264,13 +264,17 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
 
 // ── App root ───────────────────────────────────────────
 function App() {
-  const [view, setView] = useState('menu'); // 'menu' | 'dashboard' | 'mailbox'
+  const [view, setView] = useState(() => sessionStorage.getItem('adminView') || 'menu'); // 'menu' | 'dashboard' | 'mailbox'
   const [selectedPrograms, setSelectedPrograms] = useState(() => new Set());
   const [dataKey,   setDataKey]   = useState(0);
   const [loading,   setLoading]   = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
   const [mailbox,   setMailbox]   = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem('adminView', view);
+  }, [view]);
 
   const loadData = () => {
     setLoading(true);
