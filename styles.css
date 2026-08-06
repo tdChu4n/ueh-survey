@@ -1259,7 +1259,8 @@ button {
 
 .home-menu__card-title {
   margin: 0;
-  font-size: 0.95rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
 }
 
 .home-menu__card.disabled .home-menu__icon-wrap {
