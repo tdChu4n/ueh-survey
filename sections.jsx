@@ -285,14 +285,14 @@ function FactorTabContent({ factor, responses }) {
           <div className="stat-strip__value stat-strip__value--good">
             {hi.mean.toFixed(2)}
           </div>
-          <div className="stat-strip__sub">{hi.code} — {hi.label}</div>
+          <div className="stat-strip__sub">{hi.code}</div>
         </div>
         <div className="stat-strip__item stat-strip__item--bad">
           <div className="stat-strip__label">Biến thấp nhất</div>
           <div className="stat-strip__value stat-strip__value--bad">
             {lo.mean.toFixed(2)}
           </div>
-          <div className="stat-strip__sub">{lo.code} — {lo.label}</div>
+          <div className="stat-strip__sub">{lo.code}</div>
         </div>
         <div className="stat-strip__item stat-strip__item--neutral">
           <div className="stat-strip__label">Số mẫu</div>
