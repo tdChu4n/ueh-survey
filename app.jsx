@@ -32,7 +32,7 @@ function Footer() {
 // ── Sidebar chọn chương trình (2 tầng: năm → hoạt động) ─
 function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onHomeClick }) {
   const allPrograms = window.PROGRAMS || [];
-  const yearMap     = window.PROGRAM_YEARS || {};
+  const yearMap = window.PROGRAM_YEARS || {};
 
   // Nhóm chương trình theo năm
   const byYear = {};
@@ -74,9 +74,9 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onHomeClick })
         <span className="sidebar__title">Chương trình</span>
         <div className="sidebar__btns">
           <button className="sidebar__btn"
-                  onClick={() => onBatchSet(visiblePrograms, true)}>Chọn hết</button>
+            onClick={() => onBatchSet(visiblePrograms, true)}>Chọn hết</button>
           <button className="sidebar__btn sidebar__btn--clear"
-                  onClick={() => onBatchSet(visiblePrograms, false)}>Xóa hết</button>
+            onClick={() => onBatchSet(visiblePrograms, false)}>Xóa hết</button>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ function ProgramSidebar({ selectedPrograms, onToggle, onBatchSet, onHomeClick })
       {/* Tầng 2: chọn từng hoạt động */}
       <div className="sidebar__body">
         {visiblePrograms.length === 0 ? (
-          <div style={{ padding:"16px 14px", fontSize:12, color:"#94a3b8", textAlign:"center" }}>
+          <div style={{ padding: "16px 14px", fontSize: 12, color: "#94a3b8", textAlign: "center" }}>
             Chọn năm để xem hoạt động
           </div>
         ) : visiblePrograms.map(p => {
@@ -132,11 +132,11 @@ function ReportTabs({ responses }) {
   });
   useEffect(() => { localStorage.setItem("mymy.tab", active); }, [active]);
 
-  const [cohortFilter,  setCohortFilter]  = useState("__ALL__");
+  const [cohortFilter, setCohortFilter] = useState("__ALL__");
   const [facultyFilter, setFacultyFilter] = useState("__ALL__");
 
   const availableCohorts = useMemo(() =>
-    ["49","50","51"].filter(k => responses.some(r => r.cohort === k)),
+    ["49", "50", "51"].filter(k => responses.some(r => r.cohort === k)),
     [responses]
   );
   const availableFaculties = useMemo(() =>
@@ -146,7 +146,7 @@ function ReportTabs({ responses }) {
 
   const filtered = useMemo(() => {
     let r = responses;
-    if (cohortFilter  !== "__ALL__") r = r.filter(x => x.cohort  === cohortFilter);
+    if (cohortFilter !== "__ALL__") r = r.filter(x => x.cohort === cohortFilter);
     if (facultyFilter !== "__ALL__") r = r.filter(x => x.faculty === facultyFilter);
     return r;
   }, [responses, cohortFilter, facultyFilter]);
@@ -166,26 +166,32 @@ function ReportTabs({ responses }) {
         <span style={{ fontSize: 12, color: "#64748b", fontWeight: 600, whiteSpace: "nowrap" }}>Lọc theo:</span>
 
         <select value={cohortFilter} onChange={e => setCohortFilter(e.target.value)}
-                style={{ fontFamily: "inherit", fontSize: 13,
-                         border: "1px solid #cbd5e1", borderRadius: 8,
-                         padding: "5px 10px", background: "#fff", cursor: "pointer" }}>
+          style={{
+            fontFamily: "inherit", fontSize: 13,
+            border: "1px solid #cbd5e1", borderRadius: 8,
+            padding: "5px 10px", background: "#fff", cursor: "pointer"
+          }}>
           <option value="__ALL__">— Tất cả khóa —</option>
           {availableCohorts.map(k => <option key={k} value={k}>Khóa {k}</option>)}
         </select>
 
         <select value={facultyFilter} onChange={e => setFacultyFilter(e.target.value)}
-                style={{ fontFamily: "inherit", fontSize: 13,
-                         border: "1px solid #cbd5e1", borderRadius: 8,
-                         padding: "5px 10px", background: "#fff", cursor: "pointer", maxWidth: 240 }}>
+          style={{
+            fontFamily: "inherit", fontSize: 13,
+            border: "1px solid #cbd5e1", borderRadius: 8,
+            padding: "5px 10px", background: "#fff", cursor: "pointer", maxWidth: 240
+          }}>
           <option value="__ALL__">— Tất cả khoa —</option>
           {availableFaculties.map(f => <option key={f} value={f}>{f}</option>)}
         </select>
 
         {hasFilter && (
           <button onClick={() => { setCohortFilter("__ALL__"); setFacultyFilter("__ALL__"); }}
-                  style={{ fontSize: 12, color: "#dc2626", background: "#fef2f2",
-                           border: "1px solid #fca5a5", borderRadius: 6,
-                           padding: "4px 10px", cursor: "pointer" }}>
+            style={{
+              fontSize: 12, color: "#dc2626", background: "#fef2f2",
+              border: "1px solid #fca5a5", borderRadius: 6,
+              padding: "4px 10px", cursor: "pointer"
+            }}>
             ✕ Bỏ lọc
           </button>
         )}
@@ -201,8 +207,8 @@ function ReportTabs({ responses }) {
           const Ico = t.icon;
           return (
             <button key={t.id}
-                    className={"tab" + (active === t.id ? " tab--active" : "")}
-                    onClick={() => setActive(t.id)}>
+              className={"tab" + (active === t.id ? " tab--active" : "")}
+              onClick={() => setActive(t.id)}>
               {Ico ? <Ico style={{ width: 16, height: 16 }} /> : null}
               {t.label}
             </button>
@@ -212,7 +218,7 @@ function ReportTabs({ responses }) {
       {(() => {
         if (active === "__SUMMARY__")
           return <SummaryTabContent responses={filtered} onFactorClick={setActive} />;
-        if (active === "__QUAL__")    return <QualitativeTabContent responses={filtered} />;
+        if (active === "__QUAL__") return <QualitativeTabContent responses={filtered} />;
         const f = FACTORS.find(x => x.code === active);
         return f ? <FactorTabContent factor={f} responses={filtered} /> : null;
       })()}
@@ -225,15 +231,23 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
   return (
     <div className="home-menu">
       <h2 className="home-menu__title">ĐOÀN - HỘI KHOA TOÁN - THỐNG KÊ</h2>
-      
+
       <div className="home-menu__section">
         <div className="home-menu__header">Quản lý hoạt động</div>
         <div className="home-menu__cards">
           <div className="home-menu__card" onClick={onAddActivityClick}>
-            Thêm khảo sát hoạt động
+            <div className="home-menu__icon-wrap">
+              <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            </div>
+            <h3 className="home-menu__card-title">Thêm khảo sát hoạt động</h3>
+            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
           <div className="home-menu__card" onClick={() => window.open('https://docs.google.com/spreadsheets/d/16TyqIj3iN1cEKuiVtctmi-om1sjW_LjrDLh0E17zIyY/edit?gid=0#gid=0', '_blank')}>
-            Tổng hợp báo cáo Hoạt động cơ sở
+            <div className="home-menu__icon-wrap">
+              <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            </div>
+            <h3 className="home-menu__card-title">Tổng hợp báo cáo Hoạt động cơ sở</h3>
+            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
         </div>
       </div>
@@ -242,7 +256,11 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
         <div className="home-menu__header">Báo cáo kết quả khảo sát sau chương trình</div>
         <div className="home-menu__cards">
           <div className="home-menu__card" onClick={() => onViewChange('dashboard')}>
-            Xem kết quả khảo sát sinh viên<br/>sau chương trình
+            <div className="home-menu__icon-wrap">
+              <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/></svg>
+            </div>
+            <h3 className="home-menu__card-title">Xem kết quả khảo sát sinh viên<br/>sau chương trình</h3>
+            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
         </div>
       </div>
@@ -251,10 +269,17 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
         <div className="home-menu__header">Tổng hợp Hòm thư lắng nghe</div>
         <div className="home-menu__cards">
           <div className="home-menu__card" onClick={() => onViewChange('mailbox')}>
-            Tổng hợp ý kiến sinh viên
+            <div className="home-menu__icon-wrap">
+              <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3 className="home-menu__card-title">Tổng hợp ý kiến sinh viên</h3>
+            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
           <div className="home-menu__card disabled">
-            Dữ liệu trả lời
+            <div className="home-menu__icon-wrap">
+              <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <h3 className="home-menu__card-title">Dữ liệu trả lời</h3>
           </div>
         </div>
       </div>
@@ -269,10 +294,10 @@ function App() {
     return ['menu', 'dashboard', 'mailbox'].includes(hash) ? hash : 'menu';
   });
   const [selectedPrograms, setSelectedPrograms] = useState(() => new Set());
-  const [dataKey,   setDataKey]   = useState(0);
-  const [loading,   setLoading]   = useState(true);
+  const [dataKey, setDataKey] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [updatedAt, setUpdatedAt] = useState(null);
-  const [mailbox,   setMailbox]   = useState([]);
+  const [mailbox, setMailbox] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
@@ -315,7 +340,7 @@ function App() {
           setDataKey(k => k + 1);
         }
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   };
 
@@ -325,7 +350,7 @@ function App() {
     fetch(APPS_SCRIPT_URL + '?action=getMailbox')
       .then(r => r.json())
       .then(data => { if (data.success) setMailbox(data.entries || []); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const responses = useMemo(
@@ -346,7 +371,7 @@ function App() {
     setSelectedPrograms(prev => {
       const next = new Set(prev);
       if (shouldSelect) programs.forEach(p => next.add(p));
-      else              programs.forEach(p => next.delete(p));
+      else programs.forEach(p => next.delete(p));
       return next;
     });
   };
@@ -355,11 +380,11 @@ function App() {
     <>
       <TopNav />
       {!loading && updatedAt && (
-        <div style={{ textAlign:'right', padding:'4px 24px', fontSize:11, color:'#888' }}>
+        <div style={{ textAlign: 'right', padding: '4px 24px', fontSize: 11, color: '#888' }}>
           ✓ Cập nhật lúc {updatedAt}
           <button onClick={() => window.location.reload()} style={{
-            marginLeft:8, fontSize:11, padding:'1px 8px',
-            border:'1px solid #ccc', borderRadius:3, cursor:'pointer', background:'#fff'
+            marginLeft: 8, fontSize: 11, padding: '1px 8px',
+            border: '1px solid #ccc', borderRadius: 3, cursor: 'pointer', background: '#fff'
           }}>↻ Làm mới</button>
         </div>
       )}
@@ -503,14 +528,14 @@ function AddActivityModal({ onClose, onSaved }) {
           <h2>Thêm Hoạt Động Mới</h2>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        <form onSubmit={handleSubmit}>
           <div className="modal-body">
             {error && (
               <div style={{ color: 'var(--c-bad)', background: 'var(--c-bad-soft)', padding: '10px 14px', borderRadius: 8, fontSize: 13, fontWeight: 500 }}>
                 ⚠️ {error}
               </div>
             )}
-            
+
             <div className="form-field">
               <label>Tên hoạt động <span className="req">*</span></label>
               <input type="text" name="courseName" value={form.courseName} onChange={handleChange} required placeholder="Ví dụ: 2026_TTK_01_Hành trình Chín tháng Giêng liên khoa Toán - Thống kê và khoa Kinh tế" />
@@ -604,7 +629,7 @@ function AddActivityModal({ onClose, onSaved }) {
               </div>
             </div>
           </div>
-          
+
           <div className="modal-footer">
             <button type="button" className="btn-secondary" onClick={onClose} disabled={saving}>Hủy</button>
             <button type="submit" className="btn-primary" disabled={saving}>
