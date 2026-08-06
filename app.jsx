@@ -240,14 +240,12 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
               <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
             </div>
             <h3 className="home-menu__card-title">Thêm khảo sát hoạt động</h3>
-            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
           <div className="home-menu__card" onClick={() => window.open('https://docs.google.com/spreadsheets/d/16TyqIj3iN1cEKuiVtctmi-om1sjW_LjrDLh0E17zIyY/edit?gid=0#gid=0', '_blank')}>
             <div className="home-menu__icon-wrap">
               <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M18 20V10M12 20V4M6 20v-6"/></svg>
             </div>
             <h3 className="home-menu__card-title">Tổng hợp báo cáo Hoạt động cơ sở</h3>
-            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
         </div>
       </div>
@@ -260,7 +258,6 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
               <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/></svg>
             </div>
             <h3 className="home-menu__card-title">Xem kết quả khảo sát sinh viên<br/>sau chương trình</h3>
-            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
         </div>
       </div>
@@ -273,7 +270,6 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
               <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <h3 className="home-menu__card-title">Tổng hợp ý kiến sinh viên</h3>
-            <span className="home-menu__action-tag">→ Thực hiện</span>
           </div>
           <div className="home-menu__card disabled">
             <div className="home-menu__icon-wrap">

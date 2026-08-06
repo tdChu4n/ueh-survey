@@ -1262,22 +1262,7 @@ button {
   font-size: 0.95rem;
 }
 
-.home-menu__action-tag {
-  background: #f97316;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 4px;
-}
 .home-menu__card.disabled .home-menu__icon-wrap {
-  background: #aaa;
-}
-.home-menu__card.disabled .home-menu__action-tag {
   background: #aaa;
 }
 .home-menu__card.disabled {
