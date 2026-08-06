@@ -355,12 +355,7 @@ function FactorTabContent({ factor, responses }) {
           </div>
           <div className="callout__body">
             Nhân tố <strong>{factor.code}</strong> đạt mức <strong>{ratingLabel(factorAvg).text}</strong>{" "}
-            ({factorAvg.toFixed(2)}/7).{" "}
-            {factorAvg < 5
-              ? "Cần ưu tiên cải thiện trong các chương trình kế tiếp."
-              : factorAvg < 6
-                ? "Có tiềm năng cải thiện thêm để đạt mức tốt. Tập trung vào biến có điểm thấp nhất."
-                : "Duy trì cách triển khai hiện tại và tiếp tục phát huy."}
+            ({factorAvg.toFixed(2)}/7).
           </div>
         </div>
         <div className="split">
