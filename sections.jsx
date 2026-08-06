@@ -367,13 +367,13 @@ function FactorTabContent({ factor, responses }) {
           <div className="split__col split__col--good">
             <div className="split__title">Điểm mạnh</div>
             <div style={{ fontSize: 13 }}>
-              <strong>{hi.code}</strong> đạt cao nhất ({hi.mean.toFixed(2)}/7) — {hi.label}.
+              <strong>{hi.code}</strong> đạt cao nhất ({hi.mean.toFixed(2)}/7)
             </div>
           </div>
           <div className="split__col split__col--bad">
             <div className="split__title">Cần cải thiện</div>
             <div style={{ fontSize: 13 }}>
-              Ưu tiên cải thiện <strong>{lo.code}</strong> ({lo.mean.toFixed(2)}/7) — {lo.label}.
+              Ưu tiên cải thiện <strong>{lo.code}</strong> ({lo.mean.toFixed(2)}/7)
             </div>
           </div>
         </div>
