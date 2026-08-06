@@ -1245,7 +1245,7 @@ button {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #006b5e;
+  background: #ff751f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1260,7 +1260,7 @@ button {
 .home-menu__card-title {
   margin: 0;
   font-family: "Times New Roman", Times, serif;
-  font-size: 13px;
+  font-size: 18px;
 }
 
 .home-menu__card.disabled .home-menu__icon-wrap {

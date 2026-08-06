@@ -257,7 +257,7 @@ function HomeMenu({ onViewChange, onAddActivityClick }) {
             <div className="home-menu__icon-wrap">
               <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/></svg>
             </div>
-            <h3 className="home-menu__card-title">Xem kết quả khảo sát sinh viên<br/>sau chương trình</h3>
+            <h3 className="home-menu__card-title">Xem kết quả khảo sát sinh viên sau chương trình</h3>
           </div>
         </div>
       </div>
