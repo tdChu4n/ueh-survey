@@ -1674,7 +1674,7 @@ window.updateB2Options = function() {
   container.innerHTML = selected.map(val => {
     let disp = val;
     if (val === 'Khác' && txt) disp = 'Khác: ' + txt;
-    return \`<label><input type="checkbox" name="Q_B2" value="\${val}" data-other="\${val==='Khác'?txt:''}"> \${esc(disp)}</label>\`;
+    return `<label><input type="checkbox" name="Q_B2" value="${val}" data-other="${val==='Khác'?txt:''}"> ${esc(disp)}</label>`;
   }).join('');
 };
 
@@ -1689,7 +1689,7 @@ window.updateE2Options = function() {
   container.innerHTML = selected.map(val => {
     let disp = val;
     if (val === 'Khác' && txt) disp = 'Khác: ' + txt;
-    return \`<label><input type="radio" name="Q_E2" value="\${val}" data-other="\${val==='Khác'?txt:''}"> \${esc(disp)}</label>\`;
+    return `<label><input type="radio" name="Q_E2" value="${val}" data-other="${val==='Khác'?txt:''}"> ${esc(disp)}</label>`;
   }).join('');
 };
 
@@ -1701,7 +1701,7 @@ function collectCELGFormData() {
   data.Q_A8 = document.querySelector('input[name="Q_A8"]:checked')?.value || '';
   
   const getChecked = (name, otherTxtId) => {
-    return Array.from(document.querySelectorAll(\`input[name="\${name}"]:checked\`)).map(el => {
+    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => {
       if (el.value === 'Khác') {
         const txt = document.getElementById(otherTxtId)?.value.trim();
         return txt ? 'Khác: ' + txt : 'Khác';
@@ -1724,7 +1724,7 @@ function collectCELGFormData() {
   
   ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
    'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'].forEach(c => {
-    data[c] = document.querySelector(\`input[name="\${c}"]:checked\`)?.value || '';
+    data[c] = document.querySelector(`input[name="${c}"]:checked`)?.value || '';
   });
   
   data.Q_E1 = getChecked('Q_E1', 'txt_E1_other');
@@ -1781,7 +1781,7 @@ function validateCELGForm() {
   const likerts = ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
    'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'];
   for (let c of likerts) {
-    if (!document.querySelector(\`input[name="\${c}"]:checked\`)) { alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá theo thang điểm.'); return false; }
+    if (!document.querySelector(`input[name="${c}"]:checked`)) { alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá theo thang điểm.'); return false; }
   }
   
   const e1 = document.querySelectorAll('input[name="Q_E1"]:checked');
