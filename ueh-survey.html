@@ -1511,7 +1511,7 @@ function renderCELGForm() {
       <div class="info-field"><label>Tên <span class="req">*</span></label><input type="text" id="field_firstName" name="firstName"></div>
       <div class="info-field"><label>Lớp <span class="req">*</span></label><input type="text" id="field_studentClass" name="studentClass"></div>
       <div class="info-field"><label>Khóa <span class="req">*</span></label><select id="field_cohort" name="cohort"><option value="">-- Chọn --</option><option>49</option><option>50</option><option>51</option><option>Khác</option></select></div>
-      <div class="info-field"><label>Khoa <span class="req">*</span></label><select id="field_faculty" name="faculty"><option value="">-- Chọn khoa --</option>${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}</select></div>
+      <div class="info-field"><label>Khoa <span class="req">*</span></label><select id="field_faculty" name="faculty"><option value="">-- Chọn khoa --</option>${['Toán - Thống kê', 'Kinh tế', 'Quản trị', 'Tài chính', 'Kế toán', 'Luật', 'Công nghệ thông tin kinh doanh', 'Ngoại ngữ', 'Ngân hàng', 'Du lịch', 'Kinh doanh quốc tế - Marketing', 'Lý luận chính trị', 'Thiết kế truyền thông', 'Khoa học xã hội'].map(f => `<option>${esc(f)}</option>`).join('')}</select></div>
       <div class="info-field"><label>Giới tính <span class="req">*</span></label><select id="field_gender" name="gender"><option value="">-- Chọn --</option><option>Nam</option><option>Nữ</option></select></div>
       <div class="info-field"><label>MSSV <span class="req">*</span></label><input type="text" id="field_studentId" name="studentId"></div>
       <div class="info-field"><label>Số điện thoại <span class="req">*</span></label><input type="tel" id="field_phone" name="phone"></div>
