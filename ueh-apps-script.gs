@@ -52,13 +52,24 @@ function handleGetCourses(email) {
 
   const respSheet = ss.getSheetByName(SHEET_RESPONSES);
   const completed = new Set();
+  const norm = email.trim().toLowerCase();
   if (respSheet) {
     const respRows = respSheet.getDataRange().getValues();
-    const norm = email.trim().toLowerCase();
     for (let i = 0; i < respRows.length; i++) {
       const rowEmail = String(respRows[i][1]).trim();
       if (!rowEmail.includes('@')) continue;
       if (rowEmail.toLowerCase() === norm) completed.add(String(respRows[i][3]).trim());
+    }
+  }
+
+  const completedCELG = new Set();
+  const celgSheet = ss.getSheetByName('CELG_Responses');
+  if (celgSheet) {
+    const celgRows = celgSheet.getDataRange().getValues();
+    for (let i = 1; i < celgRows.length; i++) {
+      if (String(celgRows[i][1]).trim().toLowerCase() === norm) {
+        completedCELG.add('CELG-Innovation Awards 2026');
+      }
     }
   }
 
@@ -100,6 +111,18 @@ function handleGetCourses(email) {
     });
   }
 
+  courses.push({
+    rowIndex:       -1,
+    year:           String(new Date().getFullYear()),
+    courseName:     'CELG-Innovation Awards 2026',
+    locked:         false,
+    status:         completedCELG.has('CELG-Innovation Awards 2026') ? 'Đã thực hiện' : 'Chưa thực hiện',
+    loaiHoatDong:   'Khảo sát đặc biệt',
+    quyMo:          '', donViToChuc: '', donViPhoiHop: '',
+    ngayBatDau:     '', ngayKetThuc: '', batDauKhaoSat: '',
+    ketThucKhaoSat: 'Không thời hạn',
+  });
+
   return jsonOut({ success: true, courses });
 }
 
@@ -108,6 +131,37 @@ function handleGetCourses(email) {
 function handleSubmitSurvey(p) {
   try {
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+
+    if (p.program === 'CELG-Innovation Awards 2026') {
+      let celgSheet = ss.getSheetByName('CELG_Responses');
+      if (!celgSheet) {
+        celgSheet = ss.insertSheet('CELG_Responses');
+        celgSheet.appendRow([
+          'Dấu thời gian','Email','Năm','Chương trình',
+          'Họ và tên đệm','Tên','MSSV','Lớp','Khóa','Khoa',
+          'Giới tính','Số điện thoại','Email UEH','Email khác','Link Facebook',
+          'Số HĐ tham gia', 'Quan tâm HĐ', 'Ưu tiên HĐ', 'Hình thức HĐ',
+          'C.I.1', 'C.I.2', 'C.I.3', 'C.II.1', 'C.II.2', 'C.III.1', 'C.III.2', 'C.IV.1',
+          'D.I.1', 'D.I.2', 'D.I.3', 'D.II.1', 'D.II.2', 'D.III.1', 'D.III.2',
+          'Rào cản tham gia', 'Rào cản lớn nhất',
+          'Hình thức tổ chức', 'Khung thời gian', 'Sẵn sàng dành thời gian',
+          'Nên tổ chức HĐ nào', 'Thay đổi một điều'
+        ]);
+      }
+      celgSheet.appendRow([
+        new Date(), p.email||'', p.year||'', p.program||'',
+        p.lastName||'', p.firstName||'', p.studentId||'', p.studentClass||'', p.cohort||'', p.faculty||'',
+        p.gender||'', p.phone||'', p.emailUeh||'', p.emailOther||'', p.facebook||'',
+        p.Q_A8||'', p.Q_B1||'', p.Q_B2||'', p.Q_B3||'',
+        num(p.C_I_1), num(p.C_I_2), num(p.C_I_3), num(p.C_II_1), num(p.C_II_2), num(p.C_III_1), num(p.C_III_2), num(p.C_IV_1),
+        num(p.D_I_1), num(p.D_I_2), num(p.D_I_3), num(p.D_II_1), num(p.D_II_2), num(p.D_III_1), num(p.D_III_2),
+        p.Q_E1||'', p.Q_E2||'',
+        p.Q_F1||'', p.Q_F2||'', p.Q_F3||'',
+        p.Q_G1||'', p.Q_G2||''
+      ]);
+      return jsonOut({ success: true });
+    }
+
     
     // Kiểm tra xem chương trình đã quá hạn khảo sát chưa trước khi lưu
     const assignSheet = ss.getSheetByName(SHEET_ASSIGNMENTS);
