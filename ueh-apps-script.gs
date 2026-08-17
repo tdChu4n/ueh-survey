@@ -141,8 +141,8 @@ function handleSubmitSurvey(p) {
           'Họ và tên đệm','Tên','MSSV','Lớp','Khóa','Khoa',
           'Giới tính','Số điện thoại','Email UEH','Email khác','Link Facebook',
           'Số HĐ tham gia', 'Quan tâm HĐ', 'Ưu tiên HĐ', 'Hình thức HĐ',
-          'C.I.1', 'C.I.2', 'C.I.3', 'C.II.1', 'C.II.2', 'C.III.1', 'C.III.2', 'C.IV.1',
-          'D.I.1', 'D.I.2', 'D.I.3', 'D.II.1', 'D.II.2', 'D.III.1', 'D.III.2',
+          'C.1', 'C.2', 'C.3', 'C.4', 'C.5', 'C.6', 'C.7',
+          'D.1', 'D.2', 'D.3', 'D.4', 'D.5',
           'Rào cản tham gia', 'Rào cản lớn nhất',
           'Hình thức tổ chức', 'Khung thời gian', 'Sẵn sàng dành thời gian',
           'Nên tổ chức HĐ nào', 'Thay đổi một điều'
@@ -153,8 +153,8 @@ function handleSubmitSurvey(p) {
         p.lastName||'', p.firstName||'', p.studentId||'', p.studentClass||'', p.cohort||'', p.faculty||'',
         p.gender||'', p.phone||'', p.emailUeh||'', p.emailOther||'', p.facebook||'',
         p.Q_A8||'', p.Q_B1||'', p.Q_B2||'', p.Q_B3||'',
-        num(p.C_I_1), num(p.C_I_2), num(p.C_I_3), num(p.C_II_1), num(p.C_II_2), num(p.C_III_1), num(p.C_III_2), num(p.C_IV_1),
-        num(p.D_I_1), num(p.D_I_2), num(p.D_I_3), num(p.D_II_1), num(p.D_II_2), num(p.D_III_1), num(p.D_III_2),
+        num(p.C_1), num(p.C_2), num(p.C_3), num(p.C_4), num(p.C_5), num(p.C_6), num(p.C_7),
+        p.D_1||'', p.D_2||'', p.D_3||'', p.D_4||'', p.D_5||'',
         p.Q_E1||'', p.Q_E2||'',
         p.Q_F1||'', p.Q_F2||'', p.Q_F3||'',
         p.Q_G1||'', p.Q_G2||''

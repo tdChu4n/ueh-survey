@@ -1561,44 +1561,49 @@ function renderCELGForm() {
     </div>
   `;
 
-  // --- PHẦN C & D: Likert 1-7 ---
-  const LIKERT_LABELS_CELG = ['Hoàn toàn<br>không đồng ý','Không<br>đồng ý','Hơi không<br>đồng ý','Trung lập','Hơi<br>đồng ý','Đồng ý','Hoàn toàn<br>đồng ý'];
-  
-  const likertGroups = [
-    {
-      title: 'PHẦN C. ĐỘNG CƠ THAM GIA',
-      factors: [
-        { name: 'I. Lợi ích cá nhân và phát triển nghề nghiệp', items: [{c:'C_I_1', l:'Tôi mong muốn có cơ hội học hỏi thêm kiến thức và kinh nghiệm từ những người có kinh nghiệm trong lĩnh vực liên quan.'}, {c:'C_I_2', l:'Tôi mong muốn phát triển những kỹ năng hữu ích cho học tập và công việc sau này.'}, {c:'C_I_3', l:'Tôi mong muốn xây dựng những mối quan hệ có ích cho định hướng học tập và nghề nghiệp của mình.'}] },
-        { name: 'II. Giá trị và ý nghĩa của hoạt động', items: [{c:'C_II_1', l:'Tôi mong muốn nhận được những quyền lợi thiết thực khi tham gia hoạt động hoặc sự kiện.'}, {c:'C_II_2', l:'Tôi mong muốn tham gia những hoạt động có ý nghĩa.'}] },
-        { name: 'III. Ảnh hưởng từ bạn bè và những người xung quanh', items: [{c:'C_III_1', l:'Tôi có xu hướng tham gia một hoạt động khi bạn bè của tôi cũng tham gia hoạt động đó.'}, {c:'C_III_2', l:'Tôi muốn tham gia một hoạt động để có thể cùng bạn bè trải nghiệm hoạt động đó.'}] },
-        { name: 'IV. Ảnh hưởng của trải nghiệm tham gia trước đây', items: [{c:'C_IV_1', l:'Những trải nghiệm tích cực từ các hoạt động trước đây khuyến khích tôi tiếp tục tham gia.'}] }
-      ]
-    },
-    {
-      title: 'PHẦN D. KỲ VỌNG VÀ Ý ĐỊNH THAM GIA',
-      factors: [
-        { name: 'I. Nội dung và chương trình', items: [{c:'D_I_1', l:'Tôi mong muốn nội dung hoạt động phù hợp với nhu cầu và sở thích của sinh viên.'}, {c:'D_I_2', l:'Tôi mong muốn các hoạt động có nội dung đa dạng và phong phú.'}, {c:'D_I_3', l:'Tôi mong muốn nội dung hoạt động mang tính thực tế và hữu ích.'}] },
-        { name: 'II. Cách thức tổ chức', items: [{c:'D_II_1', l:'Tôi mong muốn thông tin về hoạt động được cung cấp rõ ràng trước khi diễn ra.'}, {c:'D_II_2', l:'Tôi mong muốn quy trình đăng ký tham gia đơn giản và thuận tiện.'}] },
-        { name: 'III. Ý định tham gia', items: [{c:'D_III_1', l:'Tôi sẵn sàng tham gia các hoạt động mới do Đoàn - Hội tổ chức nếu nội dung phù hợp với nhu cầu của tôi.'}, {c:'D_III_2', l:'Tôi sẽ ưu tiên tham gia những hoạt động/sự kiện phù hợp với mối quan tâm của mình.'}] }
-      ]
-    }
+  // --- PHẦN C ---
+  const LIKERT_LABELS_C = ['1<br><small>(Rất không hài lòng)</small>', '2', '3', '4', '5', '6', '7<br><small>(Rất hài lòng)</small>'];
+  const pC_items = [
+    {c:'C_1', l:'1. Mức độ hài lòng chung của bạn về các hoạt động Đoàn - Hội khoa trong kỳ vừa qua'},
+    {c:'C_2', l:'2. Chất lượng nội dung, hình thức tổ chức của các hoạt động'},
+    {c:'C_3', l:'3. Mức độ đa dạng của các loại hình hoạt động (học thuật, tình nguyện, hỗ trợ sinh viên, phong trào...)'},
+    {c:'C_4', l:'4. Sự hỗ trợ của Đoàn - Hội khi bạn gặp khó khăn, thắc mắc (học tập, đời sống, thủ tục...)'},
+    {c:'C_5', l:'5. Tốc độ và sự rõ ràng khi giải đáp thắc mắc/phản hồi của sinh viên'},
+    {c:'C_6', l:'6. Mức độ kịp thời, đầy đủ của thông tin được truyền tải (thời gian, địa điểm, nội dung hoạt động)'},
+    {c:'C_7', l:'7. Thái độ, tinh thần phục vụ của các bạn cán bộ Đoàn - Hội'}
   ];
-
-  for (const group of likertGroups) {
-    html += `<h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">${group.title}</h3>`;
-    for (const factor of group.factors) {
-      html += `<div class="factor-card">
-        <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
-        <div class="likert-scroll">
-        <table class="likert-table">
-          <thead><tr><th class="col-lbl"></th>${LIKERT_LABELS_CELG.map(lbl => `<th>${lbl}</th>`).join('')}</tr></thead>
-          <tbody>`;
-      for (const item of factor.items) {
-        html += `<tr><td class="col-lbl">${esc(item.l)}</td>${[1,2,3,4,5,6,7].map(n => `<td><input type="radio" name="${item.c}" value="${n}"></td>`).join('')}</tr>`;
-      }
-      html += `</tbody></table></div></div>`;
-    }
+  html += `<h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN C. MỨC ĐỘ HÀI LÒNG ĐA CHIỀU</h3>`;
+  html += `<div class="factor-card">
+    <div class="factor-title">Đánh giá mức độ hài lòng (1 = Rất không hài lòng, 7 = Rất hài lòng) <span class="req">*</span></div>
+    <div class="likert-scroll">
+    <table class="likert-table">
+      <thead><tr><th class="col-lbl"></th>${LIKERT_LABELS_C.map(lbl => `<th>${lbl}</th>`).join('')}</tr></thead>
+      <tbody>`;
+  for (const item of pC_items) {
+    html += `<tr><td class="col-lbl" style="text-align:left;">${esc(item.l)}</td>${[1,2,3,4,5,6,7].map(n => `<td><input type="radio" name="${item.c}" value="${n}"></td>`).join('')}</tr>`;
   }
+  html += `</tbody></table></div></div>`;
+
+  // --- PHẦN D ---
+  const LIKERT_LABELS_D = ['Chưa tham gia', '1', '2', '3', '4', '5'];
+  const pD_items = [
+    {c:'D_1', l:'1. Hoạt động học thuật (hội thảo, tọa đàm, hỗ trợ học tập, nghiên cứu khoa học...)'},
+    {c:'D_2', l:'2. Hoạt động kỹ năng mềm, hỗ trợ sinh viên (hướng nghiệp, kỹ năng làm việc nhóm, thuyết trình, CV...)'},
+    {c:'D_3', l:'3. Hoạt động văn - thể - mỹ, giải trí, phong trào, hội thao,...'},
+    {c:'D_4', l:'4. Hoạt động tình nguyện, cộng đồng'},
+    {c:'D_5', l:'5. Hoạt động kết nối doanh nghiệp/hướng nghiệp'}
+  ];
+  html += `<h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN D. ĐÁNH GIÁ CHI TIẾT TỪNG MẢNG</h3>`;
+  html += `<div class="factor-card">
+    <div class="factor-title">Đánh giá mức độ cần thiết/hài lòng (1-5, hoặc "Chưa tham gia") <span class="req">*</span></div>
+    <div class="likert-scroll">
+    <table class="likert-table">
+      <thead><tr><th class="col-lbl"></th>${LIKERT_LABELS_D.map(lbl => `<th>${lbl}</th>`).join('')}</tr></thead>
+      <tbody>`;
+  for (const item of pD_items) {
+    html += `<tr><td class="col-lbl" style="text-align:left;">${esc(item.l)}</td>${['Chưa tham gia',1,2,3,4,5].map(n => `<td><input type="radio" name="${item.c}" value="${n}"></td>`).join('')}</tr>`;
+  }
+  html += `</tbody></table></div></div>`;
 
   // --- PHẦN E ---
   const raoCan = ['Thời gian hoặc thời lượng hoạt động chưa phù hợp với lịch học/công việc cá nhân','Chưa nhận được thông tin hoặc thông tin về hoạt động chưa được truyền tải kịp thời','Nội dung hoạt động chưa phù hợp với nhu cầu hoặc sở thích','Hình thức tổ chức chưa hấp dẫn','Địa điểm tổ chức chưa thuận tiện','Quy trình đăng ký tham gia chưa thuận tiện','Không có bạn bè/người quen cùng tham gia','Ngại giao tiếp hoặc khó hòa nhập với những người tham gia khác','Không thấy lợi ích hoặc giá trị rõ ràng khi tham gia','Đã từng có trải nghiệm chưa tốt với hoạt động trước đây'];
@@ -1722,8 +1727,8 @@ function collectCELGFormData() {
   
   data.Q_B3 = getChecked('Q_B3', 'txt_B3_other');
   
-  ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
-   'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'].forEach(c => {
+  ['C_1','C_2','C_3','C_4','C_5','C_6','C_7',
+   'D_1','D_2','D_3','D_4','D_5'].forEach(c => {
     data[c] = document.querySelector(`input[name="${c}"]:checked`)?.value || '';
   });
   
@@ -1778,10 +1783,10 @@ function validateCELGForm() {
   const b3 = document.querySelectorAll('input[name="Q_B3"]:checked');
   if (b3.length === 0) { alert('Vui lòng chọn ít nhất 1 phương án ở Phần B, Câu 3.'); return false; }
   
-  const likerts = ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
-   'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'];
+  const likerts = ['C_1','C_2','C_3','C_4','C_5','C_6','C_7',
+   'D_1','D_2','D_3','D_4','D_5'];
   for (let c of likerts) {
-    if (!document.querySelector(`input[name="${c}"]:checked`)) { alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá theo thang điểm.'); return false; }
+    if (!document.querySelector(`input[name="${c}"]:checked`)) { alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá ở Phần C và D.'); return false; }
   }
   
   const e1 = document.querySelectorAll('input[name="Q_E1"]:checked');
