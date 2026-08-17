@@ -1,327 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UEH â€“ Kháº£o sÃ¡t Ã½ kiáº¿n sinh viÃªn</title>
+  <title>UEH – Khảo sát ý kiến sinh viên</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://accounts.google.com/gsi/client" async defer>function renderCELGForm() {
-  let html = `
-    <div class="email-display">Xin chÃ o, <strong>${esc(currentUser.email)}</strong>. Email nÃ y sáº½ Ä‘Æ°á»£c ghi láº¡i.</div>
-    <div class="scale-note">
-      Kháº£o sÃ¡t nhu cáº§u, sá»Ÿ thÃ­ch vÃ  cÃ¡c yáº¿u tá»‘ áº£nh hÆ°á»Ÿng Ä‘áº¿n Ã½ Ä‘á»‹nh tham gia hoáº¡t Ä‘á»™ng/sá»± kiá»‡n cá»§a sinh viÃªn UEH.
-    </div>
-  `;
-
-  // --- PHáº¦N A. THÃ”NG TIN CHUNG ---
-  html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N A. THÃ”NG TIN CHUNG</h3>
-    <div class="info-grid">
-      <div class="info-field"><label>Há» vÃ  tÃªn Ä‘á»‡m <span class="req">*</span></label><input type="text" id="field_lastName" name="lastName"></div>
-      <div class="info-field"><label>TÃªn <span class="req">*</span></label><input type="text" id="field_firstName" name="firstName"></div>
-      <div class="info-field"><label>Lá»›p <span class="req">*</span></label><input type="text" id="field_studentClass" name="studentClass"></div>
-      <div class="info-field"><label>KhÃ³a <span class="req">*</span></label><select id="field_cohort" name="cohort"><option value="">-- Chá»n --</option><option>49</option><option>50</option><option>51</option><option>KhÃ¡c</option></select></div>
-      <div class="info-field"><label>Khoa <span class="req">*</span></label><select id="field_faculty" name="faculty"><option value="">-- Chá»n khoa --</option>${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}</select></div>
-      <div class="info-field"><label>Giá»›i tÃ­nh <span class="req">*</span></label><select id="field_gender" name="gender"><option value="">-- Chá»n --</option><option>Nam</option><option>Ná»¯</option></select></div>
-      <div class="info-field"><label>MSSV <span class="req">*</span></label><input type="text" id="field_studentId" name="studentId"></div>
-      <div class="info-field"><label>Sá»‘ Ä‘iá»‡n thoáº¡i <span class="req">*</span></label><input type="tel" id="field_phone" name="phone"></div>
-      <div class="info-field"><label>Email UEH <span class="req">*</span></label><input type="email" id="field_emailUeh" name="emailUeh"></div>
-      <div class="info-field"><label>Email khÃ¡c <span class="req">*</span></label><input type="email" id="field_emailOther" name="emailOther"></div>
-      <div class="info-field" style="grid-column: 1 / -1;"><label>Link Facebook <span class="req">*</span></label><input type="url" id="field_facebook" name="facebook"></div>
-    </div>
-    <div class="text-section">
-      <label>Trong 12 thÃ¡ng qua, báº¡n tham gia khoáº£ng bao nhiÃªu hoáº¡t Ä‘á»™ng/sá»± kiá»‡n táº¡i UEH? <span class="req">*</span></label>
-      <div class="radio-group" style="display:flex; flex-direction:column; gap:8px;">
-        <label><input type="radio" name="Q_A8" value="ChÆ°a tham gia"> ChÆ°a tham gia</label>
-        <label><input type="radio" name="Q_A8" value="1â€“2 hoáº¡t Ä‘á»™ng"> 1â€“2 hoáº¡t Ä‘á»™ng</label>
-        <label><input type="radio" name="Q_A8" value="3â€“5 hoáº¡t Ä‘á»™ng"> 3â€“5 hoáº¡t Ä‘á»™ng</label>
-        <label><input type="radio" name="Q_A8" value="6â€“10 hoáº¡t Ä‘á»™ng"> 6â€“10 hoáº¡t Ä‘á»™ng</label>
-        <label><input type="radio" name="Q_A8" value="TrÃªn 10 hoáº¡t Ä‘á»™ng"> TrÃªn 10 hoáº¡t Ä‘á»™ng</label>
-      </div>
-    </div>
-  `;
-
-  const mangHoatDong = ['Há»c thuáº­t & chuyÃªn mÃ´n','Äá»‹nh hÆ°á»›ng nghá» nghiá»‡p','PhÃ¡t triá»ƒn ká»¹ nÄƒng','Khá»Ÿi nghiá»‡p & Ä‘á»•i má»›i sÃ¡ng táº¡o','VÄƒn hÃ³a & nghá»‡ thuáº­t','Thá»ƒ thao & sá»©c khá»e','Giao lÆ°u & káº¿t ná»‘i sinh viÃªn','Giáº£i trÃ­ & tráº£i nghiá»‡m','Cá»™ng Ä‘á»“ng & tÃ¬nh nguyá»‡n','Quá»‘c táº¿ & giao lÆ°u vÄƒn hÃ³a'];
-
-  // --- PHáº¦N B ---
-  html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N B: SINH VIÃŠN QUAN TÃ‚M Äáº¾N HOáº T Äá»˜NG GÃŒ?</h3>
-    
-    <div class="text-section">
-      <label>1. Báº¡n quan tÃ¢m Ä‘áº¿n nhá»¯ng máº£ng hoáº¡t Ä‘á»™ng nÃ o do ÄoÃ n - Há»™i tá»• chá»©c? (CÃ³ thá»ƒ chá»n nhiá»u) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_B1" style="display:flex; flex-direction:column; gap:8px;">
-        ${mangHoatDong.map(opt => `<label><input type="checkbox" name="Q_B1" value="${opt}" onchange="updateB2Options()"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B1" value="KhÃ¡c" id="chk_B1_other" onchange="updateB2Options()"> KhÃ¡c: <input type="text" id="txt_B1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
-      </div>
-    </div>
-
-    <div class="text-section">
-      <label>2. Náº¿u chá»‰ Ä‘Æ°á»£c Æ°u tiÃªn má»™t máº£ng, báº¡n mong muá»‘n ÄoÃ nâ€“Há»™i táº­p trung tá»• chá»©c máº£ng nÃ o nháº¥t? (Chá»n tá»‘i Ä‘a 3) <span class="req">*</span><br><small style="font-weight:normal; color:#666;">(Chá»‰ hiá»ƒn thá»‹ cÃ¡c máº£ng báº¡n Ä‘Ã£ chá»n á»Ÿ cÃ¢u 1)</small></label>
-      <div class="checkbox-group" id="group_B2" style="display:flex; flex-direction:column; gap:8px;">
-        <em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>
-      </div>
-    </div>
-
-    <div class="text-section">
-      <label>3. Báº¡n thÆ°á»ng há»©ng thÃº hÃ¬nh thá»©c hoáº¡t Ä‘á»™ng nÃ o? (CÃ³ thá»ƒ chá»n nhiá»u) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_B3" style="display:flex; flex-direction:column; gap:8px;">
-        ${['Workshop','Talkshow','Cuá»™c thi','Há»™i tháº£o','NgÃ y há»™i/Festival','Hoáº¡t Ä‘á»™ng tráº£i nghiá»‡m','Giáº£i Ä‘áº¥u','Giao lÆ°u/Networking','Tham quan/Tráº£i nghiá»‡m thá»±c táº¿','Hoáº¡t Ä‘á»™ng trá»±c tuyáº¿n'].map(opt => `<label><input type="checkbox" name="Q_B3" value="${opt}"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B3" value="KhÃ¡c" id="chk_B3_other"> KhÃ¡c: <input type="text" id="txt_B3_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
-      </div>
-    </div>
-  `;
-
-  // --- PHáº¦N C & D: Likert 1-7 ---
-  const LIKERT_LABELS_CELG = ['HoÃ n toÃ n<br>khÃ´ng Ä‘á»“ng Ã½','KhÃ´ng<br>Ä‘á»“ng Ã½','HÆ¡i khÃ´ng<br>Ä‘á»“ng Ã½','Trung láº­p','HÆ¡i<br>Ä‘á»“ng Ã½','Äá»“ng Ã½','HoÃ n toÃ n<br>Ä‘á»“ng Ã½'];
-  
-  const likertGroups = [
-    {
-      title: 'PHáº¦N C. Äá»˜NG CÆ  THAM GIA',
-      factors: [
-        { name: 'I. Lá»£i Ã­ch cÃ¡ nhÃ¢n vÃ  phÃ¡t triá»ƒn nghá» nghiá»‡p', items: [{c:'C_I_1', l:'TÃ´i mong muá»‘n cÃ³ cÆ¡ há»™i há»c há»i thÃªm kiáº¿n thá»©c vÃ  kinh nghiá»‡m tá»« nhá»¯ng ngÆ°á»i cÃ³ kinh nghiá»‡m trong lÄ©nh vá»±c liÃªn quan.'}, {c:'C_I_2', l:'TÃ´i mong muá»‘n phÃ¡t triá»ƒn nhá»¯ng ká»¹ nÄƒng há»¯u Ã­ch cho há»c táº­p vÃ  cÃ´ng viá»‡c sau nÃ y.'}, {c:'C_I_3', l:'TÃ´i mong muá»‘n xÃ¢y dá»±ng nhá»¯ng má»‘i quan há»‡ cÃ³ Ã­ch cho Ä‘á»‹nh hÆ°á»›ng há»c táº­p vÃ  nghá» nghiá»‡p cá»§a mÃ¬nh.'}] },
-        { name: 'II. GiÃ¡ trá»‹ vÃ  Ã½ nghÄ©a cá»§a hoáº¡t Ä‘á»™ng', items: [{c:'C_II_1', l:'TÃ´i mong muá»‘n nháº­n Ä‘Æ°á»£c nhá»¯ng quyá»n lá»£i thiáº¿t thá»±c khi tham gia hoáº¡t Ä‘á»™ng hoáº·c sá»± kiá»‡n.'}, {c:'C_II_2', l:'TÃ´i mong muá»‘n tham gia nhá»¯ng hoáº¡t Ä‘á»™ng cÃ³ Ã½ nghÄ©a.'}] },
-        { name: 'III. áº¢nh hÆ°á»Ÿng tá»« báº¡n bÃ¨ vÃ  nhá»¯ng ngÆ°á»i xung quanh', items: [{c:'C_III_1', l:'TÃ´i cÃ³ xu hÆ°á»›ng tham gia má»™t hoáº¡t Ä‘á»™ng khi báº¡n bÃ¨ cá»§a tÃ´i cÅ©ng tham gia hoáº¡t Ä‘á»™ng Ä‘Ã³.'}, {c:'C_III_2', l:'TÃ´i muá»‘n tham gia má»™t hoáº¡t Ä‘á»™ng Ä‘á»ƒ cÃ³ thá»ƒ cÃ¹ng báº¡n bÃ¨ tráº£i nghiá»‡m hoáº¡t Ä‘á»™ng Ä‘Ã³.'}] },
-        { name: 'IV. áº¢nh hÆ°á»Ÿng cá»§a tráº£i nghiá»‡m tham gia trÆ°á»›c Ä‘Ã¢y', items: [{c:'C_IV_1', l:'Nhá»¯ng tráº£i nghiá»‡m tÃ­ch cá»±c tá»« cÃ¡c hoáº¡t Ä‘á»™ng trÆ°á»›c Ä‘Ã¢y khuyáº¿n khÃ­ch tÃ´i tiáº¿p tá»¥c tham gia.'}] }
-      ]
-    },
-    {
-      title: 'PHáº¦N D. Ká»² Vá»ŒNG VÃ€ Ã Äá»ŠNH THAM GIA',
-      factors: [
-        { name: 'I. Ná»™i dung vÃ  chÆ°Æ¡ng trÃ¬nh', items: [{c:'D_I_1', l:'TÃ´i mong muá»‘n ná»™i dung hoáº¡t Ä‘á»™ng phÃ¹ há»£p vá»›i nhu cáº§u vÃ  sá»Ÿ thÃ­ch cá»§a sinh viÃªn.'}, {c:'D_I_2', l:'TÃ´i mong muá»‘n cÃ¡c hoáº¡t Ä‘á»™ng cÃ³ ná»™i dung Ä‘a dáº¡ng vÃ  phong phÃº.'}, {c:'D_I_3', l:'TÃ´i mong muá»‘n ná»™i dung hoáº¡t Ä‘á»™ng mang tÃ­nh thá»±c táº¿ vÃ  há»¯u Ã­ch.'}] },
-        { name: 'II. CÃ¡ch thá»©c tá»• chá»©c', items: [{c:'D_II_1', l:'TÃ´i mong muá»‘n thÃ´ng tin vá» hoáº¡t Ä‘á»™ng Ä‘Æ°á»£c cung cáº¥p rÃµ rÃ ng trÆ°á»›c khi diá»…n ra.'}, {c:'D_II_2', l:'TÃ´i mong muá»‘n quy trÃ¬nh Ä‘Äƒng kÃ½ tham gia Ä‘Æ¡n giáº£n vÃ  thuáº­n tiá»‡n.'}] },
-        { name: 'III. Ã Ä‘á»‹nh tham gia', items: [{c:'D_III_1', l:'TÃ´i sáºµn sÃ ng tham gia cÃ¡c hoáº¡t Ä‘á»™ng má»›i do ÄoÃ n - Há»™i tá»• chá»©c náº¿u ná»™i dung phÃ¹ há»£p vá»›i nhu cáº§u cá»§a tÃ´i.'}, {c:'D_III_2', l:'TÃ´i sáº½ Æ°u tiÃªn tham gia nhá»¯ng hoáº¡t Ä‘á»™ng/sá»± kiá»‡n phÃ¹ há»£p vá»›i má»‘i quan tÃ¢m cá»§a mÃ¬nh.'}] }
-      ]
-    }
-  ];
-
-  for (const group of likertGroups) {
-    html += `<h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">${group.title}</h3>`;
-    for (const factor of group.factors) {
-      html += `<div class="factor-card">
-        <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
-        <div class="likert-scroll">
-        <table class="likert-table">
-          <thead><tr><th class="col-lbl"></th>${LIKERT_LABELS_CELG.map(lbl => `<th>${lbl}</th>`).join('')}</tr></thead>
-          <tbody>`;
-      for (const item of factor.items) {
-        html += `<tr><td class="col-lbl">${esc(item.l)}</td>${[1,2,3,4,5,6,7].map(n => `<td><input type="radio" name="${item.c}" value="${n}"></td>`).join('')}</tr>`;
-      }
-      html += `</tbody></table></div></div>`;
-    }
-  }
-
-  // --- PHáº¦N E ---
-  const raoCan = ['Thá»i gian hoáº·c thá»i lÆ°á»£ng hoáº¡t Ä‘á»™ng chÆ°a phÃ¹ há»£p vá»›i lá»‹ch há»c/cÃ´ng viá»‡c cÃ¡ nhÃ¢n','ChÆ°a nháº­n Ä‘Æ°á»£c thÃ´ng tin hoáº·c thÃ´ng tin vá» hoáº¡t Ä‘á»™ng chÆ°a Ä‘Æ°á»£c truyá»n táº£i ká»‹p thá»i','Ná»™i dung hoáº¡t Ä‘á»™ng chÆ°a phÃ¹ há»£p vá»›i nhu cáº§u hoáº·c sá»Ÿ thÃ­ch','HÃ¬nh thá»©c tá»• chá»©c chÆ°a háº¥p dáº«n','Äá»‹a Ä‘iá»ƒm tá»• chá»©c chÆ°a thuáº­n tiá»‡n','Quy trÃ¬nh Ä‘Äƒng kÃ½ tham gia chÆ°a thuáº­n tiá»‡n','KhÃ´ng cÃ³ báº¡n bÃ¨/ngÆ°á»i quen cÃ¹ng tham gia','Ngáº¡i giao tiáº¿p hoáº·c khÃ³ hÃ²a nháº­p vá»›i nhá»¯ng ngÆ°á»i tham gia khÃ¡c','KhÃ´ng tháº¥y lá»£i Ã­ch hoáº·c giÃ¡ trá»‹ rÃµ rÃ ng khi tham gia','ÄÃ£ tá»«ng cÃ³ tráº£i nghiá»‡m chÆ°a tá»‘t vá»›i hoáº¡t Ä‘á»™ng trÆ°á»›c Ä‘Ã¢y'];
-  html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N E. RÃ€O Cáº¢N THAM GIA</h3>
-    
-    <div class="text-section">
-      <label>1. Khi báº¡n quyáº¿t Ä‘á»‹nh khÃ´ng tham gia hoáº·c Ã­t tham gia má»™t hoáº¡t Ä‘á»™ng/sá»± kiá»‡n UEH, nhá»¯ng lÃ½ do nÃ o thÆ°á»ng áº£nh hÆ°á»Ÿng Ä‘áº¿n báº¡n? (Chá»n tá»‘i Ä‘a 3) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_E1" style="display:flex; flex-direction:column; gap:8px;">
-        ${raoCan.map(opt => `<label><input type="checkbox" name="Q_E1" value="${opt}" onchange="updateE2Options()"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_E1" value="KhÃ¡c" id="chk_E1_other" onchange="updateE2Options()"> KhÃ¡c: <input type="text" id="txt_E1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
-      </div>
-    </div>
-
-    <div class="text-section">
-      <label>2. Trong nhá»¯ng lÃ½ do báº¡n vá»«a chá»n, lÃ½ do nÃ o áº£nh hÆ°á»Ÿng lá»›n nháº¥t? (Chá»‰ chá»n 1) <span class="req">*</span><br><small style="font-weight:normal; color:#666;">(Chá»‰ hiá»ƒn thá»‹ cÃ¡c Ä‘Ã¡p Ã¡n báº¡n Ä‘Ã£ chá»n á»Ÿ cÃ¢u 1)</small></label>
-      <div class="radio-group" id="group_E2" style="display:flex; flex-direction:column; gap:8px;">
-        <em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>
-      </div>
-    </div>
-  `;
-
-  // --- PHáº¦N F & G ---
-  html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N F. ÄIá»€U KIá»†N THUáº¬N TIá»†N Äá»‚ THAM GIA</h3>
-    <div class="text-section">
-      <label>1. Báº¡n thÃ­ch hÃ¬nh thá»©c tá»• chá»©c nÃ o hÆ¡n? <span class="req">*</span></label>
-      <div style="display:flex; gap:20px;">
-        <label><input type="radio" name="Q_F1" value="Trá»±c tiáº¿p"> Trá»±c tiáº¿p</label>
-        <label><input type="radio" name="Q_F1" value="Trá»±c tuyáº¿n"> Trá»±c tuyáº¿n</label>
-        <label><input type="radio" name="Q_F1" value="Káº¿t há»£p cáº£ hai"> Káº¿t há»£p cáº£ hai</label>
-      </div>
-    </div>
-    <div class="text-section">
-      <label>2. Khung thá»i gian nÃ o thuáº­n tiá»‡n Ä‘á»ƒ báº¡n tham gia hoáº¡t Ä‘á»™ng? (CÃ³ thá»ƒ chá»n nhiá»u) <span class="req">*</span></label>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        ${['Buá»•i sÃ¡ng trong tuáº§n','Buá»•i chiá»u trong tuáº§n','Buá»•i tá»‘i trong tuáº§n','Cuá»‘i tuáº§n'].map(opt => `<label><input type="checkbox" name="Q_F2" value="${opt}"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_F2" id="chk_F2_other" value="KhÃ¡c"> KhÃ¡c: <input type="text" id="txt_F2_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
-      </div>
-    </div>
-    <div class="text-section">
-      <label>3. Báº¡n thÆ°á»ng sáºµn sÃ ng dÃ nh bao nhiÃªu thá»i gian cho má»™t hoáº¡t Ä‘á»™ng? <span class="req">*</span></label>
-      <div style="display:flex; gap:20px;">
-        <label><input type="radio" name="Q_F3" value="DÆ°á»›i 1 giá»"> DÆ°á»›i 1 giá»</label>
-        <label><input type="radio" name="Q_F3" value="1â€“2 giá»"> 1â€“2 giá»</label>
-        <label><input type="radio" name="Q_F3" value="2â€“3 giá»"> 2â€“3 giá»</label>
-        <label><input type="radio" name="Q_F3" value="TrÃªn 3 giá»"> TrÃªn 3 giá»</label>
-      </div>
-    </div>
-
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N G. CÃ‚U Há»ŽI Äá»ŠNH TÃNH</h3>
-    <div class="text-section">
-      <label>1. Theo báº¡n, ÄoÃ n - Há»™i UEH nÃªn tá»• chá»©c thÃªm nhá»¯ng hoáº¡t Ä‘á»™ng hoáº·c sá»± kiá»‡n nÃ o Ä‘á»ƒ Ä‘Ã¡p á»©ng tá»‘t hÆ¡n nhu cáº§u cá»§a sinh viÃªn? <span class="req">*</span></label>
-      <textarea id="Q_G1" rows="3"></textarea>
-    </div>
-    <div class="text-section">
-      <label>2. Náº¿u báº¡n cÃ³ thá»ƒ thay Ä‘á»•i má»™t Ä‘iá»u trong cÃ¡c hoáº¡t Ä‘á»™ng/sá»± kiá»‡n hiá»‡n nay cá»§a UEH, báº¡n muá»‘n thay Ä‘á»•i Ä‘iá»u gÃ¬ nháº¥t? <span class="req">*</span></label>
-      <textarea id="Q_G2" rows="3"></textarea>
-    </div>
-  `;
-
-  document.getElementById('modalBody').innerHTML = html;
-}
-
-window.updateB2Options = function() {
-  const selected = Array.from(document.querySelectorAll('input[name="Q_B1"]:checked')).map(el => el.value);
-  const container = document.getElementById('group_B2');
-  if (selected.length === 0) {
-    container.innerHTML = '<em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>';
-    return;
-  }
-  let txt = document.getElementById('txt_B1_other')?.value.trim();
-  container.innerHTML = selected.map(val => {
-    let disp = val;
-    if (val === 'KhÃ¡c' && txt) disp = 'KhÃ¡c: ' + txt;
-    return \`<label><input type="checkbox" name="Q_B2" value="\${val}" data-other="\${val==='KhÃ¡c'?txt:''}"> \${esc(disp)}</label>\`;
-  }).join('');
-};
-
-window.updateE2Options = function() {
-  const selected = Array.from(document.querySelectorAll('input[name="Q_E1"]:checked')).map(el => el.value);
-  const container = document.getElementById('group_E2');
-  if (selected.length === 0) {
-    container.innerHTML = '<em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>';
-    return;
-  }
-  let txt = document.getElementById('txt_E1_other')?.value.trim();
-  container.innerHTML = selected.map(val => {
-    let disp = val;
-    if (val === 'KhÃ¡c' && txt) disp = 'KhÃ¡c: ' + txt;
-    return \`<label><input type="radio" name="Q_E2" value="\${val}" data-other="\${val==='KhÃ¡c'?txt:''}"> \${esc(disp)}</label>\`;
-  }).join('');
-};
-
-function collectCELGFormData() {
-  const data = {};
-  const fields = ['lastName', 'firstName', 'studentClass', 'cohort', 'faculty', 'gender', 'studentId', 'phone', 'emailUeh', 'emailOther', 'facebook'];
-  for (const f of fields) { data[f] = document.getElementById('field_' + f)?.value.trim() || ''; }
-  
-  data.Q_A8 = document.querySelector('input[name="Q_A8"]:checked')?.value || '';
-  
-  const getChecked = (name, otherTxtId) => {
-    return Array.from(document.querySelectorAll(\`input[name="\${name}"]:checked\`)).map(el => {
-      if (el.value === 'KhÃ¡c') {
-        const txt = document.getElementById(otherTxtId)?.value.trim();
-        return txt ? 'KhÃ¡c: ' + txt : 'KhÃ¡c';
-      }
-      return el.value;
-    }).join(', ');
-  };
-  
-  data.Q_B1 = getChecked('Q_B1', 'txt_B1_other');
-  
-  data.Q_B2 = Array.from(document.querySelectorAll('input[name="Q_B2"]:checked')).map(el => {
-    if (el.value === 'KhÃ¡c') {
-      const txt = el.getAttribute('data-other');
-      return txt ? 'KhÃ¡c: ' + txt : 'KhÃ¡c';
-    }
-    return el.value;
-  }).join(', ');
-  
-  data.Q_B3 = getChecked('Q_B3', 'txt_B3_other');
-  
-  ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
-   'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'].forEach(c => {
-    data[c] = document.querySelector(\`input[name="\${c}"]:checked\`)?.value || '';
-  });
-  
-  data.Q_E1 = getChecked('Q_E1', 'txt_E1_other');
-  
-  const e2 = document.querySelector('input[name="Q_E2"]:checked');
-  if (e2) {
-    data.Q_E2 = e2.value === 'KhÃ¡c' && e2.getAttribute('data-other') ? 'KhÃ¡c: ' + e2.getAttribute('data-other') : e2.value;
-  } else data.Q_E2 = '';
-  
-  data.Q_F1 = document.querySelector('input[name="Q_F1"]:checked')?.value || '';
-  data.Q_F2 = getChecked('Q_F2', 'txt_F2_other');
-  data.Q_F3 = document.querySelector('input[name="Q_F3"]:checked')?.value || '';
-  
-  data.Q_G1 = document.getElementById('Q_G1')?.value.trim() || '';
-  data.Q_G2 = document.getElementById('Q_G2')?.value.trim() || '';
-  
-  return data;
-}
-
-function validateCELGForm() {
-  const reqFields = [
-    { id: 'field_lastName', name: 'Há» vÃ  tÃªn Ä‘á»‡m' },
-    { id: 'field_firstName', name: 'TÃªn' },
-    { id: 'field_studentClass', name: 'Lá»›p' },
-    { id: 'field_cohort', name: 'KhÃ³a' },
-    { id: 'field_faculty', name: 'Khoa' },
-    { id: 'field_gender', name: 'Giá»›i tÃ­nh' },
-    { id: 'field_studentId', name: 'MSSV' },
-    { id: 'field_phone', name: 'Sá»‘ Ä‘iá»‡n thoáº¡i' },
-    { id: 'field_emailUeh', name: 'Email UEH' },
-    { id: 'field_emailOther', name: 'Email khÃ¡c' },
-    { id: 'field_facebook', name: 'Link Facebook' }
-  ];
-  for (const field of reqFields) {
-    const el = document.getElementById(field.id);
-    if (el && !el.value.trim()) { alert('Vui lÃ²ng nháº­p/chá»n: ' + field.name); el.scrollIntoView({behavior:'smooth',block:'center'}); return false; }
-  }
-  
-  if (!document.querySelector('input[name="Q_A8"]:checked')) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i á»Ÿ Pháº§n A.'); return false; }
-  
-  const b1 = document.querySelectorAll('input[name="Q_B1"]:checked');
-  if (b1.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 1.'); return false; }
-  if (document.getElementById('chk_B1_other').checked && !document.getElementById('txt_B1_other').value.trim()) {
-    alert('Vui lÃ²ng nháº­p ná»™i dung cho lá»±a chá»n KhÃ¡c á»Ÿ Pháº§n B, CÃ¢u 1.'); return false;
-  }
-  
-  const b2 = document.querySelectorAll('input[name="Q_B2"]:checked');
-  if (b2.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 2.'); return false; }
-  if (b2.length > 3) { alert('Chá»‰ Ä‘Æ°á»£c chá»n tá»‘i Ä‘a 3 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 2.'); return false; }
-  
-  const b3 = document.querySelectorAll('input[name="Q_B3"]:checked');
-  if (b3.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 3.'); return false; }
-  
-  const likerts = ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
-   'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'];
-  for (let c of likerts) {
-    if (!document.querySelector(\`input[name="\${c}"]:checked\`)) { alert('Vui lÃ²ng hoÃ n thÃ nh táº¥t cáº£ cÃ¡c cÃ¢u há»i Ä‘Ã¡nh giÃ¡ theo thang Ä‘iá»ƒm.'); return false; }
-  }
-  
-  const e1 = document.querySelectorAll('input[name="Q_E1"]:checked');
-  if (e1.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n E, CÃ¢u 1.'); return false; }
-  if (e1.length > 3) { alert('Chá»‰ Ä‘Æ°á»£c chá»n tá»‘i Ä‘a 3 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n E, CÃ¢u 1.'); return false; }
-  if (document.getElementById('chk_E1_other').checked && !document.getElementById('txt_E1_other').value.trim()) {
-    alert('Vui lÃ²ng nháº­p ná»™i dung cho lá»±a chá»n KhÃ¡c á»Ÿ Pháº§n E, CÃ¢u 1.'); return false;
-  }
-  
-  if (!document.querySelector('input[name="Q_E2"]:checked')) { alert('Vui lÃ²ng chá»n 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n E, CÃ¢u 2.'); return false; }
-  
-  if (!document.querySelector('input[name="Q_F1"]:checked')) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i Pháº§n F, CÃ¢u 1.'); return false; }
-  if (document.querySelectorAll('input[name="Q_F2"]:checked').length === 0) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i Pháº§n F, CÃ¢u 2.'); return false; }
-  if (!document.querySelector('input[name="Q_F3"]:checked')) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i Pháº§n F, CÃ¢u 3.'); return false; }
-  
-  if (!document.getElementById('Q_G1').value.trim() || !document.getElementById('Q_G2').value.trim()) {
-    alert('Vui lÃ²ng tráº£ lá»i táº¥t cáº£ cÃ¢u há»i tá»± luáº­n á»Ÿ Pháº§n G.'); return false;
-  }
-  
-  return true;
-}
-
-</script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif; background: #fff; color: #333; display:flex; flex-direction:column; min-height:100vh; }
     .container { flex: 1; }
 
-    /* â”€â”€ Nav bar â”€â”€ */
+    /* ── Nav bar ── */
     :root { --brand: #006b5e; --brand-dark: #004d44; --brand-light: #00856e; }
 
     .top-nav {
@@ -335,7 +26,7 @@ function validateCELGForm() {
       box-shadow: 0 2px 8px rgba(0,0,0,.3);
     }
 
-    /* Logo cá»¥m gÃ³c trÃ¡i */
+    /* Logo cụm góc trái */
     .ttk-logo-wrap {
       display: flex; align-items: center; gap: 10px;
       margin-right: 20px; flex-shrink: 0;
@@ -394,7 +85,7 @@ function validateCELGForm() {
     }
     .btn-logout:hover { background: #f5f5f5; }
 
-    /* â”€â”€ Login modal (3 views) â”€â”€ */
+    /* ── Login modal (3 views) ── */
     .login-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(60,60,60,.65); z-index: 2000;
@@ -495,19 +186,19 @@ function validateCELGForm() {
     /* Student view google btn centering */
     #studentView .google-wrap { display: flex; justify-content: center; margin-top: 8px; }
 
-    /* â”€â”€ Container â”€â”€ */
+    /* ── Container ── */
     .container { width: 100%; background: #fff; min-height: calc(100vh - 72px); }
 
-    /* Padding chá»‰ cho survey section, khÃ´ng cho landing page */
+    /* Padding chỉ cho survey section, không cho landing page */
     #surveySection { padding: 32px 60px; }
 
-    /* â”€â”€ Login â”€â”€ */
+    /* ── Login ── */
     #loginSection { display: flex; flex-direction: column; align-items: center; }
     .login-logo { font-size: 48px; font-weight: 900; font-style: italic; color: #005c50; letter-spacing: -2px; margin-bottom: 6px; }
     #loginSection h2 { color: #222; font-size: 18px; font-weight: 600; margin-bottom: 6px; }
     #loginSection p { color: #777; font-size: 14px; margin-bottom: 32px; }
 
-    /* â”€â”€ Survey section â”€â”€ */
+    /* ── Survey section ── */
     #surveySection { display: none; max-width: 1200px; margin: 0 auto; }
     .page-title {
       text-align: center; color: #00c; font-size: 22px; font-weight: bold;
@@ -515,7 +206,7 @@ function validateCELGForm() {
     }
     .page-desc { text-align: center; font-size: 14px; color: #444; margin-bottom: 22px; }
 
-    /* â”€â”€ Table â”€â”€ */
+    /* ── Table ── */
     .survey-table { width: 100%; border-collapse: collapse; font-size: 14px; }
     .survey-table th { background: #e5e5e5; border: 1px solid #bbb; padding: 10px; font-weight: bold; text-align: left; }
     .survey-table td { border: 1px solid #bbb; padding: 10px; vertical-align: middle; }
@@ -539,9 +230,9 @@ function validateCELGForm() {
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    /* ══════════════════════════════════════
        SURVEY MODAL
-       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+       ══════════════════════════════════════ */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,.55); z-index: 1000;
@@ -682,7 +373,7 @@ function validateCELGForm() {
 
     /* === Responsive === */
 
-    /* Tablet (â‰¤ 900px) */
+    /* Tablet (≤ 900px) */
     @media (max-width: 900px) {
       .top-nav { padding: 0 14px; gap: 0; }
       .ttk-logo-wrap { margin-right: 12px; gap: 8px; }
@@ -691,7 +382,7 @@ function validateCELGForm() {
       footer { padding: 20px 20px !important; }
     }
 
-    /* Mobile (â‰¤ 640px) */
+    /* Mobile (≤ 640px) */
     @media (max-width: 640px) {
       .info-grid { grid-template-columns: 1fr 1fr; }
       .info-grid .info-field:last-child { grid-column: 1 / -1; }
@@ -707,7 +398,7 @@ function validateCELGForm() {
       /* Container */
       #surveySection { padding: 16px 12px; }
 
-      /* Survey table: cuá»™n ngang thay vÃ¬ trÃ n */
+      /* Survey table: cuộn ngang thay vì tràn */
       #tableContainer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .survey-table { font-size: 12px; min-width: 430px; }
       .survey-table th, .survey-table td { padding: 8px 6px; }
@@ -732,13 +423,13 @@ function validateCELGForm() {
       .btn-submit, .btn-cancel { padding: 8px 16px; font-size: 13px; }
     }
 
-    /* Small phone (â‰¤ 400px) */
+    /* Small phone (≤ 400px) */
     @media (max-width: 400px) {
       #navUserName { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .admin-nav-info .admin-name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     }
 
-    /* â”€â”€ Mailbox floating button â”€â”€ */
+    /* ── Mailbox floating button ── */
     .mailbox-fab {
       display: none;
       position: fixed; bottom: 28px; right: 28px; z-index: 900;
@@ -753,7 +444,7 @@ function validateCELGForm() {
     .mailbox-fab:hover { background: #004d44; transform: translateY(-2px); }
     .mailbox-fab svg { flex-shrink: 0; }
 
-    /* â”€â”€ Mailbox modal â”€â”€ */
+    /* ── Mailbox modal ── */
     #mailboxModal .modal-hdr { background: #004d44; }
     #mailboxModal .modal-hdr-text small { opacity: .75; }
     .mailbox-sub {
@@ -769,15 +460,15 @@ function validateCELGForm() {
     .mailbox-char-hint { font-size: 11px; color: #aaa; text-align: right; margin-top: 4px; }
     .mailbox-note { font-size: 12px; color: #888; margin-top: 14px; font-style: italic; }
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    /* ══════════════════════════════════════
        LANDING PAGE (pre-login)
-       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+       ══════════════════════════════════════ */
     #loginSection {
       padding: 0;
       text-align: left;
     }
 
-    /* â”€â”€ Hero â”€â”€ */
+    /* ── Hero ── */
     .lp-hero {
       display: flex; flex-direction: column; align-items: center; text-align: center;
       padding: 110px 80px 100px;
@@ -818,7 +509,7 @@ function validateCELGForm() {
     }
     .lp-btn-primary:hover { background: #004d44; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,107,94,.35); }
 
-    /* Hero right â€” preview card */
+    /* Hero right — preview card */
     .lp-hero-visual { flex-shrink: 0; width: 400px; }
     .lp-preview-card {
       background: #fff; border-radius: 20px; padding: 28px;
@@ -847,7 +538,7 @@ function validateCELGForm() {
       padding: 5px 14px; border-radius: 8px;
     }
 
-    /* â”€â”€ Stats bar â”€â”€ */
+    /* ── Stats bar ── */
     .lp-stats {
       display: flex;
       background: #006b5e;
@@ -860,7 +551,7 @@ function validateCELGForm() {
     .lp-stat-num { font-size: 30px; font-weight: 900; color: #fff; line-height: 1; }
     .lp-stat-label { font-size: 11.5px; color: rgba(255,255,255,.72); margin-top: 5px; font-weight: 500; }
 
-    /* â”€â”€ Inner sections â”€â”€ */
+    /* ── Inner sections ── */
     .lp-section { padding: 52px 60px; }
     .lp-section--soft { background: #f7fbf9; border-top: 1px solid #ddeee9; border-bottom: 1px solid #ddeee9; }
     .lp-eyebrow { font-size: 10.5px; font-weight: 700; color: #006b5e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
@@ -962,66 +653,66 @@ function validateCELGForm() {
     <img src="Logo UEH xanh.png"
          alt="Logo UEH" class="nav-logo">
     <div class="nav-logo-divider"></div>
-    <img src="Huy_Hiá»‡u_ÄoÃ n.png"
-         alt="Logo ÄoÃ n" class="nav-logo">
+    <img src="Huy_Hiệu_Đoàn.png"
+         alt="Logo Đoàn" class="nav-logo">
     <img src="logo-hoi-sinh-vien-viet-nam-vector-02.png"
-         alt="Logo Há»™i Sinh viÃªn" class="nav-logo">
+         alt="Logo Hội Sinh viên" class="nav-logo">
     <img src="logo-khoa.png"
          alt="Logo Khoa" class="nav-logo">
   </div>
 
   <div class="nav-right">
-    <!-- ChÆ°a Ä‘Äƒng nháº­p (áº©n vÃ¬ trang Ä‘Ã£ cÃ³ nÃºt Ä‘Äƒng nháº­p riÃªng) -->
+    <!-- Chưa đăng nhập (ẩn vì trang đã có nút đăng nhập riêng) -->
     <button class="btn-nav-login" id="btnNavLogin" onclick="openLoginModal()" style="display:none;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      ÄÄƒng nháº­p
+      Đăng nhập
     </button>
 
-    <!-- Sinh viÃªn Ä‘Ã£ Ä‘Äƒng nháº­p (Google) -->
+    <!-- Sinh viên đã đăng nhập (Google) -->
     <div id="studentNavInfo" style="display:none;align-items:center;gap:10px;">
       <img id="navAvatar" src="" alt="" style="width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.5);">
       <div>
         <div style="color:#fff;font-size:13px;font-weight:600;line-height:1.2;" id="navUserName"></div>
         <div style="color:rgba(255,255,255,.7);font-size:11px;" id="navUserEmail"></div>
       </div>
-      <button class="btn-nav-logout" onclick="signOut()">ÄÄƒng xuáº¥t</button>
+      <button class="btn-nav-logout" onclick="signOut()">Đăng xuất</button>
     </div>
 
-    <!-- Admin Ä‘Ã£ Ä‘Äƒng nháº­p -->
+    <!-- Admin đã đăng nhập -->
     <div class="admin-nav-info" id="adminNavInfo">
       <div>
-        <div class="admin-name">Quáº£n trá»‹ viÃªn</div>
+        <div class="admin-name">Quản trị viên</div>
         <div class="admin-email">doanhoi.ttk@ueh.edu.vn</div>
       </div>
-      <button class="btn-nav-logout" onclick="adminLogout()">ÄÄƒng xuáº¥t</button>
+      <button class="btn-nav-logout" onclick="adminLogout()">Đăng xuất</button>
     </div>
   </div>
 </nav>
 
-<!-- user-bar áº©n, thÃ´ng tin user hiá»‡n trong nav -->
+<!-- user-bar ẩn, thông tin user hiện trong nav -->
 <div id="userBar" style="display:none;"></div>
 
-<!-- â•â• LOGIN MODAL â•â• -->
+<!-- ══ LOGIN MODAL ══ -->
 <div class="login-overlay" id="loginOverlay" onclick="onOverlayClick(event)">
   <div class="login-box" id="loginBox">
 
-    <!-- View 1: Chá»n vai trÃ² -->
+    <!-- View 1: Chọn vai trò -->
     <div class="login-inner" id="chooseView">
       <button class="login-close" onclick="closeLoginModal()">&#x2715;</button>
       <div class="login-logo-area">
         <div class="login-logo-badge">TTK</div>
       </div>
-      <p class="login-choose-text">Vui lÃ²ng chá»n phÆ°Æ¡ng thá»©c Ä‘Äƒng nháº­p phÃ¹ há»£p</p>
+      <p class="login-choose-text">Vui lòng chọn phương thức đăng nhập phù hợp</p>
 
       <button class="login-opt login-opt--admin" onclick="showAdminView()">
         <div class="login-opt-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         </div>
         <div class="login-opt-text">
-          <div class="login-opt-title">Quáº£n trá»‹ viÃªn</div>
-          <div class="login-opt-sub">DÃ nh cho Quáº£n trá»‹ viÃªn</div>
+          <div class="login-opt-title">Quản trị viên</div>
+          <div class="login-opt-sub">Dành cho Quản trị viên</div>
         </div>
-        <span class="login-opt-arrow">â€º</span>
+        <span class="login-opt-arrow">›</span>
       </button>
 
       <button class="login-opt login-opt--student" onclick="showStudentView()">
@@ -1029,34 +720,34 @@ function validateCELGForm() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
         </div>
         <div class="login-opt-text">
-          <div class="login-opt-title">Sinh viÃªn</div>
-          <div class="login-opt-sub">DÃ nh cho sinh viÃªn tham gia kháº£o sÃ¡t</div>
+          <div class="login-opt-title">Sinh viên</div>
+          <div class="login-opt-sub">Dành cho sinh viên tham gia khảo sát</div>
         </div>
-        <span class="login-opt-arrow">â€º</span>
+        <span class="login-opt-arrow">›</span>
       </button>
     </div>
 
     <!-- View 2: Admin login -->
     <div class="login-inner" id="adminView" style="display:none">
-      <button class="login-back" onclick="showChooseView()">â† Quay láº¡i</button>
+      <button class="login-back" onclick="showChooseView()">← Quay lại</button>
       <div class="login-view-title admin-title">
-        <span></span> Quáº£n trá»‹ viÃªn
+        <span></span> Quản trị viên
       </div>
-      <input class="login-input" type="text" id="adminUser" placeholder="TÃ i khoáº£n"
+      <input class="login-input" type="text" id="adminUser" placeholder="Tài khoản"
              autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('adminPass').focus()">
-      <input class="login-input" type="password" id="adminPass" placeholder="Máº­t kháº©u"
+      <input class="login-input" type="password" id="adminPass" placeholder="Mật khẩu"
              autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
-      <div class="login-error" id="loginError">Sai tÃ i khoáº£n hoáº·c máº­t kháº©u.</div>
-      <button class="btn-login-submit" onclick="doAdminLogin()">ÄÄƒng nháº­p</button>
+      <div class="login-error" id="loginError">Sai tài khoản hoặc mật khẩu.</div>
+      <button class="btn-login-submit" onclick="doAdminLogin()">Đăng nhập</button>
     </div>
 
     <!-- View 3: Student (Google) -->
     <div class="login-inner" id="studentView" style="display:none">
-      <button class="login-back" onclick="showChooseView()">â† Quay láº¡i</button>
+      <button class="login-back" onclick="showChooseView()">← Quay lại</button>
       <div class="login-view-title student-title">
-        <span></span> Sinh viÃªn
+        <span></span> Sinh viên
       </div>
-      <p style="font-size:13px;color:#666;margin-bottom:20px;">ÄÄƒng nháº­p báº±ng tÃ i khoáº£n Google Ä‘á»ƒ thá»±c hiá»‡n kháº£o sÃ¡t.</p>
+      <p style="font-size:13px;color:#666;margin-bottom:20px;">Đăng nhập bằng tài khoản Google để thực hiện khảo sát.</p>
       <div class="google-wrap" id="googleSignInBtn"></div>
     </div>
 
@@ -1065,28 +756,28 @@ function validateCELGForm() {
 
 <!-- Main -->
 <div class="container">
-  <!-- Trang chÃ o (chÆ°a Ä‘Äƒng nháº­p) -->
+  <!-- Trang chào (chưa đăng nhập) -->
   <div id="loginSection">
 
-    <!-- â”€â”€ HERO â”€â”€ -->
+    <!-- ── HERO ── -->
     <section class="lp-hero">
       <div class="lp-hero-content">
         <h1 class="lp-hero-title">
-          Há»‡ thá»‘ng Kháº£o sÃ¡t &amp; ÄÃ¡nh giÃ¡<br>
-          <em>cháº¥t lÆ°á»£ng hoáº¡t Ä‘á»™ng ÄoÃ n â€“ Há»™i</em>
+          Hệ thống Khảo sát &amp; Đánh giá<br>
+          <em>chất lượng hoạt động Đoàn – Hội</em>
         </h1>
         <p class="lp-hero-sub">
-          Ná»n táº£ng sá»‘ hÃ³a cÃ´ng tÃ¡c thu nháº­n, phÃ¢n tÃ­ch vÃ  trá»±c quan hÃ³a pháº£n há»“i cá»§a Ä‘oÃ n viÃªn, thanh niÃªn â€” giÃºp Ban Cháº¥p hÃ nh ra quyáº¿t Ä‘á»‹nh chiáº¿n lÆ°á»£c dá»±a trÃªn dá»¯ liá»‡u thá»±c chá»©ng.
+          Nền tảng số hóa công tác thu nhận, phân tích và trực quan hóa phản hồi của đoàn viên, thanh niên — giúp Ban Chấp hành ra quyết định chiến lược dựa trên dữ liệu thực chứng.
         </p>
         <button onclick="openLoginModal()" class="lp-btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
-          ÄÄƒng nháº­p Ä‘á»ƒ kháº£o sÃ¡t
+          Đăng nhập để khảo sát
         </button>
         <div class="lp-pills">
-          <div class="lp-pill"><span class="lp-pill-dot"></span>22 biáº¿n quan sÃ¡t</div>
-          <div class="lp-pill"><span class="lp-pill-dot"></span>6 nhÃ¢n tá»‘ Ä‘Ã¡nh giÃ¡</div>
-          <div class="lp-pill"><span class="lp-pill-dot"></span>Thang Likert 7 Ä‘iá»ƒm</div>
-          <div class="lp-pill"><span class="lp-pill-dot"></span>BÃ¡o cÃ¡o tá»©c thá»i</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>22 biến quan sát</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>6 nhân tố đánh giá</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>Thang Likert 7 điểm</div>
+          <div class="lp-pill"><span class="lp-pill-dot"></span>Báo cáo tức thời</div>
         </div>
       </div>
     </section>
@@ -1096,10 +787,10 @@ function validateCELGForm() {
 
   <!-- SURVEY TABLE -->
   <div id="surveySection">
-    <h1 class="page-title">Danh sÃ¡ch / phiáº¿u kháº£o sÃ¡t cÃ¡c sá»± kiá»‡n</h1>
-    <p class="page-desc">Báº¡n hÃ£y cho Ã½ kiáº¿n Ä‘Ã¡nh giÃ¡ cÃ¡c sá»± kiá»‡n / phiáº¿u kháº£o sÃ¡t á»Ÿ danh sÃ¡ch bÃªn dÆ°á»›i:</p>
+    <h1 class="page-title">Danh sách / phiếu khảo sát các sự kiện</h1>
+    <p class="page-desc">Bạn hãy cho ý kiến đánh giá các sự kiện / phiếu khảo sát ở danh sách bên dưới:</p>
     <div id="tableContainer">
-      <div class="state-msg"><div class="spinner"></div> Äang táº£i dá»¯ liá»‡u...</div>
+      <div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>
     </div>
   </div>
 </div>
@@ -1107,7 +798,7 @@ function validateCELGForm() {
 <!-- Mailbox floating button -->
 <button class="mailbox-fab" id="mailboxFab" onclick="openMailbox()">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-  HÃ²m thÆ° láº¯ng nghe
+  Hòm thư lắng nghe
 </button>
 
 <!-- Mailbox modal -->
@@ -1115,28 +806,28 @@ function validateCELGForm() {
   <div class="modal-panel" style="max-width:520px;">
     <div class="modal-hdr">
       <div class="modal-hdr-text">
-        <small>Sáºµn sÃ ng láº¯ng nghe má»i tÃ¢m tÆ°, nguyá»‡n vá»ng cá»§a báº¡n</small>
-        <h2>HÃ²m thÆ° láº¯ng nghe thanh niÃªn 24/7</h2>
+        <small>Sẵn sàng lắng nghe mọi tâm tư, nguyện vọng của bạn</small>
+        <h2>Hòm thư lắng nghe thanh niên 24/7</h2>
       </div>
-      <button class="btn-close-modal" onclick="closeMailbox()">âœ•</button>
+      <button class="btn-close-modal" onclick="closeMailbox()">✕</button>
     </div>
     <div class="modal-body">
       <div class="email-display" id="mailboxEmailDisplay"></div>
-      <p class="mailbox-sub">HÃ£y chia sáº» nhá»¯ng tÃ¢m tÆ°, nguyá»‡n vá»ng, gÃ³p Ã½ cá»§a báº¡n vá»›i ÄoÃ n - Há»™i khoa ToÃ¡n - Thá»‘ng kÃª. Má»i Ã½ kiáº¿n Ä‘á»u Ä‘Æ°á»£c ghi nháº­n vÃ  pháº£n há»“i ká»‹p thá»i.</p>
+      <p class="mailbox-sub">Hãy chia sẻ những tâm tư, nguyện vọng, góp ý của bạn với Đoàn - Hội khoa Toán - Thống kê. Mọi ý kiến đều được ghi nhận và phản hồi kịp thời.</p>
       <label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">
-        Ná»™i dung Ã½ kiáº¿n <span style="color:#c00;">*</span>
+        Nội dung ý kiến <span style="color:#c00;">*</span>
       </label>
-      <textarea class="mailbox-textarea" id="mailboxContent" placeholder="Nháº­p tÃ¢m tÆ°, nguyá»‡n vá»ng hoáº·c gÃ³p Ã½ cá»§a báº¡n táº¡i Ä‘Ã¢y..." oninput="document.getElementById('mailboxCharHint').textContent=this.value.length+' kÃ½ tá»±'"></textarea>
-      <div class="mailbox-char-hint" id="mailboxCharHint">0 kÃ½ tá»±</div>
+      <textarea class="mailbox-textarea" id="mailboxContent" placeholder="Nhập tâm tư, nguyện vọng hoặc góp ý của bạn tại đây..." oninput="document.getElementById('mailboxCharHint').textContent=this.value.length+' ký tự'"></textarea>
+      <div class="mailbox-char-hint" id="mailboxCharHint">0 ký tự</div>
       <div class="success-overlay" id="mailboxSuccess">
-        <div class="success-icon">âœ“</div>
-        <div class="success-title">ÄÃ£ gá»­i Ã½ kiáº¿n!</div>
-        <div class="success-sub">Cáº£m Æ¡n báº¡n Ä‘Ã£ chia sáº».</div>
+        <div class="success-icon">✓</div>
+        <div class="success-title">Đã gửi ý kiến!</div>
+        <div class="success-sub">Cảm ơn bạn đã chia sẻ.</div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeMailbox()">ÄÃ³ng</button>
-      <button class="btn-submit" id="mailboxSubmitBtn" onclick="submitMailbox()">Gá»­i Ã½ kiáº¿n</button>
+      <button class="btn-cancel" onclick="closeMailbox()">Đóng</button>
+      <button class="btn-submit" id="mailboxSubmitBtn" onclick="submitMailbox()">Gửi ý kiến</button>
     </div>
   </div>
 </div>
@@ -1145,57 +836,57 @@ function validateCELGForm() {
 <footer style="background:#006b5e;color:rgba(255,255,255,.9);padding:28px 40px;margin-top:auto;font-size:13px;line-height:1.8;">
   <div style="max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:10px;">
     <div style="display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:18px;flex-shrink:0;">ðŸ›</span>
+      <span style="font-size:18px;flex-shrink:0;">🏛</span>
       <div>
-        <div>ÄoÃ n Thanh niÃªn - Há»™i Sinh viÃªn Äáº¡i há»c Kinh táº¿ TP. Há»“ ChÃ­ Minh</div>
-        <div>ÄoÃ n khoa ToÃ¡n - Thá»‘ng kÃª</div>
-        <div>LiÃªn Chi há»™i sinh viÃªn khoa ToÃ¡n - Thá»‘ng kÃª</div>
+        <div>Đoàn Thanh niên - Hội Sinh viên Đại học Kinh tế TP. Hồ Chí Minh</div>
+        <div>Đoàn khoa Toán - Thống kê</div>
+        <div>Liên Chi hội sinh viên khoa Toán - Thống kê</div>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:12px;">
-      <span style="font-size:16px;flex-shrink:0;">ðŸ“</span>
-      <span>279 Nguyá»…n Tri PhÆ°Æ¡ng, PhÆ°á»ng DiÃªn Há»“ng, ThÃ nh phá»‘ Há»“ ChÃ­ Minh</span>
+      <span style="font-size:16px;flex-shrink:0;">📍</span>
+      <span>279 Nguyễn Tri Phương, Phường Diên Hồng, Thành phố Hồ Chí Minh</span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;">
-      <span style="font-size:16px;flex-shrink:0;">âœ‰</span>
+      <span style="font-size:16px;flex-shrink:0;">✉</span>
       <span>Email: doanhoi.ttk@ueh.edu.vn</span>
     </div>
   </div>
 </footer>
 
-<!-- â•â• SURVEY MODAL â•â• -->
+<!-- ══ SURVEY MODAL ══ -->
 <div class="modal-overlay" id="surveyModal">
   <div class="modal-panel">
     <div class="modal-hdr">
       <div class="modal-hdr-text">
-        <small>Kháº£o sÃ¡t Ã½ kiáº¿n ngÆ°á»i tham dá»±</small>
+        <small>Khảo sát ý kiến người tham dự</small>
         <h2 id="modalProgramName"></h2>
       </div>
-      <button class="btn-close-modal" onclick="closeModal()">âœ•</button>
+      <button class="btn-close-modal" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal()">Há»§y</button>
-      <button class="btn-submit" id="submitBtn" onclick="submitSurveyForm()">Gá»­i kháº£o sÃ¡t</button>
+      <button class="btn-cancel" onclick="closeModal()">Hủy</button>
+      <button class="btn-submit" id="submitBtn" onclick="submitSurveyForm()">Gửi khảo sát</button>
     </div>
     <div class="success-overlay" id="successOverlay">
-      <div class="success-icon">âœ“</div>
-      <div class="success-title">ÄÃ£ gá»­i kháº£o sÃ¡t!</div>
-      <div class="success-sub">Cáº£m Æ¡n báº¡n Ä‘Ã£ tham gia Ä‘Ã¡nh giÃ¡.</div>
+      <div class="success-icon">✓</div>
+      <div class="success-title">Đã gửi khảo sát!</div>
+      <div class="success-sub">Cảm ơn bạn đã tham gia đánh giá.</div>
     </div>
   </div>
 </div>
 
 <script>
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  Cáº¤U HÃŒNH
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════
+  //  CẤU HÌNH
+  // ═══════════════════════════════════════
   const CONFIG = {
     GOOGLE_CLIENT_ID: '84059448728-7698b8sorrp7p4qrq2shhiapvbsgd22u.apps.googleusercontent.com',
     APPS_SCRIPT_URL:  'https://script.google.com/macros/s/AKfycbyP9XvRCgVKV7y_SEtQ4Oz1bBlNkgnKzhqT19DrtqhFngE4C3qLq0Yb60buuM_12H_R/exec',
   };
 
-  // â”€â”€ Táº£i sá»‘ liá»‡u thá»‘ng kÃª cÃ´ng khai (hiá»ƒn thá»‹ trÆ°á»›c khi Ä‘Äƒng nháº­p) â”€â”€
+  // ── Tải số liệu thống kê công khai (hiển thị trước khi đăng nhập) ──
   function loadPublicStats() {
     fetch(CONFIG.APPS_SCRIPT_URL + '?action=getStats')
       .then(r => r.json())
@@ -1204,101 +895,101 @@ function validateCELGForm() {
         const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
         set('statResponses',  d.totalResponses > 0 ? d.totalResponses.toLocaleString('vi-VN') + '+' : '0');
         set('statPrograms',   d.totalPrograms  > 0 ? d.totalPrograms  : '0');
-        set('statCompletion', d.completionRate  > 0 ? d.completionRate + '%' : 'â€”');
-        set('statScore',      d.avgScore !== 'â€”' ? d.avgScore + 'â˜…' : 'â€”');
+        set('statCompletion', d.completionRate  > 0 ? d.completionRate + '%' : '—');
+        set('statScore',      d.avgScore !== '—' ? d.avgScore + '★' : '—');
       })
       .catch(() => {});
   }
   loadPublicStats();
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  Cáº¤U TRÃšC FORM KHáº¢O SÃT
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════
+  //  CẤU TRÚC FORM KHẢO SÁT
+  // ═══════════════════════════════════════
   const FORM_SCHEMA = {
     factors: [
       {
-        code: 'DVTT', name: 'ÄÃ¡nh giÃ¡ I: Dá»‹ch vá»¥ thÃ´ng tin',
+        code: 'DVTT', name: 'Đánh giá I: Dịch vụ thông tin',
         items: [
-          { code: 'DVTT1', label: 'ThÃ´ng tin vá» chÆ°Æ¡ng trÃ¬nh Ä‘Æ°á»£c cung cáº¥p Ä‘áº§y Ä‘á»§ vÃ  ká»‹p thá»i trÆ°á»›c khi tÃ´i tham dá»±.',
-            labelHtml: '<mark class="hl">ThÃ´ng tin</mark> vá» chÆ°Æ¡ng trÃ¬nh Ä‘Æ°á»£c cung cáº¥p <mark class="hl">Ä‘áº§y Ä‘á»§</mark> vÃ  <mark class="hl">ká»‹p thá»i</mark> trÆ°á»›c khi tÃ´i tham dá»±.' },
-          { code: 'DVTT2', label: 'TÃ´i dá»… dÃ ng tÃ¬m Ä‘Æ°á»£c khu vá»±c diá»…n ra hoáº¡t Ä‘á»™ng nhá» báº£n Ä‘á»“, biá»ƒn chá»‰ dáº«n hoáº·c nhÃ¢n sá»± há»— trá»£.',
-            labelHtml: 'TÃ´i <mark class="hl">dá»… dÃ ng tÃ¬m</mark> Ä‘Æ°á»£c <mark class="hl">khu vá»±c diá»…n ra hoáº¡t Ä‘á»™ng</mark> nhá» báº£n Ä‘á»“, biá»ƒn chá»‰ dáº«n hoáº·c nhÃ¢n sá»± há»— trá»£.' },
-          { code: 'DVTT3', label: 'CÃ¡c ná»™i dung truyá»n thÃ´ng cá»§a chÆ°Æ¡ng trÃ¬nh cung cáº¥p Ä‘á»§ thÃ´ng tin Ä‘á»ƒ tÃ´i hiá»ƒu rÃµ vÃ  Ä‘Äƒng kÃ½ tham gia.',
-            labelHtml: 'CÃ¡c ná»™i dung <mark class="hl">truyá»n thÃ´ng</mark> cá»§a chÆ°Æ¡ng trÃ¬nh <mark class="hl">cung cáº¥p Ä‘á»§ thÃ´ng tin</mark> Ä‘á»ƒ tÃ´i hiá»ƒu rÃµ vÃ  Ä‘Äƒng kÃ½ tham gia.' },
-          { code: 'DVTT4', label: 'CÃ¡c áº¥n pháº©m truyá»n thÃ´ng cá»§a chÆ°Æ¡ng trÃ¬nh thu hÃºt sá»± chÃº Ã½ vÃ  khiáº¿n tÃ´i muá»‘n tÃ¬m hiá»ƒu thÃªm.',
-            labelHtml: 'CÃ¡c <mark class="hl">áº¥n pháº©m truyá»n thÃ´ng</mark> cá»§a chÆ°Æ¡ng trÃ¬nh <mark class="hl">thu hÃºt</mark> sá»± chÃº Ã½ vÃ  khiáº¿n tÃ´i muá»‘n tÃ¬m hiá»ƒu thÃªm.' },
+          { code: 'DVTT1', label: 'Thông tin về chương trình được cung cấp đầy đủ và kịp thời trước khi tôi tham dự.',
+            labelHtml: '<mark class="hl">Thông tin</mark> về chương trình được cung cấp <mark class="hl">đầy đủ</mark> và <mark class="hl">kịp thời</mark> trước khi tôi tham dự.' },
+          { code: 'DVTT2', label: 'Tôi dễ dàng tìm được khu vực diễn ra hoạt động nhờ bản đồ, biển chỉ dẫn hoặc nhân sự hỗ trợ.',
+            labelHtml: 'Tôi <mark class="hl">dễ dàng tìm</mark> được <mark class="hl">khu vực diễn ra hoạt động</mark> nhờ bản đồ, biển chỉ dẫn hoặc nhân sự hỗ trợ.' },
+          { code: 'DVTT3', label: 'Các nội dung truyền thông của chương trình cung cấp đủ thông tin để tôi hiểu rõ và đăng ký tham gia.',
+            labelHtml: 'Các nội dung <mark class="hl">truyền thông</mark> của chương trình <mark class="hl">cung cấp đủ thông tin</mark> để tôi hiểu rõ và đăng ký tham gia.' },
+          { code: 'DVTT4', label: 'Các ấn phẩm truyền thông của chương trình thu hút sự chú ý và khiến tôi muốn tìm hiểu thêm.',
+            labelHtml: 'Các <mark class="hl">ấn phẩm truyền thông</mark> của chương trình <mark class="hl">thu hút</mark> sự chú ý và khiến tôi muốn tìm hiểu thêm.' },
         ]
       },
       {
-        code: 'CLCT', name: 'ÄÃ¡nh giÃ¡ II: Cháº¥t lÆ°á»£ng chÆ°Æ¡ng trÃ¬nh',
+        code: 'CLCT', name: 'Đánh giá II: Chất lượng chương trình',
         items: [
-          { code: 'CLCT1', label: 'NhÃ¢n sá»± há»— trá»£ (táº¡i chá»— hoáº·c qua kÃªnh trá»±c tuyáº¿n) giáº£i Ä‘Ã¡p tháº¯c máº¯c cá»§a tÃ´i ká»‹p thá»i vÃ  rÃµ rÃ ng.',
-            labelHtml: '<mark class="hl">NhÃ¢n sá»± há»— trá»£</mark> (táº¡i chá»— hoáº·c qua kÃªnh trá»±c tuyáº¿n) <mark class="hl">giáº£i Ä‘Ã¡p</mark> tháº¯c máº¯c cá»§a tÃ´i <mark class="hl">ká»‹p thá»i vÃ  rÃµ rÃ ng</mark>.' },
-          { code: 'CLCT2', label: 'CÃ¡c hÃ¬nh thá»©c hoáº¡t Ä‘á»™ng trong chÆ°Æ¡ng trÃ¬nh Ä‘a dáº¡ng, giÃºp tÃ´i cÃ³ nhiá»u cÃ¡ch tiáº¿p cáº­n ná»™i dung khÃ¡c nhau.',
-            labelHtml: 'CÃ¡c <mark class="hl">hÃ¬nh thá»©c</mark> hoáº¡t Ä‘á»™ng trong chÆ°Æ¡ng trÃ¬nh <mark class="hl">Ä‘a dáº¡ng</mark>, giÃºp tÃ´i cÃ³ nhiá»u cÃ¡ch tiáº¿p cáº­n ná»™i dung khÃ¡c nhau.' },
-          { code: 'CLCT3', label: 'Ná»™i dung chÆ°Æ¡ng trÃ¬nh kÃ­ch thÃ­ch tÃ´i muá»‘n tÃ¬m hiá»ƒu sÃ¢u hÆ¡n sau khi tham dá»±.',
-            labelHtml: 'Ná»™i dung chÆ°Æ¡ng trÃ¬nh kÃ­ch thÃ­ch <mark class="hl">tÃ´i muá»‘n tÃ¬m hiá»ƒu sÃ¢u hÆ¡n</mark> sau khi tham dá»±.' },
-          { code: 'CLCT4', label: 'Ná»™i dung chÆ°Æ¡ng trÃ¬nh phÃ¹ há»£p vá»›i má»¥c tiÃªu vÃ  chá»§ Ä‘á» cá»§a hoáº¡t Ä‘á»™ng.',
-            labelHtml: '<mark class="hl">Ná»™i dung</mark> chÆ°Æ¡ng trÃ¬nh phÃ¹ há»£p vá»›i <mark class="hl">má»¥c tiÃªu vÃ  chá»§ Ä‘á»</mark> cá»§a hoáº¡t Ä‘á»™ng.' },
-          { code: 'CLCT5', label: 'ChÆ°Æ¡ng trÃ¬nh cÃ³ bá»‘ cá»¥c rÃµ rÃ ng (má»Ÿ Ä‘áº§u â€“ ná»™i dung chÃ­nh â€“ káº¿t thÃºc) vÃ  diá»…n ra Ä‘Ãºng thá»i gian thÃ´ng bÃ¡o.',
-            labelHtml: 'ChÆ°Æ¡ng trÃ¬nh cÃ³ <mark class="hl">bá»‘ cá»¥c rÃµ rÃ ng</mark> (má»Ÿ Ä‘áº§u â€“ ná»™i dung chÃ­nh â€“ káº¿t thÃºc) vÃ  <mark class="hl">diá»…n ra Ä‘Ãºng thá»i gian</mark> thÃ´ng bÃ¡o.' },
+          { code: 'CLCT1', label: 'Nhân sự hỗ trợ (tại chỗ hoặc qua kênh trực tuyến) giải đáp thắc mắc của tôi kịp thời và rõ ràng.',
+            labelHtml: '<mark class="hl">Nhân sự hỗ trợ</mark> (tại chỗ hoặc qua kênh trực tuyến) <mark class="hl">giải đáp</mark> thắc mắc của tôi <mark class="hl">kịp thời và rõ ràng</mark>.' },
+          { code: 'CLCT2', label: 'Các hình thức hoạt động trong chương trình đa dạng, giúp tôi có nhiều cách tiếp cận nội dung khác nhau.',
+            labelHtml: 'Các <mark class="hl">hình thức</mark> hoạt động trong chương trình <mark class="hl">đa dạng</mark>, giúp tôi có nhiều cách tiếp cận nội dung khác nhau.' },
+          { code: 'CLCT3', label: 'Nội dung chương trình kích thích tôi muốn tìm hiểu sâu hơn sau khi tham dự.',
+            labelHtml: 'Nội dung chương trình kích thích <mark class="hl">tôi muốn tìm hiểu sâu hơn</mark> sau khi tham dự.' },
+          { code: 'CLCT4', label: 'Nội dung chương trình phù hợp với mục tiêu và chủ đề của hoạt động.',
+            labelHtml: '<mark class="hl">Nội dung</mark> chương trình phù hợp với <mark class="hl">mục tiêu và chủ đề</mark> của hoạt động.' },
+          { code: 'CLCT5', label: 'Chương trình có bố cục rõ ràng (mở đầu – nội dung chính – kết thúc) và diễn ra đúng thời gian thông báo.',
+            labelHtml: 'Chương trình có <mark class="hl">bố cục rõ ràng</mark> (mở đầu – nội dung chính – kết thúc) và <mark class="hl">diễn ra đúng thời gian</mark> thông báo.' },
         ]
       },
       {
-        code: 'CSVC', name: 'ÄÃ¡nh giÃ¡ III: CÆ¡ sá»Ÿ váº­t cháº¥t',
+        code: 'CSVC', name: 'Đánh giá III: Cơ sở vật chất',
         items: [
-          { code: 'CSVC1', label: 'KhÃ´ng gian tá»• chá»©c phÃ¹ há»£p vá»›i quy mÃ´ vÃ  ná»™i dung chÆ°Æ¡ng trÃ¬nh.',
-            labelHtml: '<mark class="hl">KhÃ´ng gian</mark> tá»• chá»©c <mark class="hl">phÃ¹ há»£p</mark> vá»›i quy mÃ´ vÃ  ná»™i dung chÆ°Æ¡ng trÃ¬nh.' },
-          { code: 'CSVC2', label: 'Há»‡ thá»‘ng Ã¢m thanh, Ã¡nh sÃ¡ng vÃ  thiáº¿t bá»‹ há»— trá»£ Ä‘Ã¡p á»©ng tá»‘t nhu cáº§u cá»§a chÆ°Æ¡ng trÃ¬nh.',
-            labelHtml: '<mark class="hl">Há»‡ thá»‘ng Ã¢m thanh, Ã¡nh sÃ¡ng vÃ  thiáº¿t bá»‹ há»— trá»£</mark> Ä‘Ã¡p á»©ng tá»‘t nhu cáº§u cá»§a chÆ°Æ¡ng trÃ¬nh.' },
-          { code: 'CSVC3', label: 'Chá»— ngá»“i vÃ  khÃ´ng gian tham gia táº¡o cáº£m giÃ¡c thoáº£i mÃ¡i trong suá»‘t chÆ°Æ¡ng trÃ¬nh.',
-            labelHtml: 'Chá»— ngá»“i vÃ  khÃ´ng gian tham gia táº¡o <mark class="hl">cáº£m giÃ¡c thoáº£i mÃ¡i</mark> trong suá»‘t chÆ°Æ¡ng trÃ¬nh.' },
+          { code: 'CSVC1', label: 'Không gian tổ chức phù hợp với quy mô và nội dung chương trình.',
+            labelHtml: '<mark class="hl">Không gian</mark> tổ chức <mark class="hl">phù hợp</mark> với quy mô và nội dung chương trình.' },
+          { code: 'CSVC2', label: 'Hệ thống âm thanh, ánh sáng và thiết bị hỗ trợ đáp ứng tốt nhu cầu của chương trình.',
+            labelHtml: '<mark class="hl">Hệ thống âm thanh, ánh sáng và thiết bị hỗ trợ</mark> đáp ứng tốt nhu cầu của chương trình.' },
+          { code: 'CSVC3', label: 'Chỗ ngồi và không gian tham gia tạo cảm giác thoải mái trong suốt chương trình.',
+            labelHtml: 'Chỗ ngồi và không gian tham gia tạo <mark class="hl">cảm giác thoải mái</mark> trong suốt chương trình.' },
         ]
       },
       {
-        code: 'GTCT', name: 'ÄÃ¡nh giÃ¡ IV: GiÃ¡ trá»‹ chÆ°Æ¡ng trÃ¬nh',
+        code: 'GTCT', name: 'Đánh giá IV: Giá trị chương trình',
         items: [
-          { code: 'GTCT1', label: 'Nhá»¯ng giÃ¡ trá»‹ tÃ´i nháº­n Ä‘Æ°á»£c tá»« chÆ°Æ¡ng trÃ¬nh xá»©ng Ä‘Ã¡ng vá»›i thá»i gian vÃ  cÃ´ng sá»©c tÃ´i Ä‘Ã£ bá» ra.',
-            labelHtml: 'Nhá»¯ng giÃ¡ trá»‹ tÃ´i nháº­n Ä‘Æ°á»£c tá»« chÆ°Æ¡ng trÃ¬nh <mark class="hl">xá»©ng Ä‘Ã¡ng vá»›i thá»i gian vÃ  cÃ´ng sá»©c tÃ´i Ä‘Ã£ bá» ra</mark>.' },
-          { code: 'GTCT2', label: 'ChÆ°Æ¡ng trÃ¬nh mang láº¡i nhiá»u Ä‘iá»u thÃº vá»‹ vÃ  cÃ³ Ã­ch hÆ¡n so vá»›i ká»³ vá»ng ban Ä‘áº§u cá»§a tÃ´i.',
-            labelHtml: 'ChÆ°Æ¡ng trÃ¬nh mang láº¡i nhiá»u Ä‘iá»u <mark class="hl">thÃº vá»‹ vÃ  cÃ³ Ã­ch hÆ¡n so vá»›i ká»³ vá»ng ban Ä‘áº§u</mark> cá»§a tÃ´i.' },
+          { code: 'GTCT1', label: 'Những giá trị tôi nhận được từ chương trình xứng đáng với thời gian và công sức tôi đã bỏ ra.',
+            labelHtml: 'Những giá trị tôi nhận được từ chương trình <mark class="hl">xứng đáng với thời gian và công sức tôi đã bỏ ra</mark>.' },
+          { code: 'GTCT2', label: 'Chương trình mang lại nhiều điều thú vị và có ích hơn so với kỳ vọng ban đầu của tôi.',
+            labelHtml: 'Chương trình mang lại nhiều điều <mark class="hl">thú vị và có ích hơn so với kỳ vọng ban đầu</mark> của tôi.' },
         ]
       },
       {
-        code: 'SHL', name: 'ÄÃ¡nh giÃ¡ V: Sá»± hÃ i lÃ²ng cá»§a ngÆ°á»i tham gia',
+        code: 'SHL', name: 'Đánh giá V: Sự hài lòng của người tham gia',
         items: [
-          { code: 'SHL1', label: 'NhÃ¬n chung, tÃ´i hÃ i lÃ²ng vá»›i chÆ°Æ¡ng trÃ¬nh nÃ y.',
-            labelHtml: 'NhÃ¬n chung, tÃ´i <mark class="hl">hÃ i lÃ²ng</mark> vá»›i chÆ°Æ¡ng trÃ¬nh nÃ y.' },
-          { code: 'SHL2', label: 'Tá»•ng thá»ƒ, tÃ´i cÃ³ cáº£m xÃºc tÃ­ch cá»±c khi tham gia chÆ°Æ¡ng trÃ¬nh nÃ y.',
-            labelHtml: 'Tá»•ng thá»ƒ, tÃ´i cÃ³ <mark class="hl">cáº£m xÃºc tÃ­ch cá»±c</mark> khi tham gia chÆ°Æ¡ng trÃ¬nh nÃ y.' },
-          { code: 'SHL3', label: 'NhÃ¬n láº¡i, viá»‡c tham gia chÆ°Æ¡ng trÃ¬nh lÃ  lá»±a chá»n Ä‘Ãºng Ä‘áº¯n vÃ  cÃ³ Ã½ nghÄ©a vá»›i tÃ´i.',
-            labelHtml: 'NhÃ¬n láº¡i, viá»‡c tham gia chÆ°Æ¡ng trÃ¬nh lÃ  <mark class="hl">lá»±a chá»n Ä‘Ãºng Ä‘áº¯n vÃ  cÃ³ Ã½ nghÄ©a</mark> vá»›i tÃ´i.' },
+          { code: 'SHL1', label: 'Nhìn chung, tôi hài lòng với chương trình này.',
+            labelHtml: 'Nhìn chung, tôi <mark class="hl">hài lòng</mark> với chương trình này.' },
+          { code: 'SHL2', label: 'Tổng thể, tôi có cảm xúc tích cực khi tham gia chương trình này.',
+            labelHtml: 'Tổng thể, tôi có <mark class="hl">cảm xúc tích cực</mark> khi tham gia chương trình này.' },
+          { code: 'SHL3', label: 'Nhìn lại, việc tham gia chương trình là lựa chọn đúng đắn và có ý nghĩa với tôi.',
+            labelHtml: 'Nhìn lại, việc tham gia chương trình là <mark class="hl">lựa chọn đúng đắn và có ý nghĩa</mark> với tôi.' },
         ]
       },
       {
-        code: 'LTT', name: 'ÄÃ¡nh giÃ¡ VI: LÃ²ng trung thÃ nh',
+        code: 'LTT', name: 'Đánh giá VI: Lòng trung thành',
         items: [
-          { code: 'LTT1', label: 'TÃ´i sáº½ chia sáº» nhá»¯ng Ä‘iá»u tÃ­ch cá»±c vá» chÆ°Æ¡ng trÃ¬nh nÃ y vá»›i ngÆ°á»i khÃ¡c.',
-            labelHtml: 'TÃ´i sáº½ <mark class="hl">chia sáº» nhá»¯ng Ä‘iá»u tÃ­ch cá»±c</mark> vá» chÆ°Æ¡ng trÃ¬nh nÃ y vá»›i ngÆ°á»i khÃ¡c.' },
-          { code: 'LTT2', label: 'Náº¿u chÆ°Æ¡ng trÃ¬nh Ä‘Æ°á»£c tá»• chá»©c Ä‘á»‹nh ká»³, tÃ´i sáº½ tiáº¿p tá»¥c Ä‘Äƒng kÃ½ tham dá»± trong nhá»¯ng láº§n tá»›i.',
-            labelHtml: 'Náº¿u chÆ°Æ¡ng trÃ¬nh Ä‘Æ°á»£c tá»• chá»©c Ä‘á»‹nh ká»³, tÃ´i sáº½ <mark class="hl">tiáº¿p tá»¥c Ä‘Äƒng kÃ½ tham dá»±</mark> trong nhá»¯ng láº§n tá»›i.' },
-          { code: 'LTT3', label: 'TÃ´i sáº½ giá»›i thiá»‡u chÆ°Æ¡ng trÃ¬nh nÃ y cho báº¡n bÃ¨ vÃ  ngÆ°á»i quen.',
-            labelHtml: 'TÃ´i sáº½ <mark class="hl">giá»›i thiá»‡u</mark> chÆ°Æ¡ng trÃ¬nh nÃ y cho báº¡n bÃ¨ vÃ  ngÆ°á»i quen.' },
-          { code: 'LTT4', label: 'TÃ´i sáºµn sÃ ng cung cáº¥p pháº£n há»“i Ä‘á»ƒ Ban Tá»• chá»©c cáº£i thiá»‡n chÆ°Æ¡ng trÃ¬nh láº§n sau.',
-            labelHtml: 'TÃ´i sáºµn sÃ ng <mark class="hl">cung cáº¥p pháº£n há»“i</mark> Ä‘á»ƒ Ban Tá»• chá»©c cáº£i thiá»‡n chÆ°Æ¡ng trÃ¬nh láº§n sau.' },
+          { code: 'LTT1', label: 'Tôi sẽ chia sẻ những điều tích cực về chương trình này với người khác.',
+            labelHtml: 'Tôi sẽ <mark class="hl">chia sẻ những điều tích cực</mark> về chương trình này với người khác.' },
+          { code: 'LTT2', label: 'Nếu chương trình được tổ chức định kỳ, tôi sẽ tiếp tục đăng ký tham dự trong những lần tới.',
+            labelHtml: 'Nếu chương trình được tổ chức định kỳ, tôi sẽ <mark class="hl">tiếp tục đăng ký tham dự</mark> trong những lần tới.' },
+          { code: 'LTT3', label: 'Tôi sẽ giới thiệu chương trình này cho bạn bè và người quen.',
+            labelHtml: 'Tôi sẽ <mark class="hl">giới thiệu</mark> chương trình này cho bạn bè và người quen.' },
+          { code: 'LTT4', label: 'Tôi sẵn sàng cung cấp phản hồi để Ban Tổ chức cải thiện chương trình lần sau.',
+            labelHtml: 'Tôi sẵn sàng <mark class="hl">cung cấp phản hồi</mark> để Ban Tổ chức cải thiện chương trình lần sau.' },
         ]
       },
     ],
-    overall: { code: 'overall', label: 'TrÃªn tá»•ng 7 Ä‘iá»ƒm, báº¡n Ä‘Ã¡nh giÃ¡ chÆ°Æ¡ng trÃ¬nh bao nhiÃªu Ä‘iá»ƒm.' },
+    overall: { code: 'overall', label: 'Trên tổng 7 điểm, bạn đánh giá chương trình bao nhiêu điểm.' },
     textQuestions: [
-      { code: 'learn',    label: 'Sau khi bÆ°á»›c ra khá»i chÆ°Æ¡ng trÃ¬nh nÃ y, bÃ i há»c, kiáº¿n thá»©c hoáº·c giÃ¡ trá»‹ thá»±c táº¿ nÃ o mÃ  Anh/Chá»‹ cáº£m tháº¥y cÃ³ thá»ƒ Ã¡p dá»¥ng ngay vÃ o viá»‡c há»c táº­p hoáº·c cuá»™c sá»‘ng cá»§a mÃ¬nh?' },
-      { code: 'trouble',  label: 'Anh/Chá»‹ cÃ³ gáº·p khÃ³ khÄƒn hay tráº£i nghiá»‡m khÃ´ng thoáº£i mÃ¡i nÃ o trong suá»‘t quÃ¡ trÃ¬nh tham gia khÃ´ng?' },
-      { code: 'interest', label: 'Trong há»c ká»³ nÃ y, Ä‘á» tÃ i hoáº·c ká»¹ nÄƒng nÃ o Ä‘ang lÃ  má»‘i quan tÃ¢m lá»›n nháº¥t mÃ  Anh/Chá»‹ mong muá»‘n ÄoÃ n - Há»™i tá»• chá»©c chÆ°Æ¡ng trÃ¬nh Ä‘á»ƒ giáº£i Ä‘Ã¡p?' },
-      { code: 'feedback', label: 'Anh/Chá»‹ cÃ³ gÃ³p Ã½ cho chÆ°Æ¡ng trÃ¬nh hay khÃ´ng?' },
+      { code: 'learn',    label: 'Sau khi bước ra khỏi chương trình này, bài học, kiến thức hoặc giá trị thực tế nào mà Anh/Chị cảm thấy có thể áp dụng ngay vào việc học tập hoặc cuộc sống của mình?' },
+      { code: 'trouble',  label: 'Anh/Chị có gặp khó khăn hay trải nghiệm không thoải mái nào trong suốt quá trình tham gia không?' },
+      { code: 'interest', label: 'Trong học kỳ này, đề tài hoặc kỹ năng nào đang là mối quan tâm lớn nhất mà Anh/Chị mong muốn Đoàn - Hội tổ chức chương trình để giải đáp?' },
+      { code: 'feedback', label: 'Anh/Chị có góp ý cho chương trình hay không?' },
     ]
   };
 
-  // â”€â”€ Login modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Login modal ───────────────────────────────────
   const ADMIN = { user: 'admin', pass: 'admin123' };
 
   function openLoginModal() {
@@ -1327,7 +1018,7 @@ function validateCELGForm() {
   function showStudentView() {
     document.getElementById('chooseView').style.display  = 'none';
     document.getElementById('studentView').style.display = 'block';
-    tryRenderGoogleBtn(); // render ngay náº¿u library Ä‘Ã£ sáºµn sÃ ng, hoáº·c chá» onGoogleLibraryLoad
+    tryRenderGoogleBtn(); // render ngay nếu library đã sẵn sàng, hoặc chờ onGoogleLibraryLoad
   }
   function doAdminLogin() {
     const u = document.getElementById('adminUser').value.trim();
@@ -1354,11 +1045,11 @@ function validateCELGForm() {
     window.location.replace('admin-dashboard.html');
   }
 
-  // â”€â”€ State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── State ────────────────────────────────────────
   let currentUser = null;
   let currentSurveyRow = null;
 
-  // â”€â”€ Google Sign-In â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Google Sign-In ────────────────────────────────
   let googleReady = false;
 
   window.onGoogleLibraryLoad = function () {
@@ -1367,7 +1058,7 @@ function validateCELGForm() {
       callback: handleCredentialResponse,
     });
     googleReady = true;
-    tryRenderGoogleBtn(); // render ngay náº¿u student view Ä‘ang má»Ÿ
+    tryRenderGoogleBtn(); // render ngay nếu student view đang mở
   };
 
   function tryRenderGoogleBtn() {
@@ -1413,7 +1104,7 @@ function validateCELGForm() {
     closeMailbox();
   }
 
-  // KhÃ´i phá»¥c login sinh viÃªn sau F5
+  // Khôi phục login sinh viên sau F5
   document.addEventListener('DOMContentLoaded', () => {
     const saved = sessionStorage.getItem('studentUser');
     if (saved) {
@@ -1425,43 +1116,43 @@ function validateCELGForm() {
     }
   });
 
-  // â”€â”€ Load danh sÃ¡ch mÃ´n há»c â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Load danh sách môn học ────────────────────────
   async function loadCourses() {
     document.getElementById('tableContainer').innerHTML =
-      '<div class="state-msg"><div class="spinner"></div> Äang táº£i dá»¯ liá»‡u...</div>';
+      '<div class="state-msg"><div class="spinner"></div> Đang tải dữ liệu...</div>';
     try {
       const url = CONFIG.APPS_SCRIPT_URL + '?action=getCourses&email=' + encodeURIComponent(currentUser.email);
       const data = await (await fetch(url)).json();
       renderTable(data.courses || []);
     } catch {
       document.getElementById('tableContainer').innerHTML =
-        '<div class="state-msg" style="color:#c00;">KhÃ´ng thá»ƒ táº£i dá»¯ liá»‡u. Kiá»ƒm tra káº¿t ná»‘i hoáº·c liÃªn há»‡ quáº£n trá»‹ viÃªn.</div>';
+        '<div class="state-msg" style="color:#c00;">Không thể tải dữ liệu. Kiểm tra kết nối hoặc liên hệ quản trị viên.</div>';
     }
   }
 
-  // â”€â”€ Render báº£ng â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Render bảng ───────────────────────────────────
   function renderTable(courses) {
     if (!courses.length) {
       document.getElementById('tableContainer').innerHTML =
-        '<div class="state-msg">KhÃ´ng tÃ¬m tháº¥y sá»± kiá»‡n nÃ o Ä‘Æ°á»£c phÃ¢n cÃ´ng cho tÃ i khoáº£n cá»§a báº¡n.</div>';
+        '<div class="state-msg">Không tìm thấy sự kiện nào được phân công cho tài khoản của bạn.</div>';
       return;
     }
     const rows = courses.map((c, i) => {
-      const done   = c.status === 'ÄÃ£ thá»±c hiá»‡n';
-      const locked = c.locked || c.status === 'ÄÃ£ khoÃ¡';
+      const done   = c.status === 'Đã thực hiện';
+      const locked = c.locked || c.status === 'Đã khoá';
       let cell;
       if (done) {
-        cell = `<span class="status-done">&#10004; ÄÃ£ thá»±c hiá»‡n</span>`;
+        cell = `<span class="status-done">&#10004; Đã thực hiện</span>`;
       } else if (locked) {
-        cell = `<span class="status-locked">&#128274; ÄÃ£ khoÃ¡</span>`;
+        cell = `<span class="status-locked">&#128274; Đã khoá</span>`;
       } else {
-        cell = `<span class="status-pending" onclick='openModal(${JSON.stringify(c)})'>ChÆ°a thá»±c hiá»‡n</span>`;
+        cell = `<span class="status-pending" onclick='openModal(${JSON.stringify(c)})'>Chưa thực hiện</span>`;
       }
       return `<tr class="${locked && !done ? 'row-locked' : ''}">
         <td style="text-align:center;width:46px;">${i + 1}</td>
         <td style="width:100px;">${esc(c.year)}</td>
         <td>${esc(c.courseName)}</td>
-        <td style="text-align:center;width:140px;font-size:13px;">${esc(c.ketThucKhaoSat || 'â€”')}</td>
+        <td style="text-align:center;width:140px;font-size:13px;">${esc(c.ketThucKhaoSat || '—')}</td>
         <td style="text-align:center;width:135px;">${cell}</td>
       </tr>`;
     }).join('');
@@ -1469,24 +1160,24 @@ function validateCELGForm() {
       <table class="survey-table">
         <thead><tr>
           <th style="text-align:center;">TT</th>
-          <th>NÄ‚M</th>
-          <th>TÃŠN Sá»° KIá»†N / TÃŠN PHIáº¾U</th>
-          <th style="text-align:center;">Háº N CHÃ“T KHáº¢O SÃT</th>
-          <th style="text-align:center;">TRáº NG THÃI</th>
+          <th>NĂM</th>
+          <th>TÊN SỰ KIỆN / TÊN PHIẾU</th>
+          <th style="text-align:center;">HẠN CHÓT KHẢO SÁT</th>
+          <th style="text-align:center;">TRẠNG THÁI</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>`;
   }
 
-  // â•â• MODAL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ══ MODAL ════════════════════════════════════════
 
   function openModal(course) {
-    if (course.locked || course.status === 'ÄÃ£ khoÃ¡') return;
+    if (course.locked || course.status === 'Đã khoá') return;
     currentSurveyRow = course;
     document.getElementById('modalProgramName').textContent = course.courseName;
     document.getElementById('successOverlay').classList.remove('show');
     document.getElementById('submitBtn').disabled = false;
-    document.getElementById('submitBtn').textContent = 'Gá»­i kháº£o sÃ¡t';
+    document.getElementById('submitBtn').textContent = 'Gửi khảo sát';
     if (course.courseName.includes('CELG-Innovation Awards 2026')) {
       renderCELGForm();
     } else {
@@ -1501,58 +1192,58 @@ function validateCELGForm() {
     document.body.style.overflow = '';
   }
 
-  // â”€â”€ Render form HTML â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Render form HTML ──────────────────────────────
   function renderForm() {
     let html = '';
 
     // Email display
     html += `<div class="email-display">
       <strong>Email:</strong> ${esc(currentUser.email)}
-      <span style="color:#888;font-size:12px;margin-left:8px;">(ÄÆ°á»£c ghi nháº­n tá»± Ä‘á»™ng)</span>
+      <span style="color:#888;font-size:12px;margin-left:8px;">(Được ghi nhận tự động)</span>
     </div>`;
 
-    // ThÃ´ng tin cÃ¡ nhÃ¢n
+    // Thông tin cá nhân
     const FACULTIES = [
-      'Khoa ToÃ¡n - Thá»‘ng kÃª','Khoa Kinh táº¿','Khoa LÃ½ luáº­n chÃ­nh trá»‹','Khoa Thiáº¿t káº¿ Truyá»n thÃ´ng',
-      'Khoa CÃ´ng nghá»‡ thÃ´ng tin kinh doanh','Khoa Ngoáº¡i ngá»¯',
-      'Khoa Kinh doanh quá»‘c táº¿ - Marketing','Khoa Quáº£n trá»‹','Khoa TÃ i chÃ­nh',
-      'Khoa NgÃ¢n hÃ ng','Khoa Káº¿ toÃ¡n','Khoa Du lá»‹ch','Khoa TÃ i chÃ­nh cÃ´ng',
-      'Khoa Luáº­t','Khoa Quáº£n lÃ½ nhÃ  nÆ°á»›c',
-      'KhÃ¡c',
+      'Khoa Toán - Thống kê','Khoa Kinh tế','Khoa Lý luận chính trị','Khoa Thiết kế Truyền thông',
+      'Khoa Công nghệ thông tin kinh doanh','Khoa Ngoại ngữ',
+      'Khoa Kinh doanh quốc tế - Marketing','Khoa Quản trị','Khoa Tài chính',
+      'Khoa Ngân hàng','Khoa Kế toán','Khoa Du lịch','Khoa Tài chính công',
+      'Khoa Luật','Khoa Quản lý nhà nước',
+      'Khác',
     ];
     html += `<div class="info-grid">
       <div class="info-field">
-        <label>Há» vÃ  tÃªn Ä‘á»‡m <span class="req">*</span></label>
+        <label>Họ và tên đệm <span class="req">*</span></label>
         <input type="text" id="field_lastName" name="lastName">
       </div>
       <div class="info-field">
-        <label>TÃªn <span class="req">*</span></label>
+        <label>Tên <span class="req">*</span></label>
         <input type="text" id="field_firstName" name="firstName">
       </div>
       <div class="info-field">
-        <label>Lá»›p <span class="req">*</span></label>
+        <label>Lớp <span class="req">*</span></label>
         <input type="text" id="field_studentClass" name="studentClass">
       </div>
       <div class="info-field">
-        <label>KhÃ³a <span class="req">*</span></label>
+        <label>Khóa <span class="req">*</span></label>
         <select id="field_cohort" name="cohort">
-          <option value="">-- Chá»n --</option>
+          <option value="">-- Chọn --</option>
           <option>49</option><option>50</option><option>51</option>
-          <option>KhÃ¡c</option>
+          <option>Khác</option>
         </select>
       </div>
       <div class="info-field">
         <label>Khoa <span class="req">*</span></label>
         <select id="field_faculty" name="faculty">
-          <option value="">-- Chá»n khoa --</option>
+          <option value="">-- Chọn khoa --</option>
           ${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}
         </select>
       </div>
       <div class="info-field">
-        <label>Giá»›i tÃ­nh <span class="req">*</span></label>
+        <label>Giới tính <span class="req">*</span></label>
         <select id="field_gender" name="gender">
-          <option value="">-- Chá»n --</option>
-          <option>Nam</option><option>Ná»¯</option>
+          <option value="">-- Chọn --</option>
+          <option>Nam</option><option>Nữ</option>
         </select>
       </div>
       <div class="info-field">
@@ -1560,7 +1251,7 @@ function validateCELGForm() {
         <input type="text" id="field_studentId" name="studentId">
       </div>
       <div class="info-field">
-        <label>Sá»‘ Ä‘iá»‡n thoáº¡i <span class="req">*</span></label>
+        <label>Số điện thoại <span class="req">*</span></label>
         <input type="tel" id="field_phone" name="phone">
       </div>
       <div class="info-field">
@@ -1568,7 +1259,7 @@ function validateCELGForm() {
         <input type="email" id="field_emailUeh" name="emailUeh" placeholder="...@st.ueh.edu.vn">
       </div>
       <div class="info-field">
-        <label>Email khÃ¡c <span class="req">*</span></label>
+        <label>Email khác <span class="req">*</span></label>
         <input type="email" id="field_emailOther" name="emailOther">
       </div>
       <div class="info-field" style="grid-column: 1 / -1;">
@@ -1578,7 +1269,7 @@ function validateCELGForm() {
     </div>`;
 
     // Factor sections (Likert 1-7)
-    const LIKERT_LABELS = ['HoÃ n toÃ n\nkhÃ´ng Ä‘á»“ng Ã½','KhÃ´ng\nÄ‘á»“ng Ã½','HÆ¡i khÃ´ng\nÄ‘á»“ng Ã½','Trung láº­p','HÆ¡i\nÄ‘á»“ng Ã½','Äá»“ng Ã½','HoÃ n toÃ n\nÄ‘á»“ng Ã½'];
+    const LIKERT_LABELS = ['Hoàn toàn\nkhông đồng ý','Không\nđồng ý','Hơi không\nđồng ý','Trung lập','Hơi\nđồng ý','Đồng ý','Hoàn toàn\nđồng ý'];
     for (const factor of FORM_SCHEMA.factors) {
       html += `<div class="factor-card">
         <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
@@ -1602,7 +1293,7 @@ function validateCELGForm() {
 
     // Overall rating
     html += `<div class="factor-card">
-      <div class="factor-title">Tá»”NG QUAN <span class="req">*</span></div>
+      <div class="factor-title">TỔNG QUAN <span class="req">*</span></div>
       <div class="likert-scroll">
       <table class="likert-table">
         <thead><tr>
@@ -1622,26 +1313,26 @@ function validateCELGForm() {
     for (const q of FORM_SCHEMA.textQuestions) {
       html += `<div class="text-section">
         <label for="text_${q.code}">${esc(q.label)} <span class="req">*</span></label>
-        <textarea id="text_${q.code}" name="${q.code}" rows="3" placeholder="CÃ¢u tráº£ lá»i cá»§a báº¡n"></textarea>
+        <textarea id="text_${q.code}" name="${q.code}" rows="3" placeholder="Câu trả lời của bạn"></textarea>
       </div>`;
     }
 
     document.getElementById('modalBody').innerHTML = html;
   }
 
-  // â”€â”€ Validate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Validate ──────────────────────────────────────
   function validateForm() {
     const requiredFields = [
-      { id: 'field_lastName', name: 'Há» vÃ  tÃªn Ä‘á»‡m' },
-      { id: 'field_firstName', name: 'TÃªn' },
-      { id: 'field_studentClass', name: 'Lá»›p' },
-      { id: 'field_cohort', name: 'KhÃ³a' },
+      { id: 'field_lastName', name: 'Họ và tên đệm' },
+      { id: 'field_firstName', name: 'Tên' },
+      { id: 'field_studentClass', name: 'Lớp' },
+      { id: 'field_cohort', name: 'Khóa' },
       { id: 'field_faculty', name: 'Khoa' },
-      { id: 'field_gender', name: 'Giá»›i tÃ­nh' },
+      { id: 'field_gender', name: 'Giới tính' },
       { id: 'field_studentId', name: 'MSSV' },
-      { id: 'field_phone', name: 'Sá»‘ Ä‘iá»‡n thoáº¡i' },
+      { id: 'field_phone', name: 'Số điện thoại' },
       { id: 'field_emailUeh', name: 'Email UEH' },
-      { id: 'field_emailOther', name: 'Email khÃ¡c' },
+      { id: 'field_emailOther', name: 'Email khác' },
       { id: 'field_facebook', name: 'Link Facebook' }
     ];
 
@@ -1651,7 +1342,7 @@ function validateCELGForm() {
         if (!el.value.trim()) {
           el.classList.add('invalid');
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          alert(`Vui lÃ²ng nháº­p/chá»n: ${field.name}.`);
+          alert(`Vui lòng nhập/chọn: ${field.name}.`);
           return false;
         }
         el.classList.remove('invalid');
@@ -1661,7 +1352,7 @@ function validateCELGForm() {
     const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
     for (const item of allItems) {
       if (!document.querySelector(`input[name="${item.code}"]:checked`)) {
-        alert('Vui lÃ²ng hoÃ n thÃ nh táº¥t cáº£ cÃ¡c cÃ¢u há»i Ä‘Ã¡nh giÃ¡ theo thang Ä‘iá»ƒm 1â€“7.');
+        alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá theo thang điểm 1–7.');
         document.querySelector(`input[name="${item.code}"]`)
           ?.closest('.factor-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return false;
@@ -1670,7 +1361,7 @@ function validateCELGForm() {
     for (const q of FORM_SCHEMA.textQuestions) {
       const el = document.getElementById('text_' + q.code);
       if (!el.value.trim()) {
-        alert('Vui lÃ²ng tráº£ lá»i táº¥t cáº£ cÃ¡c cÃ¢u há»i.');
+        alert('Vui lòng trả lời tất cả các câu hỏi.');
         el.classList.add('invalid');
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.focus();
@@ -1681,7 +1372,7 @@ function validateCELGForm() {
     return true;
   }
 
-  // â”€â”€ Collect data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Collect data ──────────────────────────────────
   function collectFormData() {
     const data = {};
     const fields = ['lastName', 'firstName', 'studentClass', 'cohort', 'faculty', 'gender', 'studentId', 'phone', 'emailUeh', 'emailOther', 'facebook'];
@@ -1699,7 +1390,7 @@ function validateCELGForm() {
     return data;
   }
 
-  // â”€â”€ Submit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Submit ────────────────────────────────────────
   async function submitSurveyForm() {
     const isCELG = currentSurveyRow && currentSurveyRow.courseName.includes('CELG-Innovation Awards 2026');
     if (isCELG) {
@@ -1710,7 +1401,7 @@ function validateCELGForm() {
 
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.textContent = 'Äang gá»­i...';
+    btn.textContent = 'Đang gửi...';
 
     try {
       const formData = isCELG ? collectCELGFormData() : collectFormData();
@@ -1730,25 +1421,25 @@ function validateCELGForm() {
         document.getElementById('successOverlay').classList.add('show');
         setTimeout(() => { closeModal(); loadCourses(); }, 2200);
       } else {
-        throw new Error(result.error || 'Lá»—i khÃ´ng xÃ¡c Ä‘á»‹nh');
+        throw new Error(result.error || 'Lỗi không xác định');
       }
     } catch (err) {
-      alert('Gá»­i tháº¥t báº¡i. Vui lÃ²ng thá»­ láº¡i.\nLá»—i: ' + err.message);
+      alert('Gửi thất bại. Vui lòng thử lại.\nLỗi: ' + err.message);
       btn.disabled = false;
-      btn.textContent = 'Gá»­i kháº£o sÃ¡t';
+      btn.textContent = 'Gửi khảo sát';
     }
   }
 
-  // â”€â”€ Mailbox â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Mailbox ───────────────────────────────────────
   function openMailbox() {
     document.getElementById('mailboxEmailDisplay').innerHTML =
-      `<strong>Email:</strong> ${esc(currentUser.email)} <span style="color:#888;font-size:12px;margin-left:8px;">(ÄÆ°á»£c ghi nháº­n tá»± Ä‘á»™ng)</span>`;
+      `<strong>Email:</strong> ${esc(currentUser.email)} <span style="color:#888;font-size:12px;margin-left:8px;">(Được ghi nhận tự động)</span>`;
     document.getElementById('mailboxContent').value = '';
-    document.getElementById('mailboxCharHint').textContent = '0 kÃ½ tá»±';
+    document.getElementById('mailboxCharHint').textContent = '0 ký tự';
     document.getElementById('mailboxContent').classList.remove('invalid');
     document.getElementById('mailboxSuccess').classList.remove('show');
     document.getElementById('mailboxSubmitBtn').disabled = false;
-    document.getElementById('mailboxSubmitBtn').textContent = 'Gá»­i Ã½ kiáº¿n';
+    document.getElementById('mailboxSubmitBtn').textContent = 'Gửi ý kiến';
     document.getElementById('mailboxModal').classList.add('open');
     document.body.style.overflow = 'hidden';
     setTimeout(() => document.getElementById('mailboxContent').focus(), 80);
@@ -1770,7 +1461,7 @@ function validateCELGForm() {
 
     const btn = document.getElementById('mailboxSubmitBtn');
     btn.disabled = true;
-    btn.textContent = 'Äang gá»­i...';
+    btn.textContent = 'Đang gửi...';
 
     try {
       const params = new URLSearchParams({
@@ -1785,16 +1476,16 @@ function validateCELGForm() {
         document.getElementById('mailboxSuccess').classList.add('show');
         setTimeout(() => closeMailbox(), 2000);
       } else {
-        throw new Error(result.error || 'Lá»—i khÃ´ng xÃ¡c Ä‘á»‹nh');
+        throw new Error(result.error || 'Lỗi không xác định');
       }
     } catch (err) {
-      alert('Gá»­i tháº¥t báº¡i. Vui lÃ²ng thá»­ láº¡i.\nLá»—i: ' + err.message);
+      alert('Gửi thất bại. Vui lòng thử lại.\nLỗi: ' + err.message);
       btn.disabled = false;
-      btn.textContent = 'Gá»­i Ã½ kiáº¿n';
+      btn.textContent = 'Gửi ý kiến';
     }
   }
 
-  // â”€â”€ Utilities â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Utilities ─────────────────────────────────────
   function parseJwt(token) {
     const b64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
     return JSON.parse(decodeURIComponent(
@@ -1806,89 +1497,89 @@ function validateCELGForm() {
   }
 function renderCELGForm() {
   let html = `
-    <div class="email-display">Xin chÃ o, <strong>${esc(currentUser.email)}</strong>. Email nÃ y sáº½ Ä‘Æ°á»£c ghi láº¡i.</div>
+    <div class="email-display">Xin chào, <strong>${esc(currentUser.email)}</strong>. Email này sẽ được ghi lại.</div>
     <div class="scale-note">
-      Kháº£o sÃ¡t nhu cáº§u, sá»Ÿ thÃ­ch vÃ  cÃ¡c yáº¿u tá»‘ áº£nh hÆ°á»Ÿng Ä‘áº¿n Ã½ Ä‘á»‹nh tham gia hoáº¡t Ä‘á»™ng/sá»± kiá»‡n cá»§a sinh viÃªn UEH.
+      Khảo sát nhu cầu, sở thích và các yếu tố ảnh hưởng đến ý định tham gia hoạt động/sự kiện của sinh viên UEH.
     </div>
   `;
 
-  // --- PHáº¦N A. THÃ”NG TIN CHUNG ---
+  // --- PHẦN A. THÔNG TIN CHUNG ---
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N A. THÃ”NG TIN CHUNG</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN A. THÔNG TIN CHUNG</h3>
     <div class="info-grid">
-      <div class="info-field"><label>Há» vÃ  tÃªn Ä‘á»‡m <span class="req">*</span></label><input type="text" id="field_lastName" name="lastName"></div>
-      <div class="info-field"><label>TÃªn <span class="req">*</span></label><input type="text" id="field_firstName" name="firstName"></div>
-      <div class="info-field"><label>Lá»›p <span class="req">*</span></label><input type="text" id="field_studentClass" name="studentClass"></div>
-      <div class="info-field"><label>KhÃ³a <span class="req">*</span></label><select id="field_cohort" name="cohort"><option value="">-- Chá»n --</option><option>49</option><option>50</option><option>51</option><option>KhÃ¡c</option></select></div>
-      <div class="info-field"><label>Khoa <span class="req">*</span></label><select id="field_faculty" name="faculty"><option value="">-- Chá»n khoa --</option>${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}</select></div>
-      <div class="info-field"><label>Giá»›i tÃ­nh <span class="req">*</span></label><select id="field_gender" name="gender"><option value="">-- Chá»n --</option><option>Nam</option><option>Ná»¯</option></select></div>
+      <div class="info-field"><label>Họ và tên đệm <span class="req">*</span></label><input type="text" id="field_lastName" name="lastName"></div>
+      <div class="info-field"><label>Tên <span class="req">*</span></label><input type="text" id="field_firstName" name="firstName"></div>
+      <div class="info-field"><label>Lớp <span class="req">*</span></label><input type="text" id="field_studentClass" name="studentClass"></div>
+      <div class="info-field"><label>Khóa <span class="req">*</span></label><select id="field_cohort" name="cohort"><option value="">-- Chọn --</option><option>49</option><option>50</option><option>51</option><option>Khác</option></select></div>
+      <div class="info-field"><label>Khoa <span class="req">*</span></label><select id="field_faculty" name="faculty"><option value="">-- Chọn khoa --</option>${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}</select></div>
+      <div class="info-field"><label>Giới tính <span class="req">*</span></label><select id="field_gender" name="gender"><option value="">-- Chọn --</option><option>Nam</option><option>Nữ</option></select></div>
       <div class="info-field"><label>MSSV <span class="req">*</span></label><input type="text" id="field_studentId" name="studentId"></div>
-      <div class="info-field"><label>Sá»‘ Ä‘iá»‡n thoáº¡i <span class="req">*</span></label><input type="tel" id="field_phone" name="phone"></div>
+      <div class="info-field"><label>Số điện thoại <span class="req">*</span></label><input type="tel" id="field_phone" name="phone"></div>
       <div class="info-field"><label>Email UEH <span class="req">*</span></label><input type="email" id="field_emailUeh" name="emailUeh"></div>
-      <div class="info-field"><label>Email khÃ¡c <span class="req">*</span></label><input type="email" id="field_emailOther" name="emailOther"></div>
+      <div class="info-field"><label>Email khác <span class="req">*</span></label><input type="email" id="field_emailOther" name="emailOther"></div>
       <div class="info-field" style="grid-column: 1 / -1;"><label>Link Facebook <span class="req">*</span></label><input type="url" id="field_facebook" name="facebook"></div>
     </div>
     <div class="text-section">
-      <label>Trong 12 thÃ¡ng qua, báº¡n tham gia khoáº£ng bao nhiÃªu hoáº¡t Ä‘á»™ng/sá»± kiá»‡n táº¡i UEH? <span class="req">*</span></label>
+      <label>Trong 12 tháng qua, bạn tham gia khoảng bao nhiêu hoạt động/sự kiện tại UEH? <span class="req">*</span></label>
       <div class="radio-group" style="display:flex; flex-direction:column; gap:8px;">
-        <label><input type="radio" name="Q_A8" value="ChÆ°a tham gia"> ChÆ°a tham gia</label>
-        <label><input type="radio" name="Q_A8" value="1â€“2 hoáº¡t Ä‘á»™ng"> 1â€“2 hoáº¡t Ä‘á»™ng</label>
-        <label><input type="radio" name="Q_A8" value="3â€“5 hoáº¡t Ä‘á»™ng"> 3â€“5 hoáº¡t Ä‘á»™ng</label>
-        <label><input type="radio" name="Q_A8" value="6â€“10 hoáº¡t Ä‘á»™ng"> 6â€“10 hoáº¡t Ä‘á»™ng</label>
-        <label><input type="radio" name="Q_A8" value="TrÃªn 10 hoáº¡t Ä‘á»™ng"> TrÃªn 10 hoáº¡t Ä‘á»™ng</label>
+        <label><input type="radio" name="Q_A8" value="Chưa tham gia"> Chưa tham gia</label>
+        <label><input type="radio" name="Q_A8" value="1–2 hoạt động"> 1–2 hoạt động</label>
+        <label><input type="radio" name="Q_A8" value="3–5 hoạt động"> 3–5 hoạt động</label>
+        <label><input type="radio" name="Q_A8" value="6–10 hoạt động"> 6–10 hoạt động</label>
+        <label><input type="radio" name="Q_A8" value="Trên 10 hoạt động"> Trên 10 hoạt động</label>
       </div>
     </div>
   `;
 
-  const mangHoatDong = ['Há»c thuáº­t & chuyÃªn mÃ´n','Äá»‹nh hÆ°á»›ng nghá» nghiá»‡p','PhÃ¡t triá»ƒn ká»¹ nÄƒng','Khá»Ÿi nghiá»‡p & Ä‘á»•i má»›i sÃ¡ng táº¡o','VÄƒn hÃ³a & nghá»‡ thuáº­t','Thá»ƒ thao & sá»©c khá»e','Giao lÆ°u & káº¿t ná»‘i sinh viÃªn','Giáº£i trÃ­ & tráº£i nghiá»‡m','Cá»™ng Ä‘á»“ng & tÃ¬nh nguyá»‡n','Quá»‘c táº¿ & giao lÆ°u vÄƒn hÃ³a'];
+  const mangHoatDong = ['Học thuật & chuyên môn','Định hướng nghề nghiệp','Phát triển kỹ năng','Khởi nghiệp & đổi mới sáng tạo','Văn hóa & nghệ thuật','Thể thao & sức khỏe','Giao lưu & kết nối sinh viên','Giải trí & trải nghiệm','Cộng đồng & tình nguyện','Quốc tế & giao lưu văn hóa'];
 
-  // --- PHáº¦N B ---
+  // --- PHẦN B ---
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N B: SINH VIÃŠN QUAN TÃ‚M Äáº¾N HOáº T Äá»˜NG GÃŒ?</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN B: SINH VIÊN QUAN TÂM ĐẾN HOẠT ĐỘNG GÌ?</h3>
     
     <div class="text-section">
-      <label>1. Báº¡n quan tÃ¢m Ä‘áº¿n nhá»¯ng máº£ng hoáº¡t Ä‘á»™ng nÃ o do ÄoÃ n - Há»™i tá»• chá»©c? (CÃ³ thá»ƒ chá»n nhiá»u) <span class="req">*</span></label>
+      <label>1. Bạn quan tâm đến những mảng hoạt động nào do Đoàn - Hội tổ chức? (Có thể chọn nhiều) <span class="req">*</span></label>
       <div class="checkbox-group" id="group_B1" style="display:flex; flex-direction:column; gap:8px;">
         ${mangHoatDong.map(opt => `<label><input type="checkbox" name="Q_B1" value="${opt}" onchange="updateB2Options()"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B1" value="KhÃ¡c" id="chk_B1_other" onchange="updateB2Options()"> KhÃ¡c: <input type="text" id="txt_B1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B1" value="Khác" id="chk_B1_other" onchange="updateB2Options()"> Khác: <input type="text" id="txt_B1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
       </div>
     </div>
 
     <div class="text-section">
-      <label>2. Náº¿u chá»‰ Ä‘Æ°á»£c Æ°u tiÃªn má»™t máº£ng, báº¡n mong muá»‘n ÄoÃ nâ€“Há»™i táº­p trung tá»• chá»©c máº£ng nÃ o nháº¥t? (Chá»n tá»‘i Ä‘a 3) <span class="req">*</span><br><small style="font-weight:normal; color:#666;">(Chá»‰ hiá»ƒn thá»‹ cÃ¡c máº£ng báº¡n Ä‘Ã£ chá»n á»Ÿ cÃ¢u 1)</small></label>
+      <label>2. Nếu chỉ được ưu tiên một mảng, bạn mong muốn Đoàn–Hội tập trung tổ chức mảng nào nhất? (Chọn tối đa 3) <span class="req">*</span><br><small style="font-weight:normal; color:#666;">(Chỉ hiển thị các mảng bạn đã chọn ở câu 1)</small></label>
       <div class="checkbox-group" id="group_B2" style="display:flex; flex-direction:column; gap:8px;">
-        <em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>
+        <em style="color:#888;">Vui lòng chọn ở câu 1 trước</em>
       </div>
     </div>
 
     <div class="text-section">
-      <label>3. Báº¡n thÆ°á»ng há»©ng thÃº hÃ¬nh thá»©c hoáº¡t Ä‘á»™ng nÃ o? (CÃ³ thá»ƒ chá»n nhiá»u) <span class="req">*</span></label>
+      <label>3. Bạn thường hứng thú hình thức hoạt động nào? (Có thể chọn nhiều) <span class="req">*</span></label>
       <div class="checkbox-group" id="group_B3" style="display:flex; flex-direction:column; gap:8px;">
-        ${['Workshop','Talkshow','Cuá»™c thi','Há»™i tháº£o','NgÃ y há»™i/Festival','Hoáº¡t Ä‘á»™ng tráº£i nghiá»‡m','Giáº£i Ä‘áº¥u','Giao lÆ°u/Networking','Tham quan/Tráº£i nghiá»‡m thá»±c táº¿','Hoáº¡t Ä‘á»™ng trá»±c tuyáº¿n'].map(opt => `<label><input type="checkbox" name="Q_B3" value="${opt}"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B3" value="KhÃ¡c" id="chk_B3_other"> KhÃ¡c: <input type="text" id="txt_B3_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        ${['Workshop','Talkshow','Cuộc thi','Hội thảo','Ngày hội/Festival','Hoạt động trải nghiệm','Giải đấu','Giao lưu/Networking','Tham quan/Trải nghiệm thực tế','Hoạt động trực tuyến'].map(opt => `<label><input type="checkbox" name="Q_B3" value="${opt}"> ${opt}</label>`).join('')}
+        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B3" value="Khác" id="chk_B3_other"> Khác: <input type="text" id="txt_B3_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
       </div>
     </div>
   `;
 
-  // --- PHáº¦N C & D: Likert 1-7 ---
-  const LIKERT_LABELS_CELG = ['HoÃ n toÃ n<br>khÃ´ng Ä‘á»“ng Ã½','KhÃ´ng<br>Ä‘á»“ng Ã½','HÆ¡i khÃ´ng<br>Ä‘á»“ng Ã½','Trung láº­p','HÆ¡i<br>Ä‘á»“ng Ã½','Äá»“ng Ã½','HoÃ n toÃ n<br>Ä‘á»“ng Ã½'];
+  // --- PHẦN C & D: Likert 1-7 ---
+  const LIKERT_LABELS_CELG = ['Hoàn toàn<br>không đồng ý','Không<br>đồng ý','Hơi không<br>đồng ý','Trung lập','Hơi<br>đồng ý','Đồng ý','Hoàn toàn<br>đồng ý'];
   
   const likertGroups = [
     {
-      title: 'PHáº¦N C. Äá»˜NG CÆ  THAM GIA',
+      title: 'PHẦN C. ĐỘNG CƠ THAM GIA',
       factors: [
-        { name: 'I. Lá»£i Ã­ch cÃ¡ nhÃ¢n vÃ  phÃ¡t triá»ƒn nghá» nghiá»‡p', items: [{c:'C_I_1', l:'TÃ´i mong muá»‘n cÃ³ cÆ¡ há»™i há»c há»i thÃªm kiáº¿n thá»©c vÃ  kinh nghiá»‡m tá»« nhá»¯ng ngÆ°á»i cÃ³ kinh nghiá»‡m trong lÄ©nh vá»±c liÃªn quan.'}, {c:'C_I_2', l:'TÃ´i mong muá»‘n phÃ¡t triá»ƒn nhá»¯ng ká»¹ nÄƒng há»¯u Ã­ch cho há»c táº­p vÃ  cÃ´ng viá»‡c sau nÃ y.'}, {c:'C_I_3', l:'TÃ´i mong muá»‘n xÃ¢y dá»±ng nhá»¯ng má»‘i quan há»‡ cÃ³ Ã­ch cho Ä‘á»‹nh hÆ°á»›ng há»c táº­p vÃ  nghá» nghiá»‡p cá»§a mÃ¬nh.'}] },
-        { name: 'II. GiÃ¡ trá»‹ vÃ  Ã½ nghÄ©a cá»§a hoáº¡t Ä‘á»™ng', items: [{c:'C_II_1', l:'TÃ´i mong muá»‘n nháº­n Ä‘Æ°á»£c nhá»¯ng quyá»n lá»£i thiáº¿t thá»±c khi tham gia hoáº¡t Ä‘á»™ng hoáº·c sá»± kiá»‡n.'}, {c:'C_II_2', l:'TÃ´i mong muá»‘n tham gia nhá»¯ng hoáº¡t Ä‘á»™ng cÃ³ Ã½ nghÄ©a.'}] },
-        { name: 'III. áº¢nh hÆ°á»Ÿng tá»« báº¡n bÃ¨ vÃ  nhá»¯ng ngÆ°á»i xung quanh', items: [{c:'C_III_1', l:'TÃ´i cÃ³ xu hÆ°á»›ng tham gia má»™t hoáº¡t Ä‘á»™ng khi báº¡n bÃ¨ cá»§a tÃ´i cÅ©ng tham gia hoáº¡t Ä‘á»™ng Ä‘Ã³.'}, {c:'C_III_2', l:'TÃ´i muá»‘n tham gia má»™t hoáº¡t Ä‘á»™ng Ä‘á»ƒ cÃ³ thá»ƒ cÃ¹ng báº¡n bÃ¨ tráº£i nghiá»‡m hoáº¡t Ä‘á»™ng Ä‘Ã³.'}] },
-        { name: 'IV. áº¢nh hÆ°á»Ÿng cá»§a tráº£i nghiá»‡m tham gia trÆ°á»›c Ä‘Ã¢y', items: [{c:'C_IV_1', l:'Nhá»¯ng tráº£i nghiá»‡m tÃ­ch cá»±c tá»« cÃ¡c hoáº¡t Ä‘á»™ng trÆ°á»›c Ä‘Ã¢y khuyáº¿n khÃ­ch tÃ´i tiáº¿p tá»¥c tham gia.'}] }
+        { name: 'I. Lợi ích cá nhân và phát triển nghề nghiệp', items: [{c:'C_I_1', l:'Tôi mong muốn có cơ hội học hỏi thêm kiến thức và kinh nghiệm từ những người có kinh nghiệm trong lĩnh vực liên quan.'}, {c:'C_I_2', l:'Tôi mong muốn phát triển những kỹ năng hữu ích cho học tập và công việc sau này.'}, {c:'C_I_3', l:'Tôi mong muốn xây dựng những mối quan hệ có ích cho định hướng học tập và nghề nghiệp của mình.'}] },
+        { name: 'II. Giá trị và ý nghĩa của hoạt động', items: [{c:'C_II_1', l:'Tôi mong muốn nhận được những quyền lợi thiết thực khi tham gia hoạt động hoặc sự kiện.'}, {c:'C_II_2', l:'Tôi mong muốn tham gia những hoạt động có ý nghĩa.'}] },
+        { name: 'III. Ảnh hưởng từ bạn bè và những người xung quanh', items: [{c:'C_III_1', l:'Tôi có xu hướng tham gia một hoạt động khi bạn bè của tôi cũng tham gia hoạt động đó.'}, {c:'C_III_2', l:'Tôi muốn tham gia một hoạt động để có thể cùng bạn bè trải nghiệm hoạt động đó.'}] },
+        { name: 'IV. Ảnh hưởng của trải nghiệm tham gia trước đây', items: [{c:'C_IV_1', l:'Những trải nghiệm tích cực từ các hoạt động trước đây khuyến khích tôi tiếp tục tham gia.'}] }
       ]
     },
     {
-      title: 'PHáº¦N D. Ká»² Vá»ŒNG VÃ€ Ã Äá»ŠNH THAM GIA',
+      title: 'PHẦN D. KỲ VỌNG VÀ Ý ĐỊNH THAM GIA',
       factors: [
-        { name: 'I. Ná»™i dung vÃ  chÆ°Æ¡ng trÃ¬nh', items: [{c:'D_I_1', l:'TÃ´i mong muá»‘n ná»™i dung hoáº¡t Ä‘á»™ng phÃ¹ há»£p vá»›i nhu cáº§u vÃ  sá»Ÿ thÃ­ch cá»§a sinh viÃªn.'}, {c:'D_I_2', l:'TÃ´i mong muá»‘n cÃ¡c hoáº¡t Ä‘á»™ng cÃ³ ná»™i dung Ä‘a dáº¡ng vÃ  phong phÃº.'}, {c:'D_I_3', l:'TÃ´i mong muá»‘n ná»™i dung hoáº¡t Ä‘á»™ng mang tÃ­nh thá»±c táº¿ vÃ  há»¯u Ã­ch.'}] },
-        { name: 'II. CÃ¡ch thá»©c tá»• chá»©c', items: [{c:'D_II_1', l:'TÃ´i mong muá»‘n thÃ´ng tin vá» hoáº¡t Ä‘á»™ng Ä‘Æ°á»£c cung cáº¥p rÃµ rÃ ng trÆ°á»›c khi diá»…n ra.'}, {c:'D_II_2', l:'TÃ´i mong muá»‘n quy trÃ¬nh Ä‘Äƒng kÃ½ tham gia Ä‘Æ¡n giáº£n vÃ  thuáº­n tiá»‡n.'}] },
-        { name: 'III. Ã Ä‘á»‹nh tham gia', items: [{c:'D_III_1', l:'TÃ´i sáºµn sÃ ng tham gia cÃ¡c hoáº¡t Ä‘á»™ng má»›i do ÄoÃ n - Há»™i tá»• chá»©c náº¿u ná»™i dung phÃ¹ há»£p vá»›i nhu cáº§u cá»§a tÃ´i.'}, {c:'D_III_2', l:'TÃ´i sáº½ Æ°u tiÃªn tham gia nhá»¯ng hoáº¡t Ä‘á»™ng/sá»± kiá»‡n phÃ¹ há»£p vá»›i má»‘i quan tÃ¢m cá»§a mÃ¬nh.'}] }
+        { name: 'I. Nội dung và chương trình', items: [{c:'D_I_1', l:'Tôi mong muốn nội dung hoạt động phù hợp với nhu cầu và sở thích của sinh viên.'}, {c:'D_I_2', l:'Tôi mong muốn các hoạt động có nội dung đa dạng và phong phú.'}, {c:'D_I_3', l:'Tôi mong muốn nội dung hoạt động mang tính thực tế và hữu ích.'}] },
+        { name: 'II. Cách thức tổ chức', items: [{c:'D_II_1', l:'Tôi mong muốn thông tin về hoạt động được cung cấp rõ ràng trước khi diễn ra.'}, {c:'D_II_2', l:'Tôi mong muốn quy trình đăng ký tham gia đơn giản và thuận tiện.'}] },
+        { name: 'III. Ý định tham gia', items: [{c:'D_III_1', l:'Tôi sẵn sàng tham gia các hoạt động mới do Đoàn - Hội tổ chức nếu nội dung phù hợp với nhu cầu của tôi.'}, {c:'D_III_2', l:'Tôi sẽ ưu tiên tham gia những hoạt động/sự kiện phù hợp với mối quan tâm của mình.'}] }
       ]
     }
   ];
@@ -1909,62 +1600,62 @@ function renderCELGForm() {
     }
   }
 
-  // --- PHáº¦N E ---
-  const raoCan = ['Thá»i gian hoáº·c thá»i lÆ°á»£ng hoáº¡t Ä‘á»™ng chÆ°a phÃ¹ há»£p vá»›i lá»‹ch há»c/cÃ´ng viá»‡c cÃ¡ nhÃ¢n','ChÆ°a nháº­n Ä‘Æ°á»£c thÃ´ng tin hoáº·c thÃ´ng tin vá» hoáº¡t Ä‘á»™ng chÆ°a Ä‘Æ°á»£c truyá»n táº£i ká»‹p thá»i','Ná»™i dung hoáº¡t Ä‘á»™ng chÆ°a phÃ¹ há»£p vá»›i nhu cáº§u hoáº·c sá»Ÿ thÃ­ch','HÃ¬nh thá»©c tá»• chá»©c chÆ°a háº¥p dáº«n','Äá»‹a Ä‘iá»ƒm tá»• chá»©c chÆ°a thuáº­n tiá»‡n','Quy trÃ¬nh Ä‘Äƒng kÃ½ tham gia chÆ°a thuáº­n tiá»‡n','KhÃ´ng cÃ³ báº¡n bÃ¨/ngÆ°á»i quen cÃ¹ng tham gia','Ngáº¡i giao tiáº¿p hoáº·c khÃ³ hÃ²a nháº­p vá»›i nhá»¯ng ngÆ°á»i tham gia khÃ¡c','KhÃ´ng tháº¥y lá»£i Ã­ch hoáº·c giÃ¡ trá»‹ rÃµ rÃ ng khi tham gia','ÄÃ£ tá»«ng cÃ³ tráº£i nghiá»‡m chÆ°a tá»‘t vá»›i hoáº¡t Ä‘á»™ng trÆ°á»›c Ä‘Ã¢y'];
+  // --- PHẦN E ---
+  const raoCan = ['Thời gian hoặc thời lượng hoạt động chưa phù hợp với lịch học/công việc cá nhân','Chưa nhận được thông tin hoặc thông tin về hoạt động chưa được truyền tải kịp thời','Nội dung hoạt động chưa phù hợp với nhu cầu hoặc sở thích','Hình thức tổ chức chưa hấp dẫn','Địa điểm tổ chức chưa thuận tiện','Quy trình đăng ký tham gia chưa thuận tiện','Không có bạn bè/người quen cùng tham gia','Ngại giao tiếp hoặc khó hòa nhập với những người tham gia khác','Không thấy lợi ích hoặc giá trị rõ ràng khi tham gia','Đã từng có trải nghiệm chưa tốt với hoạt động trước đây'];
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N E. RÃ€O Cáº¢N THAM GIA</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN E. RÀO CẢN THAM GIA</h3>
     
     <div class="text-section">
-      <label>1. Khi báº¡n quyáº¿t Ä‘á»‹nh khÃ´ng tham gia hoáº·c Ã­t tham gia má»™t hoáº¡t Ä‘á»™ng/sá»± kiá»‡n UEH, nhá»¯ng lÃ½ do nÃ o thÆ°á»ng áº£nh hÆ°á»Ÿng Ä‘áº¿n báº¡n? (Chá»n tá»‘i Ä‘a 3) <span class="req">*</span></label>
+      <label>1. Khi bạn quyết định không tham gia hoặc ít tham gia một hoạt động/sự kiện UEH, những lý do nào thường ảnh hưởng đến bạn? (Chọn tối đa 3) <span class="req">*</span></label>
       <div class="checkbox-group" id="group_E1" style="display:flex; flex-direction:column; gap:8px;">
         ${raoCan.map(opt => `<label><input type="checkbox" name="Q_E1" value="${opt}" onchange="updateE2Options()"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_E1" value="KhÃ¡c" id="chk_E1_other" onchange="updateE2Options()"> KhÃ¡c: <input type="text" id="txt_E1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_E1" value="Khác" id="chk_E1_other" onchange="updateE2Options()"> Khác: <input type="text" id="txt_E1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
       </div>
     </div>
 
     <div class="text-section">
-      <label>2. Trong nhá»¯ng lÃ½ do báº¡n vá»«a chá»n, lÃ½ do nÃ o áº£nh hÆ°á»Ÿng lá»›n nháº¥t? (Chá»‰ chá»n 1) <span class="req">*</span><br><small style="font-weight:normal; color:#666;">(Chá»‰ hiá»ƒn thá»‹ cÃ¡c Ä‘Ã¡p Ã¡n báº¡n Ä‘Ã£ chá»n á»Ÿ cÃ¢u 1)</small></label>
+      <label>2. Trong những lý do bạn vừa chọn, lý do nào ảnh hưởng lớn nhất? (Chỉ chọn 1) <span class="req">*</span><br><small style="font-weight:normal; color:#666;">(Chỉ hiển thị các đáp án bạn đã chọn ở câu 1)</small></label>
       <div class="radio-group" id="group_E2" style="display:flex; flex-direction:column; gap:8px;">
-        <em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>
+        <em style="color:#888;">Vui lòng chọn ở câu 1 trước</em>
       </div>
     </div>
   `;
 
-  // --- PHáº¦N F & G ---
+  // --- PHẦN F & G ---
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N F. ÄIá»€U KIá»†N THUáº¬N TIá»†N Äá»‚ THAM GIA</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN F. ĐIỀU KIỆN THUẬN TIỆN ĐỂ THAM GIA</h3>
     <div class="text-section">
-      <label>1. Báº¡n thÃ­ch hÃ¬nh thá»©c tá»• chá»©c nÃ o hÆ¡n? <span class="req">*</span></label>
+      <label>1. Bạn thích hình thức tổ chức nào hơn? <span class="req">*</span></label>
       <div style="display:flex; gap:20px;">
-        <label><input type="radio" name="Q_F1" value="Trá»±c tiáº¿p"> Trá»±c tiáº¿p</label>
-        <label><input type="radio" name="Q_F1" value="Trá»±c tuyáº¿n"> Trá»±c tuyáº¿n</label>
-        <label><input type="radio" name="Q_F1" value="Káº¿t há»£p cáº£ hai"> Káº¿t há»£p cáº£ hai</label>
+        <label><input type="radio" name="Q_F1" value="Trực tiếp"> Trực tiếp</label>
+        <label><input type="radio" name="Q_F1" value="Trực tuyến"> Trực tuyến</label>
+        <label><input type="radio" name="Q_F1" value="Kết hợp cả hai"> Kết hợp cả hai</label>
       </div>
     </div>
     <div class="text-section">
-      <label>2. Khung thá»i gian nÃ o thuáº­n tiá»‡n Ä‘á»ƒ báº¡n tham gia hoáº¡t Ä‘á»™ng? (CÃ³ thá»ƒ chá»n nhiá»u) <span class="req">*</span></label>
+      <label>2. Khung thời gian nào thuận tiện để bạn tham gia hoạt động? (Có thể chọn nhiều) <span class="req">*</span></label>
       <div style="display:flex; flex-direction:column; gap:8px;">
-        ${['Buá»•i sÃ¡ng trong tuáº§n','Buá»•i chiá»u trong tuáº§n','Buá»•i tá»‘i trong tuáº§n','Cuá»‘i tuáº§n'].map(opt => `<label><input type="checkbox" name="Q_F2" value="${opt}"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_F2" id="chk_F2_other" value="KhÃ¡c"> KhÃ¡c: <input type="text" id="txt_F2_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        ${['Buổi sáng trong tuần','Buổi chiều trong tuần','Buổi tối trong tuần','Cuối tuần'].map(opt => `<label><input type="checkbox" name="Q_F2" value="${opt}"> ${opt}</label>`).join('')}
+        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_F2" id="chk_F2_other" value="Khác"> Khác: <input type="text" id="txt_F2_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
       </div>
     </div>
     <div class="text-section">
-      <label>3. Báº¡n thÆ°á»ng sáºµn sÃ ng dÃ nh bao nhiÃªu thá»i gian cho má»™t hoáº¡t Ä‘á»™ng? <span class="req">*</span></label>
+      <label>3. Bạn thường sẵn sàng dành bao nhiêu thời gian cho một hoạt động? <span class="req">*</span></label>
       <div style="display:flex; gap:20px;">
-        <label><input type="radio" name="Q_F3" value="DÆ°á»›i 1 giá»"> DÆ°á»›i 1 giá»</label>
-        <label><input type="radio" name="Q_F3" value="1â€“2 giá»"> 1â€“2 giá»</label>
-        <label><input type="radio" name="Q_F3" value="2â€“3 giá»"> 2â€“3 giá»</label>
-        <label><input type="radio" name="Q_F3" value="TrÃªn 3 giá»"> TrÃªn 3 giá»</label>
+        <label><input type="radio" name="Q_F3" value="Dưới 1 giờ"> Dưới 1 giờ</label>
+        <label><input type="radio" name="Q_F3" value="1–2 giờ"> 1–2 giờ</label>
+        <label><input type="radio" name="Q_F3" value="2–3 giờ"> 2–3 giờ</label>
+        <label><input type="radio" name="Q_F3" value="Trên 3 giờ"> Trên 3 giờ</label>
       </div>
     </div>
 
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHáº¦N G. CÃ‚U Há»ŽI Äá»ŠNH TÃNH</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN G. CÂU HỎI ĐỊNH TÍNH</h3>
     <div class="text-section">
-      <label>1. Theo báº¡n, ÄoÃ n - Há»™i UEH nÃªn tá»• chá»©c thÃªm nhá»¯ng hoáº¡t Ä‘á»™ng hoáº·c sá»± kiá»‡n nÃ o Ä‘á»ƒ Ä‘Ã¡p á»©ng tá»‘t hÆ¡n nhu cáº§u cá»§a sinh viÃªn? <span class="req">*</span></label>
+      <label>1. Theo bạn, Đoàn - Hội UEH nên tổ chức thêm những hoạt động hoặc sự kiện nào để đáp ứng tốt hơn nhu cầu của sinh viên? <span class="req">*</span></label>
       <textarea id="Q_G1" rows="3"></textarea>
     </div>
     <div class="text-section">
-      <label>2. Náº¿u báº¡n cÃ³ thá»ƒ thay Ä‘á»•i má»™t Ä‘iá»u trong cÃ¡c hoáº¡t Ä‘á»™ng/sá»± kiá»‡n hiá»‡n nay cá»§a UEH, báº¡n muá»‘n thay Ä‘á»•i Ä‘iá»u gÃ¬ nháº¥t? <span class="req">*</span></label>
+      <label>2. Nếu bạn có thể thay đổi một điều trong các hoạt động/sự kiện hiện nay của UEH, bạn muốn thay đổi điều gì nhất? <span class="req">*</span></label>
       <textarea id="Q_G2" rows="3"></textarea>
     </div>
   `;
@@ -1976,14 +1667,14 @@ window.updateB2Options = function() {
   const selected = Array.from(document.querySelectorAll('input[name="Q_B1"]:checked')).map(el => el.value);
   const container = document.getElementById('group_B2');
   if (selected.length === 0) {
-    container.innerHTML = '<em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>';
+    container.innerHTML = '<em style="color:#888;">Vui lòng chọn ở câu 1 trước</em>';
     return;
   }
   let txt = document.getElementById('txt_B1_other')?.value.trim();
   container.innerHTML = selected.map(val => {
     let disp = val;
-    if (val === 'KhÃ¡c' && txt) disp = 'KhÃ¡c: ' + txt;
-    return \`<label><input type="checkbox" name="Q_B2" value="\${val}" data-other="\${val==='KhÃ¡c'?txt:''}"> \${esc(disp)}</label>\`;
+    if (val === 'Khác' && txt) disp = 'Khác: ' + txt;
+    return \`<label><input type="checkbox" name="Q_B2" value="\${val}" data-other="\${val==='Khác'?txt:''}"> \${esc(disp)}</label>\`;
   }).join('');
 };
 
@@ -1991,14 +1682,14 @@ window.updateE2Options = function() {
   const selected = Array.from(document.querySelectorAll('input[name="Q_E1"]:checked')).map(el => el.value);
   const container = document.getElementById('group_E2');
   if (selected.length === 0) {
-    container.innerHTML = '<em style="color:#888;">Vui lÃ²ng chá»n á»Ÿ cÃ¢u 1 trÆ°á»›c</em>';
+    container.innerHTML = '<em style="color:#888;">Vui lòng chọn ở câu 1 trước</em>';
     return;
   }
   let txt = document.getElementById('txt_E1_other')?.value.trim();
   container.innerHTML = selected.map(val => {
     let disp = val;
-    if (val === 'KhÃ¡c' && txt) disp = 'KhÃ¡c: ' + txt;
-    return \`<label><input type="radio" name="Q_E2" value="\${val}" data-other="\${val==='KhÃ¡c'?txt:''}"> \${esc(disp)}</label>\`;
+    if (val === 'Khác' && txt) disp = 'Khác: ' + txt;
+    return \`<label><input type="radio" name="Q_E2" value="\${val}" data-other="\${val==='Khác'?txt:''}"> \${esc(disp)}</label>\`;
   }).join('');
 };
 
@@ -2011,9 +1702,9 @@ function collectCELGFormData() {
   
   const getChecked = (name, otherTxtId) => {
     return Array.from(document.querySelectorAll(\`input[name="\${name}"]:checked\`)).map(el => {
-      if (el.value === 'KhÃ¡c') {
+      if (el.value === 'Khác') {
         const txt = document.getElementById(otherTxtId)?.value.trim();
-        return txt ? 'KhÃ¡c: ' + txt : 'KhÃ¡c';
+        return txt ? 'Khác: ' + txt : 'Khác';
       }
       return el.value;
     }).join(', ');
@@ -2022,9 +1713,9 @@ function collectCELGFormData() {
   data.Q_B1 = getChecked('Q_B1', 'txt_B1_other');
   
   data.Q_B2 = Array.from(document.querySelectorAll('input[name="Q_B2"]:checked')).map(el => {
-    if (el.value === 'KhÃ¡c') {
+    if (el.value === 'Khác') {
       const txt = el.getAttribute('data-other');
-      return txt ? 'KhÃ¡c: ' + txt : 'KhÃ¡c';
+      return txt ? 'Khác: ' + txt : 'Khác';
     }
     return el.value;
   }).join(', ');
@@ -2040,7 +1731,7 @@ function collectCELGFormData() {
   
   const e2 = document.querySelector('input[name="Q_E2"]:checked');
   if (e2) {
-    data.Q_E2 = e2.value === 'KhÃ¡c' && e2.getAttribute('data-other') ? 'KhÃ¡c: ' + e2.getAttribute('data-other') : e2.value;
+    data.Q_E2 = e2.value === 'Khác' && e2.getAttribute('data-other') ? 'Khác: ' + e2.getAttribute('data-other') : e2.value;
   } else data.Q_E2 = '';
   
   data.Q_F1 = document.querySelector('input[name="Q_F1"]:checked')?.value || '';
@@ -2055,65 +1746,63 @@ function collectCELGFormData() {
 
 function validateCELGForm() {
   const reqFields = [
-    { id: 'field_lastName', name: 'Há» vÃ  tÃªn Ä‘á»‡m' },
-    { id: 'field_firstName', name: 'TÃªn' },
-    { id: 'field_studentClass', name: 'Lá»›p' },
-    { id: 'field_cohort', name: 'KhÃ³a' },
+    { id: 'field_lastName', name: 'Họ và tên đệm' },
+    { id: 'field_firstName', name: 'Tên' },
+    { id: 'field_studentClass', name: 'Lớp' },
+    { id: 'field_cohort', name: 'Khóa' },
     { id: 'field_faculty', name: 'Khoa' },
-    { id: 'field_gender', name: 'Giá»›i tÃ­nh' },
+    { id: 'field_gender', name: 'Giới tính' },
     { id: 'field_studentId', name: 'MSSV' },
-    { id: 'field_phone', name: 'Sá»‘ Ä‘iá»‡n thoáº¡i' },
+    { id: 'field_phone', name: 'Số điện thoại' },
     { id: 'field_emailUeh', name: 'Email UEH' },
-    { id: 'field_emailOther', name: 'Email khÃ¡c' },
+    { id: 'field_emailOther', name: 'Email khác' },
     { id: 'field_facebook', name: 'Link Facebook' }
   ];
   for (const field of reqFields) {
     const el = document.getElementById(field.id);
-    if (el && !el.value.trim()) { alert('Vui lÃ²ng nháº­p/chá»n: ' + field.name); el.scrollIntoView({behavior:'smooth',block:'center'}); return false; }
+    if (el && !el.value.trim()) { alert('Vui lòng nhập/chọn: ' + field.name); el.scrollIntoView({behavior:'smooth',block:'center'}); return false; }
   }
   
-  if (!document.querySelector('input[name="Q_A8"]:checked')) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i á»Ÿ Pháº§n A.'); return false; }
+  if (!document.querySelector('input[name="Q_A8"]:checked')) { alert('Vui lòng trả lời câu hỏi ở Phần A.'); return false; }
   
   const b1 = document.querySelectorAll('input[name="Q_B1"]:checked');
-  if (b1.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 1.'); return false; }
+  if (b1.length === 0) { alert('Vui lòng chọn ít nhất 1 phương án ở Phần B, Câu 1.'); return false; }
   if (document.getElementById('chk_B1_other').checked && !document.getElementById('txt_B1_other').value.trim()) {
-    alert('Vui lÃ²ng nháº­p ná»™i dung cho lá»±a chá»n KhÃ¡c á»Ÿ Pháº§n B, CÃ¢u 1.'); return false;
+    alert('Vui lòng nhập nội dung cho lựa chọn Khác ở Phần B, Câu 1.'); return false;
   }
   
   const b2 = document.querySelectorAll('input[name="Q_B2"]:checked');
-  if (b2.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 2.'); return false; }
-  if (b2.length > 3) { alert('Chá»‰ Ä‘Æ°á»£c chá»n tá»‘i Ä‘a 3 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 2.'); return false; }
+  if (b2.length === 0) { alert('Vui lòng chọn ít nhất 1 phương án ở Phần B, Câu 2.'); return false; }
+  if (b2.length > 3) { alert('Chỉ được chọn tối đa 3 phương án ở Phần B, Câu 2.'); return false; }
   
   const b3 = document.querySelectorAll('input[name="Q_B3"]:checked');
-  if (b3.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n B, CÃ¢u 3.'); return false; }
+  if (b3.length === 0) { alert('Vui lòng chọn ít nhất 1 phương án ở Phần B, Câu 3.'); return false; }
   
   const likerts = ['C_I_1','C_I_2','C_I_3','C_II_1','C_II_2','C_III_1','C_III_2','C_IV_1',
    'D_I_1','D_I_2','D_I_3','D_II_1','D_II_2','D_III_1','D_III_2'];
   for (let c of likerts) {
-    if (!document.querySelector(\`input[name="\${c}"]:checked\`)) { alert('Vui lÃ²ng hoÃ n thÃ nh táº¥t cáº£ cÃ¡c cÃ¢u há»i Ä‘Ã¡nh giÃ¡ theo thang Ä‘iá»ƒm.'); return false; }
+    if (!document.querySelector(\`input[name="\${c}"]:checked\`)) { alert('Vui lòng hoàn thành tất cả các câu hỏi đánh giá theo thang điểm.'); return false; }
   }
   
   const e1 = document.querySelectorAll('input[name="Q_E1"]:checked');
-  if (e1.length === 0) { alert('Vui lÃ²ng chá»n Ã­t nháº¥t 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n E, CÃ¢u 1.'); return false; }
-  if (e1.length > 3) { alert('Chá»‰ Ä‘Æ°á»£c chá»n tá»‘i Ä‘a 3 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n E, CÃ¢u 1.'); return false; }
+  if (e1.length === 0) { alert('Vui lòng chọn ít nhất 1 phương án ở Phần E, Câu 1.'); return false; }
+  if (e1.length > 3) { alert('Chỉ được chọn tối đa 3 phương án ở Phần E, Câu 1.'); return false; }
   if (document.getElementById('chk_E1_other').checked && !document.getElementById('txt_E1_other').value.trim()) {
-    alert('Vui lÃ²ng nháº­p ná»™i dung cho lá»±a chá»n KhÃ¡c á»Ÿ Pháº§n E, CÃ¢u 1.'); return false;
+    alert('Vui lòng nhập nội dung cho lựa chọn Khác ở Phần E, Câu 1.'); return false;
   }
   
-  if (!document.querySelector('input[name="Q_E2"]:checked')) { alert('Vui lÃ²ng chá»n 1 phÆ°Æ¡ng Ã¡n á»Ÿ Pháº§n E, CÃ¢u 2.'); return false; }
+  if (!document.querySelector('input[name="Q_E2"]:checked')) { alert('Vui lòng chọn 1 phương án ở Phần E, Câu 2.'); return false; }
   
-  if (!document.querySelector('input[name="Q_F1"]:checked')) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i Pháº§n F, CÃ¢u 1.'); return false; }
-  if (document.querySelectorAll('input[name="Q_F2"]:checked').length === 0) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i Pháº§n F, CÃ¢u 2.'); return false; }
-  if (!document.querySelector('input[name="Q_F3"]:checked')) { alert('Vui lÃ²ng tráº£ lá»i cÃ¢u há»i Pháº§n F, CÃ¢u 3.'); return false; }
+  if (!document.querySelector('input[name="Q_F1"]:checked')) { alert('Vui lòng trả lời câu hỏi Phần F, Câu 1.'); return false; }
+  if (document.querySelectorAll('input[name="Q_F2"]:checked').length === 0) { alert('Vui lòng trả lời câu hỏi Phần F, Câu 2.'); return false; }
+  if (!document.querySelector('input[name="Q_F3"]:checked')) { alert('Vui lòng trả lời câu hỏi Phần F, Câu 3.'); return false; }
   
   if (!document.getElementById('Q_G1').value.trim() || !document.getElementById('Q_G2').value.trim()) {
-    alert('Vui lÃ²ng tráº£ lá»i táº¥t cáº£ cÃ¢u há»i tá»± luáº­n á»Ÿ Pháº§n G.'); return false;
+    alert('Vui lòng trả lời tất cả câu hỏi tự luận ở Phần G.'); return false;
   }
   
   return true;
 }
-
 </script>
 </body>
 </html>
-
