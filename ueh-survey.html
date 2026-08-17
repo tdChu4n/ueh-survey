@@ -1505,7 +1505,7 @@ function renderCELGForm() {
 
   // --- PHẦN A. THÔNG TIN CHUNG ---
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN A. THÔNG TIN CHUNG</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN A. THÔNG TIN CHUNG</h3>
     <div class="info-grid">
       <div class="info-field"><label>Họ và tên đệm <span class="req">*</span></label><input type="text" id="field_lastName" name="lastName"></div>
       <div class="info-field"><label>Tên <span class="req">*</span></label><input type="text" id="field_firstName" name="firstName"></div>
@@ -1535,7 +1535,7 @@ function renderCELGForm() {
 
   // --- PHẦN B ---
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN B: SINH VIÊN QUAN TÂM ĐẾN HOẠT ĐỘNG GÌ?</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN B: SINH VIÊN QUAN TÂM ĐẾN HOẠT ĐỘNG GÌ?</h3>
     
     <div class="text-section">
       <label>1. Bạn quan tâm đến những mảng hoạt động nào do Đoàn - Hội tổ chức? (Có thể chọn nhiều) <span class="req">*</span></label>
@@ -1585,7 +1585,7 @@ function renderCELGForm() {
   ];
 
   for (const group of likertGroups) {
-    html += `<h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">${group.title}</h3>`;
+    html += `<h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">${group.title}</h3>`;
     for (const factor of group.factors) {
       html += `<div class="factor-card">
         <div class="factor-title">${esc(factor.name)} <span class="req">*</span></div>
@@ -1603,7 +1603,7 @@ function renderCELGForm() {
   // --- PHẦN E ---
   const raoCan = ['Thời gian hoặc thời lượng hoạt động chưa phù hợp với lịch học/công việc cá nhân','Chưa nhận được thông tin hoặc thông tin về hoạt động chưa được truyền tải kịp thời','Nội dung hoạt động chưa phù hợp với nhu cầu hoặc sở thích','Hình thức tổ chức chưa hấp dẫn','Địa điểm tổ chức chưa thuận tiện','Quy trình đăng ký tham gia chưa thuận tiện','Không có bạn bè/người quen cùng tham gia','Ngại giao tiếp hoặc khó hòa nhập với những người tham gia khác','Không thấy lợi ích hoặc giá trị rõ ràng khi tham gia','Đã từng có trải nghiệm chưa tốt với hoạt động trước đây'];
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN E. RÀO CẢN THAM GIA</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN E. RÀO CẢN THAM GIA</h3>
     
     <div class="text-section">
       <label>1. Khi bạn quyết định không tham gia hoặc ít tham gia một hoạt động/sự kiện UEH, những lý do nào thường ảnh hưởng đến bạn? (Chọn tối đa 3) <span class="req">*</span></label>
@@ -1623,7 +1623,7 @@ function renderCELGForm() {
 
   // --- PHẦN F & G ---
   html += `
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN F. ĐIỀU KIỆN THUẬN TIỆN ĐỂ THAM GIA</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN F. ĐIỀU KIỆN THUẬN TIỆN ĐỂ THAM GIA</h3>
     <div class="text-section">
       <label>1. Bạn thích hình thức tổ chức nào hơn? <span class="req">*</span></label>
       <div style="display:flex; gap:20px;">
@@ -1649,7 +1649,7 @@ function renderCELGForm() {
       </div>
     </div>
 
-    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px;">PHẦN G. CÂU HỎI ĐỊNH TÍNH</h3>
+    <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN G. CÂU HỎI ĐỊNH TÍNH</h3>
     <div class="text-section">
       <label>1. Theo bạn, Đoàn - Hội UEH nên tổ chức thêm những hoạt động hoặc sự kiện nào để đáp ứng tốt hơn nhu cầu của sinh viên? <span class="req">*</span></label>
       <textarea id="Q_G1" rows="3"></textarea>
