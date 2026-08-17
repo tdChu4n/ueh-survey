@@ -135,7 +135,8 @@ function handleSubmitSurvey(p) {
       respSheet = ss.insertSheet(SHEET_RESPONSES);
       respSheet.appendRow([
         'Dấu thời gian','Email','Năm','Chương trình',
-        'Giới tính','Khóa','Khoa',
+        'Họ và tên đệm','Tên','MSSV','Lớp','Khóa','Khoa',
+        'Giới tính','Số điện thoại','Email UEH','Email khác','Link Facebook',
         'DVTT1','DVTT2','DVTT3','DVTT4',
         'CLCT1','CLCT2','CLCT3','CLCT4','CLCT5',
         'CSVC1','CSVC2','CSVC3','GTCT1','GTCT2',
@@ -146,7 +147,8 @@ function handleSubmitSurvey(p) {
     }
     respSheet.appendRow([
       new Date(), p.email||'', p.year||'', p.program||'',
-      p.gender||'', p.cohort||'', p.faculty||'',
+      p.lastName||'', p.firstName||'', p.studentId||'', p.studentClass||'', p.cohort||'', p.faculty||'',
+      p.gender||'', p.phone||'', p.emailUeh||'', p.emailOther||'', p.facebook||'',
       num(p.DVTT1),num(p.DVTT2),num(p.DVTT3),num(p.DVTT4),
       num(p.CLCT1),num(p.CLCT2),num(p.CLCT3),num(p.CLCT4),num(p.CLCT5),
       num(p.CSVC1),num(p.CSVC2),num(p.CSVC3),
@@ -177,16 +179,19 @@ function handleGetResponses() {
     responses.push({
       id: 'R'+String(i).padStart(3,'0'), ts: fmtDate(r[0]),
       email: String(r[1]||''), year: String(r[2]||''),
-      program: String(r[3]||''), gender: String(r[4]||''),
-      cohort: String(r[5]||''), faculty: String(r[6]||''),
-      DVTT1:num(r[7]),DVTT2:num(r[8]),DVTT3:num(r[9]),DVTT4:num(r[10]),
-      CLCT1:num(r[11]),CLCT2:num(r[12]),CLCT3:num(r[13]),CLCT4:num(r[14]),CLCT5:num(r[15]),
-      CSVC1:num(r[16]),CSVC2:num(r[17]),CSVC3:num(r[18]),
-      GTCT1:num(r[19]),GTCT2:num(r[20]),
-      SHL1:num(r[21]),SHL2:num(r[22]),SHL3:num(r[23]),
-      LTT1:num(r[24]),LTT2:num(r[25]),LTT3:num(r[26]),LTT4:num(r[27]),
-      overall:num(r[28]), learn:String(r[29]||''), trouble:String(r[30]||''),
-      interest:String(r[31]||''), feedback:String(r[32]||''),
+      program: String(r[3]||''), 
+      lastName: String(r[4]||''), firstName: String(r[5]||''), studentId: String(r[6]||''),
+      studentClass: String(r[7]||''), cohort: String(r[8]||''), faculty: String(r[9]||''),
+      gender: String(r[10]||''), phone: String(r[11]||''), emailUeh: String(r[12]||''),
+      emailOther: String(r[13]||''), facebook: String(r[14]||''),
+      DVTT1:num(r[15]),DVTT2:num(r[16]),DVTT3:num(r[17]),DVTT4:num(r[18]),
+      CLCT1:num(r[19]),CLCT2:num(r[20]),CLCT3:num(r[21]),CLCT4:num(r[22]),CLCT5:num(r[23]),
+      CSVC1:num(r[24]),CSVC2:num(r[25]),CSVC3:num(r[26]),
+      GTCT1:num(r[27]),GTCT2:num(r[28]),
+      SHL1:num(r[29]),SHL2:num(r[30]),SHL3:num(r[31]),
+      LTT1:num(r[32]),LTT2:num(r[33]),LTT3:num(r[34]),LTT4:num(r[35]),
+      overall:num(r[36]), learn:String(r[37]||''), trouble:String(r[38]||''),
+      interest:String(r[39]||''), feedback:String(r[40]||''),
     });
   }
 

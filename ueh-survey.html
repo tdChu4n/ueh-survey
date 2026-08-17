@@ -325,17 +325,18 @@
     .text-section textarea:focus { outline: none; border-color: #005c50; }
     .text-section textarea.invalid { border-color: #e00; }
 
-    /* Info grid (gender / cohort / faculty) */
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 12px; margin-bottom: 18px; }
+    /* Info grid (gender / cohort / faculty etc) */
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
     .info-field label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; }
     .info-field label .req { color: #c00; }
-    .info-field select {
+    .info-field select, .info-field input {
       width: 100%; border: 1px solid #ccc; border-radius: 6px;
       padding: 8px 10px; font-size: 13px; font-family: inherit;
-      background: #fff; cursor: pointer; transition: border .15s;
+      background: #fff; transition: border .15s; box-sizing: border-box;
     }
-    .info-field select:focus { outline: none; border-color: #005c50; }
-    .info-field select.invalid { border-color: #e00; }
+    .info-field select { cursor: pointer; }
+    .info-field select:focus, .info-field input:focus { outline: none; border-color: #005c50; }
+    .info-field select.invalid, .info-field input.invalid { border-color: #e00; }
 
     /* Email display */
     .email-display {
@@ -1208,14 +1209,19 @@
     ];
     html += `<div class="info-grid">
       <div class="info-field">
-        <label>Giới tính</label>
-        <select id="field_gender" name="gender">
-          <option value="">-- Chọn --</option>
-          <option>Nam</option><option>Nữ</option>
-        </select>
+        <label>Họ và tên đệm <span class="req">*</span></label>
+        <input type="text" id="field_lastName" name="lastName">
       </div>
       <div class="info-field">
-        <label>Khóa</label>
+        <label>Tên <span class="req">*</span></label>
+        <input type="text" id="field_firstName" name="firstName">
+      </div>
+      <div class="info-field">
+        <label>Lớp <span class="req">*</span></label>
+        <input type="text" id="field_studentClass" name="studentClass">
+      </div>
+      <div class="info-field">
+        <label>Khóa <span class="req">*</span></label>
         <select id="field_cohort" name="cohort">
           <option value="">-- Chọn --</option>
           <option>49</option><option>50</option><option>51</option>
@@ -1228,6 +1234,33 @@
           <option value="">-- Chọn khoa --</option>
           ${FACULTIES.map(f => `<option>${esc(f)}</option>`).join('')}
         </select>
+      </div>
+      <div class="info-field">
+        <label>Giới tính <span class="req">*</span></label>
+        <select id="field_gender" name="gender">
+          <option value="">-- Chọn --</option>
+          <option>Nam</option><option>Nữ</option>
+        </select>
+      </div>
+      <div class="info-field">
+        <label>MSSV <span class="req">*</span></label>
+        <input type="text" id="field_studentId" name="studentId">
+      </div>
+      <div class="info-field">
+        <label>Số điện thoại <span class="req">*</span></label>
+        <input type="tel" id="field_phone" name="phone">
+      </div>
+      <div class="info-field">
+        <label>Email UEH <span class="req">*</span></label>
+        <input type="email" id="field_emailUeh" name="emailUeh" placeholder="...@st.ueh.edu.vn">
+      </div>
+      <div class="info-field">
+        <label>Email khác <span class="req">*</span></label>
+        <input type="email" id="field_emailOther" name="emailOther">
+      </div>
+      <div class="info-field" style="grid-column: 1 / -1;">
+        <label>Link Facebook <span class="req">*</span></label>
+        <input type="url" id="field_facebook" name="facebook" placeholder="https://www.facebook.com/...">
       </div>
     </div>`;
 
@@ -1285,14 +1318,32 @@
 
   // ── Validate ──────────────────────────────────────
   function validateForm() {
-    const faculty = document.getElementById('field_faculty');
-    if (!faculty.value) {
-      faculty.classList.add('invalid');
-      faculty.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      alert('Vui lòng chọn Khoa.');
-      return false;
+    const requiredFields = [
+      { id: 'field_lastName', name: 'Họ và tên đệm' },
+      { id: 'field_firstName', name: 'Tên' },
+      { id: 'field_studentClass', name: 'Lớp' },
+      { id: 'field_cohort', name: 'Khóa' },
+      { id: 'field_faculty', name: 'Khoa' },
+      { id: 'field_gender', name: 'Giới tính' },
+      { id: 'field_studentId', name: 'MSSV' },
+      { id: 'field_phone', name: 'Số điện thoại' },
+      { id: 'field_emailUeh', name: 'Email UEH' },
+      { id: 'field_emailOther', name: 'Email khác' },
+      { id: 'field_facebook', name: 'Link Facebook' }
+    ];
+
+    for (const field of requiredFields) {
+      const el = document.getElementById(field.id);
+      if (el) {
+        if (!el.value.trim()) {
+          el.classList.add('invalid');
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          alert(`Vui lòng nhập/chọn: ${field.name}.`);
+          return false;
+        }
+        el.classList.remove('invalid');
+      }
     }
-    faculty.classList.remove('invalid');
 
     const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
     for (const item of allItems) {
@@ -1320,9 +1371,10 @@
   // ── Collect data ──────────────────────────────────
   function collectFormData() {
     const data = {};
-    data.gender  = document.getElementById('field_gender')?.value  || '';
-    data.cohort  = document.getElementById('field_cohort')?.value  || '';
-    data.faculty = document.getElementById('field_faculty')?.value || '';
+    const fields = ['lastName', 'firstName', 'studentClass', 'cohort', 'faculty', 'gender', 'studentId', 'phone', 'emailUeh', 'emailOther', 'facebook'];
+    for (const f of fields) {
+      data[f] = document.getElementById('field_' + f)?.value.trim() || '';
+    }
     const allItems = FORM_SCHEMA.factors.flatMap(f => f.items).concat([FORM_SCHEMA.overall]);
     for (const item of allItems) {
       const sel = document.querySelector(`input[name="${item.code}"]:checked`);
