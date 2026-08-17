@@ -68,7 +68,7 @@ function handleGetCourses(email) {
     const celgRows = celgSheet.getDataRange().getValues();
     for (let i = 1; i < celgRows.length; i++) {
       if (String(celgRows[i][1]).trim().toLowerCase() === norm) {
-        completedCELG.add('CELG-Innovation Awards 2026');
+        completedCELG.add('Khảo sát nhu cầu, sở thích và các yếu tố ảnh hưởng đến ý định tham gia hoạt động/sự kiện của sinh viên UEH.');
       }
     }
   }
@@ -114,9 +114,9 @@ function handleGetCourses(email) {
   courses.push({
     rowIndex:       -1,
     year:           String(new Date().getFullYear()),
-    courseName:     'CELG-Innovation Awards 2026',
+    courseName:     'Khảo sát nhu cầu, sở thích và các yếu tố ảnh hưởng đến ý định tham gia hoạt động/sự kiện của sinh viên UEH.',
     locked:         false,
-    status:         completedCELG.has('CELG-Innovation Awards 2026') ? 'Đã thực hiện' : 'Chưa thực hiện',
+    status:         completedCELG.has('Khảo sát nhu cầu, sở thích và các yếu tố ảnh hưởng đến ý định tham gia hoạt động/sự kiện của sinh viên UEH.') ? 'Đã thực hiện' : 'Chưa thực hiện',
     loaiHoatDong:   'Khảo sát đặc biệt',
     quyMo:          '', donViToChuc: '', donViPhoiHop: '',
     ngayBatDau:     '', ngayKetThuc: '', batDauKhaoSat: '',
@@ -132,7 +132,7 @@ function handleSubmitSurvey(p) {
   try {
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-    if (p.program === 'CELG-Innovation Awards 2026') {
+    if (p.program === 'Khảo sát nhu cầu, sở thích và các yếu tố ảnh hưởng đến ý định tham gia hoạt động/sự kiện của sinh viên UEH.') {
       let celgSheet = ss.getSheetByName('CELG_Responses');
       if (!celgSheet) {
         celgSheet = ss.insertSheet('CELG_Responses');
