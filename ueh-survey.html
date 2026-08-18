@@ -374,6 +374,28 @@
     /* === Responsive === */
 
     /* Tablet (≤ 900px) */
+    /* ── Nhóm lựa chọn checkbox/radio (form khảo sát nhu cầu) ── */
+    .opt-col { display: flex; flex-direction: column; gap: 8px; }
+    .opt-row { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+    .opt-col > label, .opt-row > label {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; line-height: 1.5; cursor: pointer;
+      padding: 3px 0; min-height: 28px;
+    }
+    .opt-col > label.opt-other, .opt-row > label.opt-other {
+      align-items: center; flex-wrap: wrap;
+    }
+    .opt-col input[type="checkbox"], .opt-col input[type="radio"],
+    .opt-row input[type="checkbox"], .opt-row input[type="radio"] {
+      width: 18px; height: 18px; margin: 0; flex-shrink: 0;
+      accent-color: #005c50;
+    }
+    .other-input {
+      flex: 1 1 120px; min-width: 0; max-width: 100%;
+      border: 1px solid #ccc; border-radius: 4px; padding: 6px 8px;
+      font-size: 13px; font-family: inherit;
+    }
+
     @media (max-width: 900px) {
       .top-nav { padding: 0 14px; gap: 0; }
       .ttk-logo-wrap { margin-right: 12px; gap: 8px; }
@@ -421,6 +443,17 @@
       .modal-body { padding: 14px; }
       .modal-footer { padding: 10px 14px; }
       .btn-submit, .btn-cancel { padding: 8px 16px; font-size: 13px; }
+
+      /* Bảng Likert: thu gọn để vừa màn hình, vùng chạm to hơn */
+      .likert-table { font-size: 12px; }
+      .likert-table thead th { font-size: 10px; padding: 6px 2px; }
+      .likert-table thead th.col-lbl { width: 34%; padding-left: 10px; }
+      .likert-table tbody td { padding: 12px 2px; }
+      .likert-table tbody td.col-lbl { padding-left: 10px; padding-right: 8px; }
+      .likert-table input[type="radio"] { width: 22px; height: 22px; }
+
+      /* Nhóm lựa chọn */
+      .opt-row { gap: 8px 14px; }
     }
 
     /* Small phone (≤ 400px) */
@@ -1526,7 +1559,7 @@ function renderCELGForm() {
     </div>
     <div class="text-section">
       <label>Trong 12 tháng qua, bạn tham gia khoảng bao nhiêu hoạt động/sự kiện tại UEH? <span class="req">*</span></label>
-      <div class="radio-group" style="display:flex; flex-direction:column; gap:8px;">
+      <div class="radio-group opt-col">
         <label><input type="radio" name="Q_A8" value="Chưa tham gia"> Chưa tham gia</label>
         <label><input type="radio" name="Q_A8" value="1–2 hoạt động"> 1–2 hoạt động</label>
         <label><input type="radio" name="Q_A8" value="3–5 hoạt động"> 3–5 hoạt động</label>
@@ -1544,24 +1577,24 @@ function renderCELGForm() {
     
     <div class="text-section">
       <label>1. Bạn quan tâm đến những mảng hoạt động nào do Đoàn - Hội tổ chức? (Có thể chọn nhiều) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_B1" style="display:flex; flex-direction:column; gap:8px;">
+      <div id="group_B1" class="checkbox-group opt-col">
         ${mangHoatDong.map(opt => `<label><input type="checkbox" name="Q_B1" value="${opt}" onchange="updateB2Options()"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B1" value="Khác" id="chk_B1_other" onchange="updateB2Options()"> Khác: <input type="text" id="txt_B1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        <label class="opt-other"><input type="checkbox" name="Q_B1" value="Khác" id="chk_B1_other" onchange="updateB2Options()"> Khác: <input type="text" id="txt_B1_other" class="other-input"></label>
       </div>
     </div>
 
     <div class="text-section">
       <label>2. Nếu chỉ được ưu tiên một mảng, bạn mong muốn Đoàn–Hội tập trung tổ chức mảng nào nhất? (Chọn tối đa 3) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_B2" style="display:flex; flex-direction:column; gap:8px;">
+      <div id="group_B2" class="checkbox-group opt-col">
         <em style="color:#888;">Vui lòng chọn ở câu 1 trước</em>
       </div>
     </div>
 
     <div class="text-section">
       <label>3. Bạn thường hứng thú hình thức hoạt động nào? (Có thể chọn nhiều) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_B3" style="display:flex; flex-direction:column; gap:8px;">
+      <div id="group_B3" class="checkbox-group opt-col">
         ${['Workshop','Talkshow','Cuộc thi','Hội thảo','Ngày hội/Festival','Hoạt động trải nghiệm','Giải đấu','Giao lưu/Networking','Tham quan/Trải nghiệm thực tế','Hoạt động trực tuyến'].map(opt => `<label><input type="checkbox" name="Q_B3" value="${opt}"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_B3" value="Khác" id="chk_B3_other"> Khác: <input type="text" id="txt_B3_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        <label class="opt-other"><input type="checkbox" name="Q_B3" value="Khác" id="chk_B3_other"> Khác: <input type="text" id="txt_B3_other" class="other-input"></label>
       </div>
     </div>
   `;
@@ -1617,15 +1650,15 @@ function renderCELGForm() {
     
     <div class="text-section">
       <label>1. Khi bạn quyết định không tham gia hoặc ít tham gia một hoạt động/sự kiện UEH, những lý do nào thường ảnh hưởng đến bạn? (Chọn tối đa 3) <span class="req">*</span></label>
-      <div class="checkbox-group" id="group_E1" style="display:flex; flex-direction:column; gap:8px;">
+      <div id="group_E1" class="checkbox-group opt-col">
         ${raoCan.map(opt => `<label><input type="checkbox" name="Q_E1" value="${opt}" onchange="updateE2Options()"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_E1" value="Khác" id="chk_E1_other" onchange="updateE2Options()"> Khác: <input type="text" id="txt_E1_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        <label class="opt-other"><input type="checkbox" name="Q_E1" value="Khác" id="chk_E1_other" onchange="updateE2Options()"> Khác: <input type="text" id="txt_E1_other" class="other-input"></label>
       </div>
     </div>
 
     <div class="text-section">
       <label>2. Trong những lý do bạn vừa chọn, lý do nào ảnh hưởng lớn nhất? (Chỉ chọn 1) <span class="req">*</span></label>
-      <div class="radio-group" id="group_E2" style="display:flex; flex-direction:column; gap:8px;">
+      <div id="group_E2" class="radio-group opt-col">
         <em style="color:#888;">Vui lòng chọn ở câu 1 trước</em>
       </div>
     </div>
@@ -1636,7 +1669,7 @@ function renderCELGForm() {
     <h3 style="margin-top:20px; color:#005c50; border-bottom:2px solid #005c50; padding-bottom:5px; margin-bottom:15px;">PHẦN F. ĐIỀU KIỆN THUẬN TIỆN ĐỂ THAM GIA</h3>
     <div class="text-section">
       <label>1. Bạn thích hình thức tổ chức nào hơn? <span class="req">*</span></label>
-      <div style="display:flex; gap:20px;">
+      <div class="opt-row">
         <label><input type="radio" name="Q_F1" value="Trực tiếp"> Trực tiếp</label>
         <label><input type="radio" name="Q_F1" value="Trực tuyến"> Trực tuyến</label>
         <label><input type="radio" name="Q_F1" value="Kết hợp cả hai"> Kết hợp cả hai</label>
@@ -1644,14 +1677,14 @@ function renderCELGForm() {
     </div>
     <div class="text-section">
       <label>2. Khung thời gian nào thuận tiện để bạn tham gia hoạt động? (Có thể chọn nhiều) <span class="req">*</span></label>
-      <div style="display:flex; flex-direction:column; gap:8px;">
+      <div class="opt-col">
         ${['Buổi sáng trong tuần','Buổi chiều trong tuần','Buổi tối trong tuần','Cuối tuần'].map(opt => `<label><input type="checkbox" name="Q_F2" value="${opt}"> ${opt}</label>`).join('')}
-        <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" name="Q_F2" id="chk_F2_other" value="Khác"> Khác: <input type="text" id="txt_F2_other" style="border:1px solid #ccc; border-radius:4px; padding:4px;"></label>
+        <label class="opt-other"><input type="checkbox" name="Q_F2" id="chk_F2_other" value="Khác"> Khác: <input type="text" id="txt_F2_other" class="other-input"></label>
       </div>
     </div>
     <div class="text-section">
       <label>3. Bạn thường sẵn sàng dành bao nhiêu thời gian cho một hoạt động? <span class="req">*</span></label>
-      <div style="display:flex; gap:20px;">
+      <div class="opt-row">
         <label><input type="radio" name="Q_F3" value="Dưới 1 giờ"> Dưới 1 giờ</label>
         <label><input type="radio" name="Q_F3" value="1–2 giờ"> 1–2 giờ</label>
         <label><input type="radio" name="Q_F3" value="2–3 giờ"> 2–3 giờ</label>
