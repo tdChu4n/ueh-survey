@@ -1171,6 +1171,11 @@
 
   // ══ MODAL ════════════════════════════════════════
 
+  // Nhận diện phiếu "Khảo sát nhu cầu, sở thích..." (form CELG nhiều phần A-G)
+  function isCELGCourse(course) {
+    return !!course && String(course.courseName || '').includes('Khảo sát nhu cầu, sở thích');
+  }
+
   function openModal(course) {
     if (course.locked || course.status === 'Đã khoá') return;
     currentSurveyRow = course;
@@ -1178,7 +1183,7 @@
     document.getElementById('successOverlay').classList.remove('show');
     document.getElementById('submitBtn').disabled = false;
     document.getElementById('submitBtn').textContent = 'Gửi khảo sát';
-    if (course.courseName.includes('Khảo sát nhu cầu, sở thích')) {
+    if (isCELGCourse(course)) {
       renderCELGForm();
     } else {
       renderForm();
@@ -1392,7 +1397,7 @@
 
   // ── Submit ────────────────────────────────────────
   async function submitSurveyForm() {
-    const isCELG = currentSurveyRow && currentSurveyRow.courseName.includes('CELG-Innovation Awards 2026');
+    const isCELG = isCELGCourse(currentSurveyRow);
     if (isCELG) {
       if (!validateCELGForm()) return;
     } else {
