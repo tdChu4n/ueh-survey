@@ -138,9 +138,9 @@ function DescriptiveSection({ responses, selectedPrograms }) {
   for (const r of responses) {
     if (r.cohort) cohCounts[r.cohort] = (cohCounts[r.cohort] || 0) + 1;
   }
-  const cohorts = ["51","50","49","Khác"]
+  const cohorts = ["52","51","50","49"]
     .filter(k => cohCounts[k] > 0)
-    .map(k => ({ label: k === 'Khác' ? 'Khác' : `Khóa ${k}`, n: cohCounts[k] }));
+    .map(k => ({ label: k, n: cohCounts[k] }));
 
   const maxN = Math.max(1, total);
 
@@ -510,7 +510,7 @@ function SummaryTabContent({ responses, onFactorClick }) {
       {/* Overall distribution histogram */}
       <div className="sub-card">
         <h3 className="sub-card__title">
-          Phân phối điểm tổng thể — câu đánh giá cuối
+          Đánh giá mức độ hài lòng của sinh viên
           <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>
             n = {responses.length} phiếu
           </span>

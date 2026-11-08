@@ -136,7 +136,7 @@ function ReportTabs({ responses }) {
   const [facultyFilter, setFacultyFilter] = useState("__ALL__");
 
   const availableCohorts = useMemo(() =>
-    ["49", "50", "51"].filter(k => responses.some(r => r.cohort === k)),
+    ["49", "50", "51", "52"].filter(k => responses.some(r => r.cohort === k)),
     [responses]
   );
   const availableFaculties = useMemo(() =>
